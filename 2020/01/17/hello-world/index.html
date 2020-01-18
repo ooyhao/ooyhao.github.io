@@ -207,23 +207,23 @@
     <div class="card-content">
         <h3 class="title is-5 has-text-weight-normal">评论</h3>
         
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
 <script>
-    var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2020/01/17/hello-world/';
-        this.page.identifier = '2020/01/17/hello-world/';
-    };
-    (function() {
-        var d = document, s = d.createElement('script');  
-        s.src = '//' + 'ooyhao' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'Fri Jan 17 2020 21:22:51 GMT+0800',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ouYang",
+        createIssueManually: true,
+        distractionFreeMode: true
+    })
+    gitalk.render('comment-container')
 </script>
 
-<div id="disqus_thread">
-    
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
     </div>
 </div>
 </div>
