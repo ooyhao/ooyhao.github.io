@@ -208,20 +208,19 @@
         <h3 class="title is-5 has-text-weight-normal">评论</h3>
         
 <div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
-    var gitalk = new Gitalk({
-        clientID: 'f4cce3ecdc344c1ed151',
-        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
-        id: 'Fri Jan 17 2020 21:22:51 GMT+0800',
-        repo: 'ooyhao.github.io',
-        owner: 'ooyhao',
-        admin: "ouYang",
-        createIssueManually: true,
-        distractionFreeMode: true
-    })
-    gitalk.render('comment-container')
+	var gitment = new Gitment({
+		id: 'f9b1ac69d46f7f9d09939e9b622d81a4',
+		owner: 'ooyhao',
+		repo: 'ooyhao.github.io',
+		oauth: {
+			client_id: 'f4cce3ecdc344c1ed151',
+			client_secret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+		},
+	})
+	gitment.render('comment-container')
 </script>
 
     </div>
