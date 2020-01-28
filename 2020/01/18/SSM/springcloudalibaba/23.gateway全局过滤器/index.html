@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>二十五、Gateway全局过滤器 - Hexo</title>
+
+
+    <meta name="description" content="全局过滤器GlobalFilte 接口与 GatewayFilter 具有相同的签名，这些特定的过滤器有条件的应用到所有的路由上。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二十五、Gateway全局过滤器">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="全局过滤器GlobalFilte 接口与 GatewayFilter 具有相同的签名，这些特定的过滤器有条件的应用到所有的路由上。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-18T08:55:25.000Z">
+<meta property="article:modified_time" content="2020-01-28T03:57:28.779Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="gateway">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="二十五、Gateway全局过滤器" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 870 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                二十五、Gateway全局过滤器
+            
+        </h1>
+        <div class="content">
+            <p>全局过滤器<code>GlobalFilte</code> 接口与 <code>GatewayFilter</code> 具有相同的签名，这些特定的过滤器有条件的应用到所有的路由上。</p>
+<a id="more"></a>
+
+<blockquote>
+<p><a href="https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.0.RC1/reference/html/#global-filters">https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.0.RC1/reference/html/#global-filters</a> </p>
+</blockquote>
+<h2 id="组合使用GlobalFilter和GatewayFilter"><a href="#组合使用GlobalFilter和GatewayFilter" class="headerlink" title="组合使用GlobalFilter和GatewayFilter"></a>组合使用GlobalFilter和GatewayFilter</h2><p>当请求进来的时候，过滤器Web处理器将会将所有的<code>GlobalFilter</code> 实例和所有特定的<code>GatewayFilter</code> 路由实例添加到过滤器filter链中，该组合的过滤器按<code>org.springframework.core.Ordered</code>接口排序，通过实现<code>getOrder()</code>方法来设置。</p>
+<p>由于Spring Cloud Gateway 区分了过滤器逻辑执行器的”前”阶段和”后”阶段，因此优先级最高的过滤器在<code>pre</code> 阶段中处于第一个，而在<code>post</code> 阶段处于最后一个。</p>
+<p> CustomGlobalFilter.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomGlobalFilter</span> <span class="keyword">implements</span> <span class="title">GlobalFilter</span>,<span class="title">Ordered</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Mono&lt;Void&gt; <span class="title">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：数值越小，越靠前执行。</p>
+<h2 id="LoadBalancerClient"><a href="#LoadBalancerClient" class="headerlink" title="LoadBalancerClient"></a>LoadBalancerClient</h2><p> 将<code>LoadBalancerClientFilter</code>在交换属性查找一个URI <code>ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR</code>。如果url有一个<code>lb</code>方案（即<code>lb://myservice</code>），它将使用Spring Cloud <code>LoadBalancerClient</code>将名称（<code>myservice</code>在前面的示例中）解析为实际的主机和端口，并在同一属性中替换URI。未经修改的原始url将附加到<code>ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR</code>属性中的列表。过滤器还将在<code>ServerWebExchangeUtils.GATEWAY_SCHEME_PREFIX_ATTR</code>属性中查找是否相等<code>lb</code>，然后应用相同的规则 </p>
+<p>application.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">myRoute</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">lb://service</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">Path=/service/**</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的介绍难以理解，其实通过代码可以看出，就是使用<code>lb</code> 来指定是否使用ribbon负载均衡。可以发现，这里Gateway也是使用ribbon来实现负载均衡的。</p>
+<p>默认情况下，当一个服务示例不能被<code>LoadBalancer</code>发现,将会返回<code>503</code>, 我们可以配置<code>spring.cloud.gateway.loadbalancer.use404 = false</code> 来使得Gateway返回<code>404</code>.</p>
+<p>我们建议使用<code>ReactiveLoadBalancerClientFilter</code>。您可以通过设置<code>spring.cloud.loadbalancer.ribbon.enabled</code>的值为<code>false</code>来使用<code>ReactiveLoadBalancerClientFilter</code>.</p>
+<h2 id="ReactiveLoadBalancerClientFilter"><a href="#ReactiveLoadBalancerClientFilter" class="headerlink" title="ReactiveLoadBalancerClientFilter"></a>ReactiveLoadBalancerClientFilter</h2><p>如上，见识使用这个，只需要将<code>spring.cloud.loadbalancer.ribbon.enabled</code>设置为false就可以了。</p>
+<h2 id="Sentinel-整合Gateway"><a href="#Sentinel-整合Gateway" class="headerlink" title="Sentinel 整合Gateway"></a>Sentinel 整合Gateway</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-sentinel-gateway<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> hao.ouYang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span> 2019-10-29 14:15</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GatewayConfiguration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;ViewResolver&gt; viewResolvers;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ServerCodecConfigurer serverCodecConfigurer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GatewayConfiguration</span><span class="params">(ObjectProvider&lt;List&lt;ViewResolver&gt;&gt; viewResolversProvider,</span></span></span><br><span class="line"><span class="function"><span class="params">                                ServerCodecConfigurer serverCodecConfigurer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.viewResolvers = viewResolversProvider.getIfAvailable(Collections::emptyList);</span><br><span class="line">        <span class="keyword">this</span>.serverCodecConfigurer = serverCodecConfigurer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//     这两个在SentinelSCGAutoConfiguration已经配置好了</span></span><br><span class="line">    <span class="comment">/*@Bean</span></span><br><span class="line"><span class="comment">    @Order(Ordered.HIGHEST_PRECEDENCE)</span></span><br><span class="line"><span class="comment">    public SentinelGatewayBlockExceptionHandler sentinelGatewayBlockExceptionHandler() &#123;</span></span><br><span class="line"><span class="comment">        return new SentinelGatewayBlockExceptionHandler(viewResolvers, serverCodecConfigurer);</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    @Bean</span></span><br><span class="line"><span class="comment">    @Order(-1)</span></span><br><span class="line"><span class="comment">    public GlobalFilter sentinelGatewayFilter() &#123;</span></span><br><span class="line"><span class="comment">        return new SentinelGatewayFilter();</span></span><br><span class="line"><span class="comment">    &#125;*/</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*@PostConstruct</span></span><br><span class="line"><span class="comment">    public void doInit() &#123;</span></span><br><span class="line"><span class="comment">        initCustomizedApis();</span></span><br><span class="line"><span class="comment">        initGatewayRules();</span></span><br><span class="line"><span class="comment">    &#125;*/</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*可以使用管理控制台进行管理*/</span></span><br><span class="line">    <span class="comment">/*初始化自定义的Api*/</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initCustomizedApis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Set&lt;ApiDefinition&gt; definitions = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// some_customized_api api名称</span></span><br><span class="line">        ApiDefinition api1 = <span class="keyword">new</span> ApiDefinition(<span class="string">"some_customized_api"</span>)</span><br><span class="line">                .setPredicateItems(<span class="keyword">new</span> HashSet&lt;ApiPredicateItem&gt;() &#123;&#123;</span><br><span class="line">                    add(<span class="keyword">new</span> ApiPathPredicateItem().setPattern(<span class="string">"/ahas"</span>));</span><br><span class="line">                    add(<span class="keyword">new</span> ApiPathPredicateItem().setPattern(<span class="string">"/product/**"</span>)</span><br><span class="line">                            .setMatchStrategy(SentinelGatewayConstants.URL_MATCH_STRATEGY_PREFIX));</span><br><span class="line">                &#125;&#125;);</span><br><span class="line"></span><br><span class="line">        ApiDefinition api2 = <span class="keyword">new</span> ApiDefinition(<span class="string">"another_customized_api"</span>)</span><br><span class="line">                .setPredicateItems(<span class="keyword">new</span> HashSet&lt;ApiPredicateItem&gt;() &#123;&#123;</span><br><span class="line">                    add(<span class="keyword">new</span> ApiPathPredicateItem().setPattern(<span class="string">"/**"</span>)</span><br><span class="line">                            .setMatchStrategy(SentinelGatewayConstants.URL_MATCH_STRATEGY_PREFIX));</span><br><span class="line">                &#125;&#125;);</span><br><span class="line">        definitions.add(api1);</span><br><span class="line">        definitions.add(api2);</span><br><span class="line">        GatewayApiDefinitionManager.loadApiDefinitions(definitions);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*初始化网关流控规则*/</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initGatewayRules</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Set&lt;GatewayFlowRule&gt; rules = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        rules.add(<span class="keyword">new</span> GatewayFlowRule(<span class="string">"aliyun_route"</span>)</span><br><span class="line">                .setCount(<span class="number">10</span>)</span><br><span class="line">                .setIntervalSec(<span class="number">1</span>)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        rules.add(<span class="keyword">new</span> GatewayFlowRule(<span class="string">"aliyun_route"</span>)</span><br><span class="line">                .setCount(<span class="number">2</span>)</span><br><span class="line">                .setIntervalSec(<span class="number">2</span>)</span><br><span class="line">                .setBurst(<span class="number">2</span>)</span><br><span class="line">                .setParamItem(<span class="keyword">new</span> GatewayParamFlowItem()</span><br><span class="line">                        .setParseStrategy(SentinelGatewayConstants.PARAM_PARSE_STRATEGY_CLIENT_IP)</span><br><span class="line">                )</span><br><span class="line">        );</span><br><span class="line">        rules.add(<span class="keyword">new</span> GatewayFlowRule(<span class="string">"httpbin_route"</span>)</span><br><span class="line">                .setCount(<span class="number">10</span>)</span><br><span class="line">                .setIntervalSec(<span class="number">1</span>)</span><br><span class="line">                .setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_RATE_LIMITER)</span><br><span class="line">                .setMaxQueueingTimeoutMs(<span class="number">600</span>)</span><br><span class="line">                .setParamItem(<span class="keyword">new</span> GatewayParamFlowItem()</span><br><span class="line">                        .setParseStrategy(SentinelGatewayConstants.PARAM_PARSE_STRATEGY_HEADER)</span><br><span class="line">                        .setFieldName(<span class="string">"X-Sentinel-Flag"</span>)</span><br><span class="line">                )</span><br><span class="line">        );</span><br><span class="line">        rules.add(<span class="keyword">new</span> GatewayFlowRule(<span class="string">"httpbin_route"</span>)</span><br><span class="line">                .setCount(<span class="number">1</span>)</span><br><span class="line">                .setIntervalSec(<span class="number">1</span>)</span><br><span class="line">                .setParamItem(<span class="keyword">new</span> GatewayParamFlowItem()</span><br><span class="line">                        .setParseStrategy(SentinelGatewayConstants.PARAM_PARSE_STRATEGY_URL_PARAM)</span><br><span class="line">                        .setFieldName(<span class="string">"pa"</span>)</span><br><span class="line">                )</span><br><span class="line">        );</span><br><span class="line">        rules.add(<span class="keyword">new</span> GatewayFlowRule(<span class="string">"httpbin_route"</span>)</span><br><span class="line">                .setCount(<span class="number">2</span>)</span><br><span class="line">                .setIntervalSec(<span class="number">30</span>)</span><br><span class="line">                .setParamItem(<span class="keyword">new</span> GatewayParamFlowItem()</span><br><span class="line">                        .setParseStrategy(SentinelGatewayConstants.PARAM_PARSE_STRATEGY_URL_PARAM)</span><br><span class="line">                        .setFieldName(<span class="string">"type"</span>)</span><br><span class="line">                        .setPattern(<span class="string">"warn"</span>)</span><br><span class="line">                        .setMatchStrategy(SentinelGatewayConstants.PARAM_MATCH_STRATEGY_CONTAINS)</span><br><span class="line">                )</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        rules.add(<span class="keyword">new</span> GatewayFlowRule(<span class="string">"some_customized_api"</span>)</span><br><span class="line">                .setResourceMode(SentinelGatewayConstants.RESOURCE_MODE_CUSTOM_API_NAME)</span><br><span class="line">                .setCount(<span class="number">5</span>)</span><br><span class="line">                .setIntervalSec(<span class="number">1</span>)</span><br><span class="line">                .setParamItem(<span class="keyword">new</span> GatewayParamFlowItem()</span><br><span class="line">                        .setParseStrategy(SentinelGatewayConstants.PARAM_PARSE_STRATEGY_URL_PARAM)</span><br><span class="line">                        .setFieldName(<span class="string">"pn"</span>)</span><br><span class="line">                )</span><br><span class="line">        );</span><br><span class="line">        GatewayRuleManager.loadRules(rules);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/">二十五、Gateway全局过滤器</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/">https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</a></li>
+            <li><strong>发布时间：</strong>2020-01-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/gateway/" rel="tag">gateway</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">二十六、Gateway 配置实例</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/">
+                <span class="level-item">二十四、GatewayFilter 工厂</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '75fad6fb9582460cab9019b1ed1829ff',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            38
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            7
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fas fa-wechat"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#组合使用GlobalFilter和GatewayFilter">
+        <span class="has-mr-6">1</span>
+        <span>组合使用GlobalFilter和GatewayFilter</span>
+        </a></li><li>
+        <a class="is-flex" href="#LoadBalancerClient">
+        <span class="has-mr-6">2</span>
+        <span>LoadBalancerClient</span>
+        </a></li><li>
+        <a class="is-flex" href="#ReactiveLoadBalancerClientFilter">
+        <span class="has-mr-6">3</span>
+        <span>ReactiveLoadBalancerClientFilter</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sentinel-整合Gateway">
+        <span class="has-mr-6">4</span>
+        <span>Sentinel 整合Gateway</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十三、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:23.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十三、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十二、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:22.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十二、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">38</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="二十五、Gateway全局过滤器" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

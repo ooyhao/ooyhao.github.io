@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>四、Mybatis动态SQL - Hexo</title>
+
+
+    <meta name="description" content="Mybatis动态SQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四、Mybatis动态SQL">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/18/SSM/mybatis/4Mybatis%E5%8A%A8%E6%80%81SQL/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Mybatis动态SQL">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-18T08:15:04.000Z">
+<meta property="article:modified_time" content="2020-01-28T03:27:12.214Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="四、Mybatis动态SQL" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-18T08:15:04.000Z">2020-01-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/mybatis/">mybatis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    13 分钟 读完 (大约 2000 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                四、Mybatis动态SQL
+            
+        </h1>
+        <div class="content">
+            <p>Mybatis动态SQL</p>
+<a id="more"></a>
+
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>摘自官网：<a href="https://mybatis.org/mybatis-3/zh/dynamic-sql.html">https://mybatis.org/mybatis-3/zh/dynamic-sql.html</a></p>
+<blockquote>
+<p>  ​        MyBatis 的强大特性之一便是它的动态 SQL。如果你有使用 JDBC 或其它类似框架的经验，你就能体会到根据不同条件拼接 SQL 语句的痛苦。例如拼接时要确保不能忘记添加必要的空格，还要注意去掉列表最后一个列名的逗号。利用动态 SQL 这一特性可以彻底摆脱这种痛苦。</p>
+<p>  ​        虽然在以前使用动态 SQL 并非一件易事，但正是 MyBatis 提供了可以被用在任意 SQL 映射语句中的强大的动态 SQL 语言得以改进这种情形。</p>
+<p>  ​         动态 SQL 元素和 JSTL 或基于类似 XML 的文本处理器相似。在 MyBatis 之前的版本中，有很多元素需要花时间了解。MyBatis 3 大大精简了元素种类，现在只需学习原来一半的元素便可。MyBatis 采用功能强大的基于 OGNL 的表达式来淘汰其它大部分元素。</p>
+</blockquote>
+<p>动态sql语句标签主要包括下面这几种：</p>
+<ul>
+<li>if</li>
+<li>choose…when…otherwise</li>
+<li>trim</li>
+<li>foreach</li>
+<li>bind</li>
+</ul>
+<h2 id="if-标签"><a href="#if-标签" class="headerlink" title="if 标签"></a>if 标签</h2><p>当我们需要做一些判断的时候，可以使用到if标签，如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByUsernamePassword"</span> <span class="attr">resultType</span>=<span class="string">"user"</span> &gt;</span></span><br><span class="line">  select * from tb_user</span><br><span class="line">  <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"username != null"</span>&gt;</span></span><br><span class="line">      username = #&#123;username&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"password != null"</span>&gt;</span></span><br><span class="line">      and password = #&#123;password&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>所对应的Mapper接口方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*根据username和password查询*/</span></span><br><span class="line"><span class="function">List&lt;User&gt; <span class="title">findUsersByUsernamePassword</span><span class="params">(User user)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以直接使用对象中的属性来取值。如果此时我们加了<code>@Param(&quot;user&quot;)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*根据username和password查询*/</span></span><br><span class="line"><span class="function">List&lt;User&gt; <span class="title">findUsersByUsernamePassword</span><span class="params">(@Param(<span class="string">"user"</span>)</span> User user)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>对应的取值xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByUsernamePassword"</span> <span class="attr">resultType</span>=<span class="string">"user"</span> &gt;</span></span><br><span class="line">  select * from tb_user</span><br><span class="line">  <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"user.username != null"</span>&gt;</span></span><br><span class="line">      username = #&#123;user.username&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"user.password != null"</span>&gt;</span></span><br><span class="line">      and password = #&#123;user.password&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>解释：上述示例中，sql拼接结果如下：</p>
+<ul>
+<li><p>username 为null，password 不为null</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">password</span> = ?</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>username 不为null，password为null</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> username = ?</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>username 不为null，password不为null</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> username = ? <span class="keyword">and</span> <span class="keyword">password</span> = ?</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>username 为null，password为null</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user</span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"id != null and userId != '' and username =='2'"</span>&gt;</span></span><br><span class="line">    refusalreason=#&#123;remark,jdbcType=VARCHAR&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>mybatis是用OGNL表达式来解析的，在OGNL的表达式中，’2’会被解析成字符，java是强类型的，char 和一个string 会导致不等，所以if标签中的sql不会被解析。</p>
+<ul>
+<li>if标签里，判断相等或不相等</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">单个字符需要加.toString()，如：auditidentified =='2'.toString()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>if标签里，判断相等或不相等</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">多个字符不需要加toString()，如：auditidentified !='2155'</span><br></pre></td></tr></table></figure>
+
+<h2 id="choose-标签"><a href="#choose-标签" class="headerlink" title="choose 标签"></a>choose 标签</h2><p>​    有时我们不希望用到所有的条件，比如用户有记录有id，user_id, username这几个属性，但是查询的时候希望有优先级，比如id存在的时候，只按id查询，如果id不存在，但是user_id存在，则按照user_id查询，如果前面两者都不存在，则按照username查询。</p>
+<p>语句模板：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">choose</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">when</span> <span class="attr">test</span> = <span class="string">"a"</span>&gt;</span>A<span class="tag">&lt;/<span class="name">when</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">when</span> <span class="attr">test</span> = <span class="string">"b"</span>&gt;</span>B<span class="tag">&lt;/<span class="name">when</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">otherwise</span>&gt;</span>C<span class="tag">&lt;/<span class="name">otherwise</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">choose</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>语句解释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">解释：（只会执行一个条件,也必定会有一个条件执行）</span><br><span class="line">  这个语句相当Java中的 <span class="keyword">switch</span>...<span class="keyword">case</span>...<span class="keyword">default</span></span><br><span class="line">  <span class="keyword">switch</span> 	==&gt; choose:定义语句范围</span><br><span class="line">  <span class="keyword">case</span>   	==&gt; when  :满足当前条件 test 时执行</span><br><span class="line">  <span class="keyword">default</span> 	==&gt; otherwise :当前面的所有when都不满足的时候，使用otherwise的语句</span><br><span class="line"></span><br><span class="line">即：当表达式a计算结果为<span class="keyword">true</span>时，则执行语句A, choose结束</span><br><span class="line">    当表达式b计算结果为<span class="keyword">true</span>时，则执行语句B, choose结束</span><br><span class="line">    当前面的when都不满足时，执行C。choose结束。</span><br></pre></td></tr></table></figure>
+
+<p>示例语句如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByIdOrUserIdOrUsername"</span> <span class="attr">resultType</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">    select * from tb_user</span><br><span class="line">    <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">choose</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">when</span> <span class="attr">test</span>=<span class="string">"id != null"</span>&gt;</span></span><br><span class="line">             	 id = #&#123;id&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">when</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">when</span> <span class="attr">test</span>=<span class="string">"userId != null"</span>&gt;</span></span><br><span class="line">            	  user_id = #&#123;userId&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">when</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">otherwise</span>&gt;</span></span><br><span class="line">            	  username = #&#123;username&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">otherwise</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">choose</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>对应的Mapper接口方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*查询，如果有id不为空，则直接按id查询，如果id为空，则按userId查询，否则按username查询*/</span></span><br><span class="line"><span class="function">List&lt;User&gt; <span class="title">findUsersByIdOrUserIdOrUsername</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    @Param(<span class="string">"id"</span>)</span> Integer id,</span></span><br><span class="line"><span class="function">    @<span class="title">Param</span><span class="params">(<span class="string">"userId"</span>)</span> String userId,</span></span><br><span class="line"><span class="function">    @<span class="title">Param</span><span class="params">(<span class="string">"username"</span>)</span> String  username)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>​    注意的同学可以发现，这里与之前的传参方法不同。后面将会有一篇专门介绍参数传递问题。这里先不细说。</p>
+<h2 id="trim-标签"><a href="#trim-标签" class="headerlink" title="trim 标签"></a>trim 标签</h2><p>与trim相关的标签还有set和where标签，这是用来我们解决sql拼接的问题，之前自己手动凭借SQL的时候，需要非常注意 and，or和逗号问题，对应and|or，我们会在sql之前使用where 1 = 1,如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span> <span class="keyword">and</span> ...</span><br></pre></td></tr></table></figure>
+
+<p>我们看一下下面这个sql:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByUsernamePassword"</span> <span class="attr">resultType</span>=<span class="string">"user"</span> &gt;</span></span><br><span class="line">  select * from tb_user where</span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"username != null"</span>&gt;</span></span><br><span class="line">      username = #&#123;username&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"password != null"</span>&gt;</span></span><br><span class="line">      and password = #&#123;password&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当我username为空，password不为空时，处理之后就会生成如下sql：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">and</span> <span class="keyword">password</span> = ?</span><br></pre></td></tr></table></figure>
+
+<p>上面这个sql就是一个错误的sql，但是mybatis中的动态sql帮我们提供了方法，下面我们看一下trim标签：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">trim</span> <span class="attr">prefix</span>=<span class="string">""</span> <span class="attr">prefixOverrides</span>=<span class="string">""</span> <span class="attr">suffix</span>=<span class="string">""</span> <span class="attr">suffixOverrides</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">trim</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 解释：</span></span><br><span class="line"><span class="comment">prefix: 前缀,即在当前使用trim标签的最开头处添加指定元素。</span></span><br><span class="line"><span class="comment">suffix: 后缀,即在当前使用trim标签的最结束处添加指定元素。</span></span><br><span class="line"><span class="comment">prefixOverrides: 在最前面将元素指定的数据移除掉。</span></span><br><span class="line"><span class="comment">suffixOverrides: 在最后面将元素指定的数据移除掉。</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>所以我们使用trim标签来解决上面标签产生的问题，如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByUsernamePassword"</span> <span class="attr">resultType</span>=<span class="string">"user"</span> &gt;</span></span><br><span class="line">  select * from tb_user</span><br><span class="line">  <span class="tag">&lt;<span class="name">trim</span> <span class="attr">prefix</span>=<span class="string">"where"</span> <span class="attr">prefixOverrides</span>=<span class="string">"and |or"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"username != null"</span>&gt;</span></span><br><span class="line">      username = #&#123;username&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"password != null"</span>&gt;</span></span><br><span class="line">      and password = #&#123;password&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">trim</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：and后面的空格是必要添加的(官网介绍)。但是我测试的空格没有影响，为了规避问题，建议加上空格。</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-18_17-15-00.png" alt></p>
+<p>mybatis鉴于上述使用环境非常常见，将其封装为where标签，以及set标签，如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByUsernamePassword"</span> <span class="attr">resultType</span>=<span class="string">"user"</span> &gt;</span></span><br><span class="line">  select * from tb_user</span><br><span class="line">  <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"username != null"</span>&gt;</span></span><br><span class="line">      username = #&#123;username&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"password != null"</span>&gt;</span></span><br><span class="line">      and password = #&#123;password&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">"updateUserByUser"</span> &gt;</span></span><br><span class="line">  update tb_user</span><br><span class="line">  <span class="tag">&lt;<span class="name">set</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"userId != null"</span>&gt;</span></span><br><span class="line">      user_id = #&#123;userId&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"username != null"</span>&gt;</span></span><br><span class="line">      username = #&#123;username&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"password != null"</span>&gt;</span></span><br><span class="line">      password = #&#123;password&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"email != null"</span>&gt;</span></span><br><span class="line">      email = #&#123;email&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"phone != null"</span>&gt;</span></span><br><span class="line">      phone = #&#123;phone&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"gender != null"</span>&gt;</span></span><br><span class="line">      gender = #&#123;gender&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"birthday != null"</span>&gt;</span></span><br><span class="line">      birthday = #&#123;birthday&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"status != null"</span>&gt;</span></span><br><span class="line">      status = #&#123;status&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createTime != null"</span>&gt;</span></span><br><span class="line">      create_time = #&#123;createTime&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createUser != null"</span>&gt;</span></span><br><span class="line">      create_user = #&#123;createUser&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyUser != null"</span>&gt;</span></span><br><span class="line">      modify_user = #&#123;modifyUser&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyTime != null"</span>&gt;</span></span><br><span class="line">      modify_time = #&#123;modifyTime&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br><span class="line">    where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="foreach标签"><a href="#foreach标签" class="headerlink" title="foreach标签"></a>foreach标签</h2><p>​    这个标签对我们来说从名字上，其实就知道是用来干啥的了。对，foreach标签就是用来循环迭代一些可迭代的元素，如，list，set，map，数组等。</p>
+<p>试想以下，当我们需要根据多个id批量查询的时候，我们使用java代码需要如何操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  String sql = <span class="string">" select * from tb_user where id in "</span>;</span><br><span class="line">  List&lt;Integer&gt; ids = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  ids.add(<span class="number">1</span>);</span><br><span class="line">  ids.add(<span class="number">2</span>);</span><br><span class="line">  ids.add(<span class="number">3</span>);</span><br><span class="line">  ids.add(<span class="number">4</span>);</span><br><span class="line">  String idSql = <span class="string">"("</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ids.size(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i == ids.size() - <span class="number">1</span>) &#123;</span><br><span class="line">      idSql += ids.get(i) +<span class="string">")"</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      idSql += ids.get(i) + <span class="string">","</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  sql += idSql;</span><br><span class="line">  System.out.println(sql);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//select * from tb_user where id in (1,2,3,4);</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看出，拼接这个sql非常繁琐，但是Mybatis提供的foreach可以很简单的实现,在此之前，我们看一下foreach标签：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">foreach</span> <span class="attr">collection</span>=<span class="string">""</span> <span class="attr">index</span>=<span class="string">""</span> <span class="attr">item</span>=<span class="string">""</span> <span class="attr">open</span>=<span class="string">""</span> <span class="attr">separator</span>=<span class="string">""</span> <span class="attr">close</span>=<span class="string">""</span> &gt;</span><span class="tag">&lt;/<span class="name">foreach</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p>你可以将任何可迭代对象 如 List、Map 对象或者数组对象传递给 <em>foreach</em> 作为集合参数。当使用可迭代对象或者数组时。</p>
+<ul>
+<li>collection 属性的书写方式，List -&gt; list/collection,Set-&gt;collection,[]数组 -&gt; array,Map -&gt; map.</li>
+</ul>
+<ul>
+<li><p>index 是当前迭代的次数，item 的值是本次迭代获取的元素。</p>
+<p>当使用 Map 对象（或者 Map.Entry 对象的集合）时，index 是键，item 是值。</p>
+</li>
+</ul>
+<ul>
+<li>open表示拼接最前的元素</li>
+<li>close表示拼接在最后的元素</li>
+<li>separator表示遍历的各个元素之间的分隔符。</li>
+</ul>
+<p>使用foreach实现：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByIds"</span> <span class="attr">resultType</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">  select * from tb_user</span><br><span class="line">  <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">    id in</span><br><span class="line">    <span class="tag">&lt;<span class="name">foreach</span> <span class="attr">collection</span>=<span class="string">"list"</span> <span class="attr">item</span>=<span class="string">"ite"</span> <span class="attr">open</span>=<span class="string">"("</span> <span class="attr">separator</span>=<span class="string">","</span> <span class="attr">close</span>=<span class="string">")"</span>&gt;</span></span><br><span class="line">      #&#123;ite&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">foreach</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>对应的mapper接口的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">List&lt;User&gt; <span class="title">findUsersByIds</span><span class="params">(List&lt;Integer&gt; id)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="bind-标签"><a href="#bind-标签" class="headerlink" title="bind 标签"></a>bind 标签</h2><p>bind 元素可以从 OGNL 表达式中创建一个变量并将其绑定到上下文：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">resultType</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bind</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">value</span>=<span class="string">" id + 1"</span>/&gt;</span></span><br><span class="line">  select * from tb_user where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">   ==&gt;  Preparing: select * from tb_user where username like ?</span></span><br><span class="line"><span class="comment">   ==&gt; Parameters: %xxx%(String)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByLikeUsername"</span> <span class="attr">resultType</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bind</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">value</span>=<span class="string">" '%' +username+ '%' "</span>/&gt;</span></span><br><span class="line">  select * from tb_user where username like #&#123;name&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 模糊查询还可以这样 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserByQueryVo"</span> <span class="attr">parameterType</span>=<span class="string">"QueryVo"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">resultType</span>=<span class="string">"User"</span>&gt;</span></span><br><span class="line">	select * from tb_user where username like concat('%',#&#123;user.username&#125;,'%')</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>bind 标签比较简单，如上所示，可以将字符串进行拼接，也可以对传递进来的参数进行处理。</p>
+<blockquote>
+<p>  源码地址：</p>
+<p>  <a href="https://gitee.com/ooyhao/JavaRepo_Public/tree/master/Mybatis">https://gitee.com/ooyhao/JavaRepo_Public/tree/master/Mybatis</a></p>
+</blockquote>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/4Mybatis%E5%8A%A8%E6%80%81SQL/">四、Mybatis动态SQL</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/4Mybatis%E5%8A%A8%E6%80%81SQL/">https://ooyhao.github.io/2020/01/18/SSM/mybatis/4Mybatis%E5%8A%A8%E6%80%81SQL/</a></li>
+            <li><strong>发布时间：</strong>2020-01-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/mybatis/" rel="tag">mybatis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/18/SSM/mybatis/5Mybatis%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">五、Mybatis参数传递</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/18/SSM/mybatis/3Mybatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/">
+                <span class="level-item">三、Mybatis映射文件</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'a1c17acfd71911a16926f77a195b08d8',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            38
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            7
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fas fa-wechat"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#概念">
+        <span class="has-mr-6">1</span>
+        <span>概念</span>
+        </a></li><li>
+        <a class="is-flex" href="#if-标签">
+        <span class="has-mr-6">2</span>
+        <span>if 标签</span>
+        </a></li><li>
+        <a class="is-flex" href="#choose-标签">
+        <span class="has-mr-6">3</span>
+        <span>choose 标签</span>
+        </a></li><li>
+        <a class="is-flex" href="#trim-标签">
+        <span class="has-mr-6">4</span>
+        <span>trim 标签</span>
+        </a></li><li>
+        <a class="is-flex" href="#foreach标签">
+        <span class="has-mr-6">5</span>
+        <span>foreach标签</span>
+        </a></li><li>
+        <a class="is-flex" href="#bind-标签">
+        <span class="has-mr-6">6</span>
+        <span>bind 标签</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十三、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:23.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十三、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十二、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:22.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十二、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">38</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="四、Mybatis动态SQL" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

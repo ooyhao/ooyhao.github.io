@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>六、一级缓存和二级缓存 - Hexo</title>
+
+
+    <meta name="description" content="一级缓存和二级缓存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="六、一级缓存和二级缓存">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/18/SSM/mybatis/6Mybatis%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E5%92%8C%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一级缓存和二级缓存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-18T08:15:06.000Z">
+<meta property="article:modified_time" content="2020-01-28T03:26:56.224Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="六、一级缓存和二级缓存" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-18T08:15:06.000Z">2020-01-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/mybatis/">mybatis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    16 分钟 读完 (大约 2425 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                六、一级缓存和二级缓存
+            
+        </h1>
+        <div class="content">
+            <p>一级缓存和二级缓存</p>
+<a id="more"></a>
+
+<p>本文参考了下文：</p>
+<blockquote>
+<p>  <a href="https://www.cnblogs.com/happyflyingpig/p/7739749.html">https://www.cnblogs.com/happyflyingpig/p/7739749.html</a>\</p>
+</blockquote>
+<h2 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h2><p>​    Mybatis 对缓存提供了支持，在没有配置的情况下，Mybatis默认只开启一级缓存，一级缓存其实就是依托于SqlSession，即使用同一个SqlSession操作下，如果Sql语句和参数都没有变化，SqlSession第一次会发送SQL，再缓存没有失效的情况下，后面的查询，就会直接去二级缓存中查找，不再像数据库发送SQL查询。</p>
+<p>图片来源于上述链接博文：</p>
+<p><img src="/images/mybatis/20190917092748154.png" alt></p>
+<p>为什么要使用一级缓存，不用多说也知道个大概。但是还有几个问题我们要注意一下。</p>
+<p>　　<strong>1、一级缓存的生命周期有多长？</strong></p>
+<p>​        a、MyBatis在开启一个数据库会话时，会创建一个新的SqlSession对象，SqlSession对象中会有一个新的Executor对象。Executor对象中持有一个新的PerpetualCache对象；当会话结束时，SqlSession对象及其内部的Executor对象还有PerpetualCache对象也一并释放掉。</p>
+<p>　　b、如果SqlSession调用了close()方法，会释放掉一级缓存PerpetualCache对象，一级缓存将不可用。</p>
+<p>　　c、如果SqlSession调用了clearCache()，会清空PerpetualCache对象中的数据，但是该对象仍可使用。</p>
+<p>　　d、SqlSession中执行了任何一个update操作(update()、delete()、insert()) ，都会清空PerpetualCache对象的数据，但是该对象可以继续使用</p>
+<p>　   <strong>2、怎么判断某两次查询是完全相同的查询？</strong></p>
+<p>mybatis认为，对于两次查询，如果以下条件都完全一样，那么就认为它们是完全相同的两次查询。</p>
+<p>　　2.1 传入的statementId</p>
+<p>　　2.2 查询时要求的结果集中的结果范围</p>
+<p>　 2.3 这次查询所产生的最终要传递给JDBC java.sql.Preparedstatement的Sql语句字符串（boundSql.getSql() ）</p>
+<p>　　2.4 传递给java.sql.Statement要设置的参数值</p>
+<h2 id="一级缓存验证"><a href="#一级缓存验证" class="headerlink" title="一级缓存验证"></a>一级缓存验证</h2><p>我们依托于前面的示例，</p>
+<p>Role:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String roleName;</span><br><span class="line">    <span class="keyword">private</span> String description;</span><br><span class="line">    <span class="keyword">private</span> Integer status;</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line">    <span class="keyword">private</span> String createUser;</span><br><span class="line">    <span class="keyword">private</span> Date modifyTime;</span><br><span class="line">    <span class="keyword">private</span> String modifyUser;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>RoleMapper:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RoleMapper</span> </span>&#123;</span><br><span class="line">    <span class="function">Role <span class="title">findById</span><span class="params">(Integer id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是测试一级缓存的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SqlSession sqlSession = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String resource = <span class="string">"mybatis.configuration.xml"</span>;</span><br><span class="line">        InputStream inputStream = AppTest<span class="class">.<span class="keyword">class</span>.<span class="title">getClassLoader</span>().<span class="title">getResourceAsStream</span>(<span class="title">resource</span>)</span>;</span><br><span class="line">        sqlSession = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream).openSession(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindRoleById</span><span class="params">()</span></span>&#123;</span><br><span class="line">        RoleMapper mapper = sqlSession.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        Role role1 = mapper.findById(<span class="number">1</span>);</span><br><span class="line">        Role role2 = mapper.findById(<span class="number">1</span>);</span><br><span class="line">        System.out.println(role1);</span><br><span class="line">        System.out.println(role2);</span><br><span class="line">        sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-20_13-11-02.png" alt></p>
+<h2 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h2><p>Mybatis的二级缓存是SqlSessionFactory层面的，一级缓存是SqlSession层面的。</p>
+<p><img src="/images/mybatis/1254583-20171029185910164-1823278112.png" alt></p>
+<p>默认情况下，只启用了本地的会话缓存，也就是一级缓存，基于SqlSession的 ，但是如果需要开启二级缓存的话，只需要在Mapper.xml文件中添加一行：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">cache</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>基本上就是这样。这个简单语句的效果如下:</p>
+<ul>
+<li>映射语句文件中的所有 select 语句的结果将会被缓存。</li>
+<li>映射语句文件中的所有 insert、update 和 delete 语句会刷新缓存。</li>
+<li>缓存会使用最近最少使用算法（LRU, Least Recently Used）算法来清除不需要的缓存。</li>
+<li>缓存不会定时进行刷新（也就是说，没有刷新间隔）。</li>
+<li>缓存会保存列表或对象（无论查询方法返回哪种）的 1024 个引用。</li>
+<li>缓存会被视为读/写缓存，这意味着获取到的对象并不是共享的，可以安全地被调用者修改，而不干扰其他调用者或线程所做的潜在修改。</li>
+</ul>
+<h2 id="二级缓存验证"><a href="#二级缓存验证" class="headerlink" title="二级缓存验证"></a>二级缓存验证</h2><p>RoleMapper.xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD Mapper 3.0//EN"</span> <span class="meta-string">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.ooyhao.mybatis4.mapper.RoleMapper"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--开启二级缓存--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">cache</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"base_map_4"</span> <span class="attr">type</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"role_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"roleName"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"description"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"description"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findById"</span> <span class="attr">resultMap</span>=<span class="string">"base_map_4"</span>&gt;</span></span><br><span class="line">        select * from tb_role where id = #&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如xml文件所述，我们仅在RoleMapper文件下添加<code>&lt;cache/&gt;</code> 用于开启当前namespace 的缓存。</p>
+<p>单元测试方法：</p>
+<p>(需要注意，我们需要将自动提交关闭，即openSession()的参数设置为false，或不填，否则无法进行缓存)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindRoleByIdWithCache</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//二级缓存是在SqlSessionFactory层面的。</span></span><br><span class="line">    String resource = <span class="string">"mybatis.configuration.xml"</span>;</span><br><span class="line">    InputStream stream = AppTest<span class="class">.<span class="keyword">class</span>.<span class="title">getClassLoader</span>().<span class="title">getResourceAsStream</span>(<span class="title">resource</span>)</span>;</span><br><span class="line">    SqlSessionFactoryBuilder builder = <span class="keyword">new</span> SqlSessionFactoryBuilder();</span><br><span class="line">    <span class="comment">//创建SqlSessionFactory</span></span><br><span class="line">    SqlSessionFactory build = builder.build(stream);</span><br><span class="line"></span><br><span class="line">    SqlSession sqlSession1 = build.openSession();</span><br><span class="line">    RoleMapper mapper = sqlSession1.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    Role role1 = mapper.findById(<span class="number">1</span>);</span><br><span class="line">    System.out.println(role1);</span><br><span class="line"></span><br><span class="line">    RoleMapper mapper1 = sqlSession1.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    Role role = mapper1.findById(<span class="number">1</span>);</span><br><span class="line">    System.out.println(role);</span><br><span class="line">    sqlSession1.commit();</span><br><span class="line"></span><br><span class="line">    SqlSession sqlSession2 = build.openSession();<span class="comment">//创建了一个新的session。</span></span><br><span class="line">    RoleMapper roleMapper = sqlSession2.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    Role role2 = roleMapper.findById(<span class="number">1</span>);</span><br><span class="line">    System.out.println(role2);</span><br><span class="line">    sqlSession2.commit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时测试结果为：(报未序列化异常)</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-20_15-39-46.png" alt></p>
+<p>所以，<strong>我们需要为Role对象加上Serializable接口</strong>。</p>
+<p>如果我们标注为缓存是只读的话，那么不序列化也不会保错：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">cache</span> <span class="attr">readOnly</span>=<span class="string">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-20_15-46-49.png" alt></p>
+<p>这是启用二级缓存之后的执行结果，可以发现查询了3次，但是实际仅仅只发送了一次SQL，我们可以看第二次的<code>Cache Hit Ratio</code> 是0.3333，即三分之一，我们总共查询了三次，在二级缓存中的命中的次数是一次，所以是0.333.</p>
+<p>我们像下面这样，增加一次查询：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindRoleByIdWithCache</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//二级缓存是在SqlSessionFactory层面的。</span></span><br><span class="line">        String resource = <span class="string">"mybatis.configuration.xml"</span>;</span><br><span class="line">        InputStream stream = AppTest<span class="class">.<span class="keyword">class</span>.<span class="title">getClassLoader</span>().<span class="title">getResourceAsStream</span>(<span class="title">resource</span>)</span>;</span><br><span class="line">        SqlSessionFactoryBuilder builder = <span class="keyword">new</span> SqlSessionFactoryBuilder();</span><br><span class="line">        <span class="comment">//创建SqlSessionFactory</span></span><br><span class="line">        SqlSessionFactory build = builder.build(stream);</span><br><span class="line"></span><br><span class="line">        SqlSession sqlSession1 = build.openSession();</span><br><span class="line">        RoleMapper mapper = sqlSession1.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        Role role1 = mapper.findById(<span class="number">1</span>);</span><br><span class="line">        System.out.println(role1);</span><br><span class="line"></span><br><span class="line">        RoleMapper mapper1 = sqlSession1.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        Role role = mapper1.findById(<span class="number">1</span>);</span><br><span class="line">        System.out.println(role);</span><br><span class="line">        sqlSession1.commit();</span><br><span class="line"></span><br><span class="line">        SqlSession sqlSession2 = build.openSession();</span><br><span class="line">        RoleMapper roleMapper = sqlSession2.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        Role role2 = roleMapper.findById(<span class="number">1</span>);</span><br><span class="line">        System.out.println(role2);</span><br><span class="line">        sqlSession2.commit();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        SqlSession sqlSession3 = build.openSession();</span><br><span class="line">        RoleMapper roleMapper3 = sqlSession3.getMapper(RoleMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        Role role3 = roleMapper3.findById(<span class="number">1</span>);</span><br><span class="line">        System.out.println(role3);</span><br><span class="line">        sqlSession3.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-20_15-55-12.png" alt></p>
+<h2 id="二级缓存详述"><a href="#二级缓存详述" class="headerlink" title="二级缓存详述"></a>二级缓存详述</h2><p>我们知道了如何操作二级缓存，下面我们对二级缓存进行更加详细的了解。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">cache</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个简单语句的效果如下:</p>
+<ul>
+<li>映射语句文件中的所有 select 语句的结果将会被缓存。</li>
+<li>映射语句文件中的所有 insert、update 和 delete 语句会刷新缓存。</li>
+<li>缓存会使用最近最少使用算法（LRU, Least Recently Used）算法来清除不需要的缓存。</li>
+<li>缓存不会定时进行刷新（也就是说，没有刷新间隔）。</li>
+<li>缓存会保存列表或对象（无论查询方法返回哪种）的 1024 个引用。</li>
+<li>缓存会被视为读/写缓存，这意味着获取到的对象并不是共享的，可以安全地被调用者修改，而不干扰其他调用者或线程所做的潜在修改。</li>
+</ul>
+<p>这些属性可以通过 cache 元素的属性来修改。比如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--开启二级缓存--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--开启本mapper的namespace下的二级缓存--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">cache</span> <span class="attr">eviction</span>=<span class="string">"FIFO"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">flushInterval</span>=<span class="string">"60000"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">readOnly</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">size</span>=<span class="string">"512"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"base_map_4"</span> <span class="attr">type</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"role_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"roleName"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"description"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"description"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--可以通过设置useCache来规定这个sql是否开启缓存，ture是开启，false是关闭--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findById"</span> <span class="attr">resultMap</span>=<span class="string">"base_map_4"</span> <span class="attr">useCache</span>=<span class="string">"true"</span> &gt;</span></span><br><span class="line">  	select * from tb_role where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    这个更高级的配置创建了一个FIFO(first in first out) 缓存，每隔60秒刷新，最多可以存储结果对象或列表的512个引用，而且返回的对象被认为是只读的，因此对他们进行修改可能会在不同线程中的调用者产生冲突。</p>
+<p>可用的清楚策略有：</p>
+<ul>
+<li>LRU -最近最少使用：移除最长时间不被使用的对象。（默认）</li>
+<li>FIFO -先进先出：按对象进入缓存的顺序来移除它们。</li>
+<li>SOFT - 软引用：基于垃圾回收器状态和软引用规则移除对象。</li>
+<li>WEAK - 弱引用：更积极地基于垃圾收集器状态和弱引用规则移除对象。 </li>
+</ul>
+<p>flushInterval（刷新间隔）属性可以被设置为任意的正整数，设置的值应该是一个以<strong>毫秒</strong>为单位的合理时间量。 默认情况是不设置，也就是没有刷新间隔，缓存仅仅会在调用语句时刷新。</p>
+<p>size（引用数目）属性可以被设置为任意正整数，要注意欲缓存对象的大小和运行环境中可用的内存资源。默认值是 1024。</p>
+<p>readOnly（只读）属性可以被设置为 true 或 false。只读的缓存会给所有调用者返回缓存对象的相同实例。 因此这些对象不能被修改。这就提供了可观的性能提升。而可读写的缓存会（通过序列化）返回缓存对象的拷贝。 速度上会慢一些，但是更安全，因此默认值是 false。</p>
+<p><strong>提示</strong>： <em>二级缓存是事务性的</em>。这意味着，当 SqlSession 完成并提交时，或是完成并回滚，但没有执行 flushCache=true 的 insert/delete/update 语句时，缓存会获得更新。</p>
+<p>总结：</p>
+<p>​    至此，我们学习了Mybatis的基础知识了，当然，如果我们需要深入理解Mybatis，我们还有很多要学习，所以，学习Mybatis，我们才刚刚开始。后面，我们学习一下如何和Spring整合操作。</p>
+<blockquote>
+<p>  源码地址：</p>
+<p>  <a href="https://gitee.com/ooyhao/JavaRepo_Public/tree/master/Mybatis">https://gitee.com/ooyhao/JavaRepo_Public/tree/master/Mybatis</a></p>
+</blockquote>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/6Mybatis%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E5%92%8C%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98/">六、一级缓存和二级缓存</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/6Mybatis%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E5%92%8C%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98/">https://ooyhao.github.io/2020/01/18/SSM/mybatis/6Mybatis%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E5%92%8C%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98/</a></li>
+            <li><strong>发布时间：</strong>2020-01-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/mybatis/" rel="tag">mybatis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/18/SSM/mybatis/7Mybatis%E4%B8%AD%E7%9A%84%E4%BA%95%E5%92%8C%E6%98%9F/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">六、Mybatis中的# 和 $</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/18/SSM/mybatis/5Mybatis%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92/">
+                <span class="level-item">五、Mybatis参数传递</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'fdb2efeac010c64ec2dd2a2ff8c4110c',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            38
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            7
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fas fa-wechat"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#一级缓存">
+        <span class="has-mr-6">1</span>
+        <span>一级缓存</span>
+        </a></li><li>
+        <a class="is-flex" href="#一级缓存验证">
+        <span class="has-mr-6">2</span>
+        <span>一级缓存验证</span>
+        </a></li><li>
+        <a class="is-flex" href="#二级缓存">
+        <span class="has-mr-6">3</span>
+        <span>二级缓存</span>
+        </a></li><li>
+        <a class="is-flex" href="#二级缓存验证">
+        <span class="has-mr-6">4</span>
+        <span>二级缓存验证</span>
+        </a></li><li>
+        <a class="is-flex" href="#二级缓存详述">
+        <span class="has-mr-6">5</span>
+        <span>二级缓存详述</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十三、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:23.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十三、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十二、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:22.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十二、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">38</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="六、一级缓存和二级缓存" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

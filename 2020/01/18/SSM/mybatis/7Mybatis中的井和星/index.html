@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>六、Mybatis中的# 和 $ - Hexo</title>
+
+
+    <meta name="description" content="Mybatis中的# 和 $">
+<meta property="og:type" content="article">
+<meta property="og:title" content="六、Mybatis中的# 和 $">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/18/SSM/mybatis/7Mybatis%E4%B8%AD%E7%9A%84%E4%BA%95%E5%92%8C%E6%98%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Mybatis中的# 和 $">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-18T08:15:07.000Z">
+<meta property="article:modified_time" content="2020-01-28T03:26:48.124Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="六、Mybatis中的# 和 $" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-18T08:15:07.000Z">2020-01-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/mybatis/">mybatis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分钟 读完 (大约 1244 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                六、Mybatis中的# 和 $
+            
+        </h1>
+        <div class="content">
+            <p>Mybatis中的# 和 $</p>
+<a id="more"></a>
+
+<h2 id="准备数据库"><a href="#准备数据库" class="headerlink" title="准备数据库"></a>准备数据库</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">NAMES</span> utf8mb4;</span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for tb_role</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`tb_role`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_role`</span>  (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'角色id'</span>,</span><br><span class="line">  <span class="string">`role_name`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'角色名称'</span>,</span><br><span class="line">  <span class="string">`description`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'角色描述'</span>,</span><br><span class="line">  <span class="string">`status`</span> <span class="built_in">int</span>(<span class="number">1</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'角色状态，0:启用，1:禁用'</span>,</span><br><span class="line">  <span class="string">`create_time`</span> datetime(<span class="number">0</span>) <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">  <span class="string">`create_user`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建人'</span>,</span><br><span class="line">  <span class="string">`modify_time`</span> datetime(<span class="number">0</span>) <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'修改时间'</span>,</span><br><span class="line">  <span class="string">`modify_user`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'修改人'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>) <span class="keyword">USING</span> BTREE,</span><br><span class="line">  <span class="keyword">INDEX</span> <span class="string">`index_role_name`</span>(<span class="string">`role_name`</span>) <span class="keyword">USING</span> BTREE</span><br><span class="line">) <span class="keyword">ENGINE</span> = <span class="keyword">InnoDB</span> AUTO_INCREMENT = <span class="number">1</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> = utf8 <span class="keyword">COLLATE</span> = utf8_general_ci ROW_FORMAT = <span class="keyword">Compact</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of tb_role</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_role`</span> <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">'admin'</span>, <span class="string">'超级管理员'</span>, <span class="number">0</span>, <span class="string">'2019-03-01 11:33:09'</span>, <span class="string">'system'</span>, <span class="string">'2019-03-05 09:17:41'</span>, <span class="string">'admin'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_role`</span> <span class="keyword">VALUES</span> (<span class="number">2</span>, <span class="string">'develop'</span>, <span class="string">'开发人员'</span>, <span class="number">0</span>, <span class="string">'2019-03-01 17:19:55'</span>, <span class="string">'admin'</span>, <span class="string">'2019-04-04 10:02:37'</span>, <span class="string">'admin'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_role`</span> <span class="keyword">VALUES</span> (<span class="number">3</span>, <span class="string">'testing'</span>, <span class="string">'用于测试人员测试'</span>, <span class="number">0</span>, <span class="string">'2019-03-01 22:14:33'</span>, <span class="string">'admin'</span>, <span class="string">'2019-04-04 10:03:05'</span>, <span class="string">'admin'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_role`</span> <span class="keyword">VALUES</span> (<span class="number">5</span>, <span class="string">'guest'</span>, <span class="string">'运营'</span>, <span class="number">1</span>, <span class="string">'2019-03-16 10:59:38'</span>, <span class="string">'admin'</span>, <span class="string">'2019-04-06 10:46:30'</span>, <span class="string">'admin'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_role`</span> <span class="keyword">VALUES</span> (<span class="number">6</span>, <span class="string">'root'</span>, <span class="string">'root'</span>, <span class="number">0</span>, <span class="string">'2019-09-19 09:46:03'</span>, <span class="string">'admin'</span>, <span class="string">'2019-09-19 09:55:25'</span>, <span class="string">'admin'</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    本案例代码基于前面小节的整合案例，所以此处不再赘述整合代码，如有需要，可以参考前面的SSM整合。</p>
+<h2 id="和-执行原理"><a href="#和-执行原理" class="headerlink" title="$ 和 # 执行原理"></a>$ 和 # 执行原理</h2><p>下面我们只讨论#{}与${}的差别.</p>
+<p>使用#{}接收参数：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_role <span class="keyword">where</span> role_name = <span class="comment">#&#123;roleName&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们看一下上面sql的打印SQL结果：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-29_17-40-17.png" alt></p>
+<p>使用${}接收参数：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_role <span class="keyword">where</span> role_name = <span class="string">'$&#123;roleName&#125;'</span></span><br></pre></td></tr></table></figure>
+
+<p>对应的SQL执行结果：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-29_17-41-43.png" alt></p>
+<p>如上两个SQL的执行结果，可以看出：</p>
+<ul>
+<li><code>#{value}</code> 会进行SQL预编译，即把参数替换成 <code>?</code>占位符。</li>
+<li><code>${}</code> 只是进行简单的字符串替换。</li>
+</ul>
+<h2 id="SQL-注入"><a href="#SQL-注入" class="headerlink" title="SQL 注入"></a>SQL 注入</h2><p><strong>百度百科</strong>：所谓SQL注入，就是通过把SQL命令插入到Web表单提交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令</p>
+<p>正是由于上述差别，<code>${}</code>可能会导致SQL注入，下面我们来看一下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 传入参数：a'  or '1' = '1</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_role <span class="keyword">where</span> role_name = <span class="comment">#&#123;roleName&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下，无法找到对应的数据：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-29_17-53-33.png" alt></p>
+<p>而当我们使用<code>${}</code> :</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 传入参数：a'  or '1' = '1</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_role <span class="keyword">where</span> role_name = <span class="string">'$&#123;roleName&#125;'</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mybatis/Snipaste_2019-09-29_17-55-19.png" alt></p>
+<p>所以，如果使用<code>${}</code> ，可以发现，sql注入是成功的，这样就把数据库中的所有数据，这里只是演示了查询的注入，最多可能会导致数据泄露，如果注入的是更新、删除操作，后果将不堪设想，所以，在这种情况下我们不能使用<code>$</code> 来接收参数。</p>
+<p><strong>说明</strong>：我们使用 mybatis 编写 SQL 语句时，难免会使用模糊查询的方法，mybatis 提供了两种方式 <code>#{}</code> 和 <code>${}</code> 。</p>
+<ul>
+<li><code>#{value}</code> 在预处理时，会把参数部分用一个占位符 ? 替代，其中 value 表示接受输入参数的名称。能有效解决 SQL 注入问题</li>
+<li><code>${}</code> 表示使用拼接字符串，将接受到参数的内容不加任何修饰符拼接在 SQL 中，使用<code>${}</code>拼接 sql，将引起 SQL 注入问题。</li>
+</ul>
+<h2 id="少不了"><a href="#少不了" class="headerlink" title="少不了$"></a>少不了$</h2><p>​    有些人看到前面的 <code>${}</code> 会导致SQL注入问题，可能会认为，那以后的开发就不再使用 <code>${}</code>了， 全部使用<code>#{}</code>.正所谓存在就有价值，所以，有些情况，<code>${}</code> 还是需要的使用的。</p>
+<p>例如：当我们需要通过参数传递来指定排序字段的时候，我们需要使用<code>${}</code>.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 参数：role_name</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_role <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="comment">#&#123;orderRoleName&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-29_18-13-03.png" alt></p>
+<p>我们可以看出使用<code>#{}</code> 并没有进行排序，此时我们将其更换如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 参数：role_name</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_role <span class="keyword">ORDER</span> <span class="keyword">BY</span> $&#123;orderRoleName&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-29_18-14-50.png" alt></p>
+<p>说明：</p>
+<p>如果需要动态的传递查询字段和排序字段等情况，我们需要使用$来进行字符串替换。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> $&#123;orderRoleName&#125; <span class="keyword">from</span> tb_role <span class="keyword">ORDER</span> <span class="keyword">BY</span> $&#123;orderRoleName&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-29_18-17-10.png" alt></p>
+<p>总结：</p>
+<ul>
+<li>能使用<code>#{}</code>的地方，尽量使用</li>
+<li>如查询字段，排序字段等，则需要使用<code>${}</code></li>
+</ul>
+<p>附：<br>这里顺带提下防止sql注入的几种方式(可能不止这几种):</p>
+<ol>
+<li>(jdbc使用 PreparedStatement代替Statement， PreparedStatement 不仅提高了代码的可读性和可维护性.而且也提高了安全性，有效防止sql注入；</li>
+<li>在程序代码中使用正则表达式过滤参数。使用正则表达式过滤可能造成注入的符号，如’ –等</li>
+<li>在页面输入参数时也进行字符串检测和提交时进行参数检查，同样可以使用正则表达式，不允许特殊符号出现。</li>
+</ol>
+<blockquote>
+<p>  部分参考自:<a href="https://www.cnblogs.com/weixuqin/p/9522802.html">https://www.cnblogs.com/weixuqin/p/9522802.html</a></p>
+</blockquote>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/7Mybatis%E4%B8%AD%E7%9A%84%E4%BA%95%E5%92%8C%E6%98%9F/">六、Mybatis中的# 和 $</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/7Mybatis%E4%B8%AD%E7%9A%84%E4%BA%95%E5%92%8C%E6%98%9F/">https://ooyhao.github.io/2020/01/18/SSM/mybatis/7Mybatis%E4%B8%AD%E7%9A%84%E4%BA%95%E5%92%8C%E6%98%9F/</a></li>
+            <li><strong>发布时间：</strong>2020-01-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/mybatis/" rel="tag">mybatis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/18/SSM/mybatis/8Mybatis%E6%95%B4%E5%90%88Spring/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">八、Mybatis整合Spring操作DB</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/18/SSM/mybatis/6Mybatis%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E5%92%8C%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98/">
+                <span class="level-item">六、一级缓存和二级缓存</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '08a60fa878cf83d09b2f38180635e43d',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            38
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            7
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fas fa-wechat"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#准备数据库">
+        <span class="has-mr-6">1</span>
+        <span>准备数据库</span>
+        </a></li><li>
+        <a class="is-flex" href="#和-执行原理">
+        <span class="has-mr-6">2</span>
+        <span>$ 和 # 执行原理</span>
+        </a></li><li>
+        <a class="is-flex" href="#SQL-注入">
+        <span class="has-mr-6">3</span>
+        <span>SQL 注入</span>
+        </a></li><li>
+        <a class="is-flex" href="#少不了">
+        <span class="has-mr-6">4</span>
+        <span>少不了$</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十三、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:23.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十三、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十二、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:22.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十二、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">38</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="六、Mybatis中的# 和 $" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

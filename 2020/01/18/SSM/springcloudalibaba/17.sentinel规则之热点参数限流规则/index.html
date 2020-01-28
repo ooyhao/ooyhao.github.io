@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>二十、Sentinel规则之熔断降级规则 - Hexo</title>
+
+
+    <meta name="description" content="Sentinel规则之热点参数限流规则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二十、Sentinel规则之熔断降级规则">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/17.sentinel%E8%A7%84%E5%88%99%E4%B9%8B%E7%83%AD%E7%82%B9%E5%8F%82%E6%95%B0%E9%99%90%E6%B5%81%E8%A7%84%E5%88%99/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Sentinel规则之热点参数限流规则">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-18T08:55:20.000Z">
+<meta property="article:modified_time" content="2020-01-28T04:05:13.790Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="sentinel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="二十、Sentinel规则之熔断降级规则" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-18T08:55:20.000Z">2020-01-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    9 分钟 读完 (大约 1355 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                二十、Sentinel规则之熔断降级规则
+            
+        </h1>
+        <div class="content">
+            <p>Sentinel规则之热点参数限流规则</p>
+<a id="more"></a>
+
+<blockquote>
+<p>  文档：</p>
+<p>  <a href="https://github.com/alibaba/Sentinel/wiki/%E7%83%AD%E7%82%B9%E5%8F%82%E6%95%B0%E9%99%90%E6%B5%81">https://github.com/alibaba/Sentinel/wiki/%E7%83%AD%E7%82%B9%E5%8F%82%E6%95%B0%E9%99%90%E6%B5%81</a></p>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>何为热点？热点即经常访问的数据。很多时候我们希望统计某个热点数据中访问频次最高的 Top K 数据，并对其访问进行限制。比如：</p>
+<ul>
+<li>商品 ID 为参数，统计一段时间内最常购买的商品 ID 并进行限制</li>
+<li>用户 ID 为参数，针对一段时间内频繁访问的用户 ID 进行限制</li>
+</ul>
+<p>热点参数限流会统计传入参数中的热点参数，并根据配置的限流阈值与模式，对包含热点参数的资源调用进行限流。热点参数限流可以看做是一种特殊的流量控制，仅对包含热点参数的资源调用生效。</p>
+<p><img src="/images/springcloudalibaba/sentinel-hot-param-overview-1.png" alt></p>
+<p>Sentinel 利用 LRU 策略统计最近最常访问的热点参数，结合令牌桶算法来进行参数级别的流控。</p>
+<h2 id="热点参数规则"><a href="#热点参数规则" class="headerlink" title="热点参数规则"></a>热点参数规则</h2><p>热点参数规则（<code>ParamFlowRule</code>）类似于流量控制规则（<code>FlowRule</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>resource</td>
+<td>资源名，必填</td>
+<td></td>
+</tr>
+<tr>
+<td>count</td>
+<td>限流阈值，必填</td>
+<td></td>
+</tr>
+<tr>
+<td>grade</td>
+<td>限流模式</td>
+<td>QPS 模式</td>
+</tr>
+<tr>
+<td>durationInSec</td>
+<td>统计窗口时间长度（单位为秒），1.6.0 版本开始支持</td>
+<td>1s</td>
+</tr>
+<tr>
+<td>controlBehavior</td>
+<td>流控效果（支持快速失败和匀速排队模式），1.6.0 版本开始支持</td>
+<td>快速失败</td>
+</tr>
+<tr>
+<td>maxQueueingTimeMs</td>
+<td>最大排队等待时长（仅在匀速排队模式生效），1.6.0 版本开始支持</td>
+<td>0ms</td>
+</tr>
+<tr>
+<td>paramIdx</td>
+<td>热点参数的索引，必填，对应 <code>SphU.entry(xxx, args)</code> 中的参数索引位置</td>
+<td></td>
+</tr>
+<tr>
+<td>paramFlowItemList</td>
+<td>参数例外项，可以针对指定的参数值单独设置限流阈值，不受前面 <code>count</code> 阈值的限制。<strong>仅支持基本类型和字符串类型</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>clusterMode</td>
+<td>是否是集群参数流控规则</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>clusterConfig</td>
+<td>集群流控相关配置</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>上面都是摘抄子官方网站，下面使用代码来测试。</p>
+<p>我们先看一下热点参数规则的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParamFlowRule</span> <span class="keyword">extends</span> <span class="title">AbstractRule</span> </span>&#123;</span><br><span class="line">    <span class="comment">//限流模式</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> grade = RuleConstant.FLOW_GRADE_QPS;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//热点参数的索引</span></span><br><span class="line">    <span class="keyword">private</span> Integer paramIdx;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//The threshold count.</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//流控效果</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> controlBehavior = RuleConstant.CONTROL_BEHAVIOR_DEFAULT;</span><br><span class="line">    <span class="comment">//最大排队等待时长</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> maxQueueingTimeMs = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> burstCount = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//统计窗口时间长度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> durationInSec = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//参数的额外项，可以针对指定的参数值单独设置限流阈值，不受前面的count影响，仅支持基本数据类型和字符串</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;ParamFlowItem&gt; paramFlowItemList = <span class="keyword">new</span> ArrayList&lt;ParamFlowItem&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//额外参数</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Object, Integer&gt; hotItems = <span class="keyword">new</span> HashMap&lt;Object, Integer&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//是否是集群参数流控规则 默认是false</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> clusterMode = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">private</span> ParamFlowClusterConfig clusterConfig;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParamFlowItem</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String object;<span class="comment">//参数值</span></span><br><span class="line">    <span class="keyword">private</span> Integer count;<span class="comment">//限流阈值</span></span><br><span class="line">    <span class="keyword">private</span> String classType;<span class="comment">//参数类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="初始化规则"><a href="#初始化规则" class="headerlink" title="初始化规则"></a>初始化规则</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initParamFlowRule</span><span class="params">()</span></span>&#123;</span><br><span class="line">    List&lt;ParamFlowRule&gt; rules = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    ParamFlowRule rule = <span class="keyword">new</span> ParamFlowRule();</span><br><span class="line">    <span class="comment">//阈值类型：只支持QPS</span></span><br><span class="line">    rule.setGrade(RuleConstant.FLOW_GRADE_QPS);</span><br><span class="line">    <span class="comment">//阈值</span></span><br><span class="line">    rule.setCount(<span class="number">1</span>);</span><br><span class="line">    <span class="comment">//资源名</span></span><br><span class="line">    rule.setResource(<span class="string">"test"</span>);</span><br><span class="line">    rule.setParamIdx(<span class="number">0</span>);<span class="comment">//指配热点参数的下标</span></span><br><span class="line">    <span class="comment">//统计窗口时间长度</span></span><br><span class="line">    rule.setDurationInSec(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    List&lt;ParamFlowItem&gt; items = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    ParamFlowItem item = <span class="keyword">new</span> ParamFlowItem();</span><br><span class="line">    item.setClassType(String<span class="class">.<span class="keyword">class</span>.<span class="title">getTypeName</span>())</span>;</span><br><span class="line">    item.setCount(<span class="number">2</span>);</span><br><span class="line">    item.setObject(<span class="string">"123456"</span>);<span class="comment">//需要统计的值</span></span><br><span class="line"></span><br><span class="line">    ParamFlowItem item1 = <span class="keyword">new</span> ParamFlowItem();</span><br><span class="line">    item1.setClassType(<span class="keyword">int</span><span class="class">.<span class="keyword">class</span>.<span class="title">getName</span>())</span>;</span><br><span class="line">    item1.setCount(<span class="number">3</span>);</span><br><span class="line">    item1.setObject(<span class="string">"12"</span>);</span><br><span class="line"></span><br><span class="line">    items.add(item);</span><br><span class="line">    items.add(item1);</span><br><span class="line">    rule.setParamFlowItemList(items);</span><br><span class="line">    rules.add(rule);</span><br><span class="line">    ParamFlowRuleManager.loadRules(rules);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述初始化规则代码相当于按如下在控制台页面配置 ：</p>
+<p><img src="/images/springcloudalibaba/Snipaste_2019-10-24_13-40-36.png" alt></p>
+<h3 id="逻辑代码"><a href="#逻辑代码" class="headerlink" title="逻辑代码"></a>逻辑代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/test"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  				@RequestParam(<span class="string">"username"</span>)</span> String username, </span></span><br><span class="line"><span class="function">  				@<span class="title">RequestParam</span><span class="params">(<span class="string">"password"</span>)</span> String password, </span></span><br><span class="line"><span class="function">  				@<span class="title">RequestParam</span><span class="params">(<span class="string">"age"</span>)</span> <span class="keyword">int</span> age) </span>&#123;</span><br><span class="line">    String echo = echoService.test(username,password,age);</span><br><span class="line">    SimpleDateFormat dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss:SSS"</span>);</span><br><span class="line">    System.out.println(echo+<span class="string">" | t:"</span>+dateFormat.format(<span class="keyword">new</span> Date()));</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"访问成功"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EchoService</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">test</span><span class="params">(String username, String password, <span class="keyword">int</span> age)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EchoServiceImpl</span> <span class="keyword">implements</span> <span class="title">EchoService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="meta">@SentinelResource</span>(value = <span class="string">"test"</span>,blockHandler = <span class="string">"handleBlockForTest"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">(String username,String password, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"username:"</span>+username +<span class="string">" password:"</span>+password + <span class="string">" age:"</span>+age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">handleBlockForTest</span><span class="params">(String username, String password,<span class="keyword">int</span> age, BlockException e)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"username:"</span>+username +<span class="string">" password:"</span>+password +<span class="string">" age:"</span>+age+<span class="string">"</span></span><br><span class="line"><span class="string">          							e:"</span>+e.getClass().getSimpleName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试1"><a href="#测试1" class="headerlink" title="测试1"></a>测试1</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localhost:8083/test?username=admin&amp;password=123456&amp;age=12</span><br><span class="line">参数索引设置为：0</span><br></pre></td></tr></table></figure>
+
+<p>如果使用上述路径测试，结果为：</p>
+<p>可以看出，passed的数量为1条，所以有效的阈值为1，统计的热点参数是username。</p>
+<p><img src="/images/springcloudalibaba/Snipaste_2019-10-24_11-44-15.png" alt></p>
+<h3 id="测试2"><a href="#测试2" class="headerlink" title="测试2"></a>测试2</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localhost:8083/test?username=admin&amp;password=123456&amp;age=12</span><br><span class="line">参数索引设置为：1</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，passed的数量为2条，所以有效的阈值为2，统计的热点参数，由于上面设置的为1，所以为password。</p>
+<p><img src="/images/springcloudalibaba/Snipaste_2019-10-24_11-50-44.png" alt></p>
+<p>我们将password的123456修改一下，设置为12345，测试结果如下：</p>
+<p>passed的条数为1条，所以在额外的参数不匹配时，阈值还原到了第一个热点参数：username。</p>
+<p><img src="/images/springcloudalibaba/Snipaste_2019-10-24_11-53-38.png" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>热点参数限流规则主要是针对请求参数来统计，并实现限流的。首先热点参数是基于QPS统计，如果参数索引设置为0，则以第一个参数统计为准，阈值也是按照基本参数中的阈值来控制的，但是指定的是额外的参数列表的下标，则需要提供指定的热点参数的值，如果当前访问的参数与预设定的参数不一致，依旧与第一个参数的阈值为准。</p>
+<p><img src="/images/springcloudalibaba/Snipaste_2019-10-24_12-59-46.png" alt></p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/17.sentinel%E8%A7%84%E5%88%99%E4%B9%8B%E7%83%AD%E7%82%B9%E5%8F%82%E6%95%B0%E9%99%90%E6%B5%81%E8%A7%84%E5%88%99/">二十、Sentinel规则之熔断降级规则</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/17.sentinel%E8%A7%84%E5%88%99%E4%B9%8B%E7%83%AD%E7%82%B9%E5%8F%82%E6%95%B0%E9%99%90%E6%B5%81%E8%A7%84%E5%88%99/">https://ooyhao.github.io/2020/01/18/SSM/springcloudalibaba/17.sentinel%E8%A7%84%E5%88%99%E4%B9%8B%E7%83%AD%E7%82%B9%E5%8F%82%E6%95%B0%E9%99%90%E6%B5%81%E8%A7%84%E5%88%99/</a></li>
+            <li><strong>发布时间：</strong>2020-01-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/sentinel/" rel="tag">sentinel</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/18/SSM/springcloudalibaba/18.sentinel%E8%A7%84%E5%88%99%E4%B9%8B%E9%BB%91%E7%99%BD%E5%90%8D%E5%8D%95%E8%A7%84%E5%88%99/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">二十一、Sentinel规则之黑白名单规则</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/18/SSM/springcloudalibaba/16.sentinel%E8%A7%84%E5%88%99%E4%B9%8B%E7%86%94%E6%96%AD%E9%99%8D%E7%BA%A7%E8%A7%84%E5%88%99/">
+                <span class="level-item">十九、Sentinel规则之熔断降级规则</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'ce1d4a13cb6f2b561e16a61eb463b83a',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            38
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            7
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fas fa-wechat"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#概述">
+        <span class="has-mr-6">1</span>
+        <span>概述</span>
+        </a></li><li>
+        <a class="is-flex" href="#热点参数规则">
+        <span class="has-mr-6">2</span>
+        <span>热点参数规则</span>
+        </a></li><li>
+        <a class="is-flex" href="#实验">
+        <span class="has-mr-6">3</span>
+        <span>实验</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#初始化规则">
+        <span class="has-mr-6">3.1</span>
+        <span>初始化规则</span>
+        </a></li><li>
+        <a class="is-flex" href="#逻辑代码">
+        <span class="has-mr-6">3.2</span>
+        <span>逻辑代码</span>
+        </a></li><li>
+        <a class="is-flex" href="#测试1">
+        <span class="has-mr-6">3.3</span>
+        <span>测试1</span>
+        </a></li><li>
+        <a class="is-flex" href="#测试2">
+        <span class="has-mr-6">3.4</span>
+        <span>测试2</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#总结">
+        <span class="has-mr-6">4</span>
+        <span>总结</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十三、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:23.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十三、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十二、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:22.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十二、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">38</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="二十、Sentinel规则之熔断降级规则" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

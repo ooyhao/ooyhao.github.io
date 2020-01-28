@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>九、整合PageHelper实现分页 - Hexo</title>
+
+
+    <meta name="description" content="由于为了后续使用SpringBoot，本人还是推荐使用Java配置类来操作，但是这里还是提一下XML配置。（本文项目基于第六节Mybatis集成Spring操作）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="九、整合PageHelper实现分页">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/18/SSM/mybatis/9Mybatis%E6%95%B4%E5%90%88PageHelper/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="由于为了后续使用SpringBoot，本人还是推荐使用Java配置类来操作，但是这里还是提一下XML配置。（本文项目基于第六节Mybatis集成Spring操作）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-18T08:15:09.000Z">
+<meta property="article:modified_time" content="2020-01-28T03:26:30.459Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="九、整合PageHelper实现分页" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-18T08:15:09.000Z">2020-01-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/mybatis/">mybatis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    16 分钟 读完 (大约 2346 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                九、整合PageHelper实现分页
+            
+        </h1>
+        <div class="content">
+            <p>由于为了后续使用SpringBoot，本人还是推荐使用Java配置类来操作，但是这里还是提一下XML配置。<br>（本文项目基于第六节Mybatis集成Spring操作）</p>
+<a id="more"></a>
+
+
+<h2 id="XML配置方式"><a href="#XML配置方式" class="headerlink" title="XML配置方式"></a>XML配置方式</h2><p>使用XML文件来配置Mybatis的PageHelper分页插件：</p>
+<p>mybatis-configuration:(mybatis的全局配置文件)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--配置开启自动匹配驼峰--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"mapUnderscoreToCamelCase"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--配置PageHelper分页插件拦截器--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"offsetAsPageNum"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"helperDialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"rowBoundsWithCount"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"reasonable"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Java配置类方式"><a href="#Java配置类方式" class="headerlink" title="Java配置类方式"></a>Java配置类方式</h2><p>完整的配置类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span> <span class="comment">//标注为一个配置类</span></span><br><span class="line"><span class="meta">@PropertySource</span>(value = <span class="string">"classpath:application.properties"</span>) <span class="comment">//加载属性文件</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages = <span class="string">"com.ooyhao.mybatis"</span>)  <span class="comment">//组件扫描</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = &#123;<span class="string">"com.ooyhao.mybatis.mapper"</span>&#125;)  <span class="comment">//mapper文件的扫描</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span> <span class="comment">//开启事务管理</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.url&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.driver&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String driverClassName;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.username&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.configuration&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mybatisConfiguration;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.mapperLocations&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mybatisMapperLocations;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.typeAliasesPackage&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mybatisTypeAliasesPackage;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置数据源*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">dataSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        DruidDataSource druidDataSource = <span class="keyword">new</span> DruidDataSource();</span><br><span class="line">        druidDataSource.setUrl(url);</span><br><span class="line">        druidDataSource.setDriverClassName(driverClassName);</span><br><span class="line">        druidDataSource.setUsername(username);</span><br><span class="line">        druidDataSource.setPassword(password);</span><br><span class="line">        <span class="keyword">return</span> druidDataSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PageInterceptor <span class="title">pageInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        PageInterceptor pageInterceptor = <span class="keyword">new</span> PageInterceptor();</span><br><span class="line">        Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">        <span class="comment">/*4.0.0版本之后可以不用配置*/</span></span><br><span class="line">        properties.setProperty(<span class="string">"helperDialect"</span>,<span class="string">"mysql"</span>);</span><br><span class="line">        <span class="comment">/*默认为false，会将RowBounds第一个参数offset当成pageNum页面使用</span></span><br><span class="line"><span class="comment">        * 和startPage中的pageNum效果一样*/</span></span><br><span class="line">        properties.setProperty(<span class="string">"offsetAsPageNum"</span>,<span class="string">"true"</span>);</span><br><span class="line">        <span class="comment">/*RowBounds方式是否做count查询 默认false*/</span></span><br><span class="line">        properties.setProperty(<span class="string">"rowBoundsWithCount"</span>,<span class="string">"true"</span>);</span><br><span class="line">        <span class="comment">/*分页合理化，true开启，如果分页参数不合理会自动修正。默认false不启用*/</span></span><br><span class="line">        properties.setProperty(<span class="string">"reasonable"</span>,<span class="string">"true"</span>);</span><br><span class="line">        <span class="comment">/*是否允许接口方法参数来传递分页参数 默认false*/</span></span><br><span class="line">        properties.setProperty(<span class="string">"supportMethodsArguments"</span>,<span class="string">"true"</span>);</span><br><span class="line">        pageInterceptor.setProperties(properties);</span><br><span class="line">        <span class="comment">/*当设置为true的时候，如果pageSize设置为0（或RowBounds的limit=0），就不执行分页*/</span></span><br><span class="line">        properties.setProperty(<span class="string">"pageSizeZero"</span>,<span class="string">"true"</span>);</span><br><span class="line">        <span class="keyword">return</span> pageInterceptor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*Mybatis的全局配置*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionFactoryBean <span class="title">sqlSessionFactoryBean</span><span class="params">(DataSource dataSource)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        SqlSessionFactoryBean sqlSessionFactoryBean = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        <span class="comment">/*配置Mybatis的全局配置文件*/</span></span><br><span class="line">        ClassPathResource resource = <span class="keyword">new</span> ClassPathResource(mybatisConfiguration);</span><br><span class="line">        sqlSessionFactoryBean.setConfigLocation(resource);</span><br><span class="line">        <span class="comment">/*配置Mapper.xml文件的路径*/</span></span><br><span class="line">        PathMatchingResourcePatternResolver resolver = <span class="keyword">new</span> PathMatchingResourcePatternResolver();</span><br><span class="line">        Resource[] resources = resolver.getResources(mybatisMapperLocations);</span><br><span class="line">        sqlSessionFactoryBean.setMapperLocations(resources);</span><br><span class="line">        <span class="comment">/*配置别名包*/</span></span><br><span class="line">        sqlSessionFactoryBean.setTypeAliasesPackage(mybatisTypeAliasesPackage);</span><br><span class="line">        <span class="comment">/*设置数据源，位置有要求，需要在下面几项之前*/</span></span><br><span class="line">        sqlSessionFactoryBean.setDataSource(dataSource);</span><br><span class="line">        <span class="comment">/*将PageHelper分页插件以拦截器的形式配置*/</span></span><br><span class="line">        sqlSessionFactoryBean.setPlugins(<span class="keyword">new</span> Interceptor[]&#123;pageInterceptor()&#125;);</span><br><span class="line">        <span class="comment">/*配置驼峰命名*/</span></span><br><span class="line">        sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">/*配置日志类*/</span></span><br><span class="line">        sqlSessionFactoryBean.getObject().getConfiguration().setLogImpl(StdOutImpl<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="comment">/*设置开启缓存*/</span></span><br><span class="line">        sqlSessionFactoryBean.getObject().getConfiguration().setCacheEnabled(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> sqlSessionFactoryBean;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置数据源事务管理器，需要将数据源注入*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSourceTransactionManager <span class="title">transactionManager</span><span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        DataSourceTransactionManager transactionManager =</span><br><span class="line">                <span class="keyword">new</span> DataSourceTransactionManager();</span><br><span class="line">        transactionManager.setDataSource(dataSource);</span><br><span class="line">        <span class="keyword">return</span> transactionManager;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示</strong>：</p>
+<ul>
+<li>添加了<code>PageInterceptor</code> 组件</li>
+<li>通过 <code>sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageInterceptor()});</code>设置到SqlSessionFactoryBean中</li>
+</ul>
+<p>开启了这个<code>properties.setProperty(&quot;supportMethodsArguments&quot;,&quot;true&quot;);</code>则表示可以通过Mapper来进行参数传递，实现分页，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">List&lt;Role&gt; <span class="title">findByPage</span><span class="params">(@Param(<span class="string">"pageNum"</span>)</span> <span class="keyword">int</span> pageNum,@<span class="title">Param</span><span class="params">(<span class="string">"pageSize"</span>)</span> <span class="keyword">int</span> pageSize)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>xml文件不需要修改，只需要在参数上添加形参即可。</p>
+<p>PageHelper的PageInterceptor的参数说明：一下是PageParams类中的setProperties方法的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Properties properties)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//offset作为PageNum使用</span></span><br><span class="line">    String offsetAsPageNum = properties.getProperty(<span class="string">"offsetAsPageNum"</span>);</span><br><span class="line">    <span class="keyword">this</span>.offsetAsPageNum = Boolean.parseBoolean(offsetAsPageNum);</span><br><span class="line">    <span class="comment">//RowBounds方式是否做count查询</span></span><br><span class="line">    String rowBoundsWithCount = properties.getProperty(<span class="string">"rowBoundsWithCount"</span>);</span><br><span class="line">    <span class="keyword">this</span>.rowBoundsWithCount = Boolean.parseBoolean(rowBoundsWithCount);</span><br><span class="line">    <span class="comment">//当设置为true的时候，如果pagesize设置为0（或RowBounds的limit=0），就不执行分页</span></span><br><span class="line">    String pageSizeZero = properties.getProperty(<span class="string">"pageSizeZero"</span>);</span><br><span class="line">    <span class="keyword">this</span>.pageSizeZero = Boolean.parseBoolean(pageSizeZero);</span><br><span class="line">    <span class="comment">//分页合理化，true开启，如果分页参数不合理会自动修正。默认false不启用</span></span><br><span class="line">    String reasonable = properties.getProperty(<span class="string">"reasonable"</span>);</span><br><span class="line">    <span class="keyword">this</span>.reasonable = Boolean.parseBoolean(reasonable);</span><br><span class="line">    <span class="comment">//是否支持接口参数来传递分页参数，默认false</span></span><br><span class="line">    String supportMethodsArguments = properties.getProperty(<span class="string">"supportMethodsArguments"</span>);</span><br><span class="line">    <span class="keyword">this</span>.supportMethodsArguments = Boolean.parseBoolean(supportMethodsArguments);</span><br><span class="line">    <span class="comment">//默认count列</span></span><br><span class="line">    String countColumn = properties.getProperty(<span class="string">"countColumn"</span>);</span><br><span class="line">    <span class="keyword">if</span>(StringUtil.isNotEmpty(countColumn))&#123;</span><br><span class="line">      <span class="keyword">this</span>.countColumn = countColumn;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//当offsetAsPageNum=false的时候，不能</span></span><br><span class="line">    <span class="comment">//参数映射</span></span><br><span class="line">    PageObjectUtil.setParams(properties.getProperty(<span class="string">"params"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试：</p>
+<p>下面是测试结果，以及获取PageInfo中的各个参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppTest</span> </span>&#123;</span><br><span class="line">    AnnotationConfigApplicationContext context = <span class="keyword">null</span>;</span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        context = <span class="keyword">new</span> AnnotationConfigApplicationContext(AppConfig<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindByPage</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        RoleService bean = context.getBean(RoleService<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="comment">/*是否需要计算总条数*/</span></span><br><span class="line">        List&lt;Role&gt; page = bean.findByPage(<span class="number">2</span>, <span class="number">2</span>, <span class="keyword">true</span>);</span><br><span class="line">        PageInfo&lt;Role&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(page);</span><br><span class="line">        <span class="comment">//返回的是Page对象，Page是ArrayList的子类。由于Page重写了toString方法</span></span><br><span class="line">        List&lt;Role&gt; list = pageInfo.getList();</span><br><span class="line">        System.out.println(JSONObject.toJSONString(list));</span><br><span class="line">        System.out.println(JSONObject.toJSON(list));</span><br><span class="line">        <span class="comment">//SQL查询的数据总条数</span></span><br><span class="line">        System.out.println(<span class="string">"total:"</span>+pageInfo.getTotal());<span class="comment">//22</span></span><br><span class="line">        <span class="comment">//总分页数</span></span><br><span class="line">        System.out.println(<span class="string">"pages:"</span>+pageInfo.getPages());<span class="comment">//8</span></span><br><span class="line">        <span class="comment">//自动生成一个分页导航，大小为8（如果满足）[1, 2, 3, 4, 5, 6, 7, 8]</span></span><br><span class="line">        System.out.println(<span class="string">"navigatepageNums:"</span>+Arrays.toString(pageInfo.getNavigatepageNums()));</span><br><span class="line">        <span class="comment">//分页导航的第一页</span></span><br><span class="line">        System.out.println(<span class="string">"navigateFirstPage:"</span>+pageInfo.getNavigateFirstPage());<span class="comment">//1</span></span><br><span class="line">        <span class="comment">//分页导航的最后一页</span></span><br><span class="line">        System.out.println(<span class="string">"navigateLastPage:"</span>+pageInfo.getNavigateLastPage());<span class="comment">//8</span></span><br><span class="line">        <span class="comment">//分页导航的总页数</span></span><br><span class="line">        System.out.println(<span class="string">"navigatePages:"</span>+pageInfo.getNavigatePages());<span class="comment">//8</span></span><br><span class="line">        <span class="comment">//当前页</span></span><br><span class="line">        System.out.println(<span class="string">"pageNum:"</span>+pageInfo.getPageNum());<span class="comment">//2</span></span><br><span class="line">        <span class="comment">//当前页的上一页</span></span><br><span class="line">        System.out.println(<span class="string">"prePage:"</span>+pageInfo.getPrePage());<span class="comment">//1</span></span><br><span class="line">        <span class="comment">//当前页的下一页</span></span><br><span class="line">        System.out.println(<span class="string">"nextPage:"</span>+pageInfo.getNextPage());<span class="comment">//3</span></span><br><span class="line">        <span class="comment">//每页的数据条数</span></span><br><span class="line">        System.out.println(<span class="string">"pageSize:"</span>+pageInfo.getPageSize());<span class="comment">//3</span></span><br><span class="line">        <span class="comment">//当前页的开始行号</span></span><br><span class="line">        System.out.println(<span class="string">"startRow:"</span>+pageInfo.getStartRow());<span class="comment">//4</span></span><br><span class="line">        <span class="comment">//当前页的结束行号</span></span><br><span class="line">        System.out.println(<span class="string">"endRow:"</span>+pageInfo.getEndRow());<span class="comment">//6</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示:</strong></p>
+<p>List<Role> list = pageInfo.getList();我们通过打印这个list对象是无法正常打印出Role对象的数据，是因为Page对象继承自ArrayList，并且重写了toString方法。我们可以通过迭代循环打印出来。如下图:</Role></p>
+<p><img src="/images/mybatis/Snipaste_2019-09-23_16-43-29.png" alt></p>
+<p>​    这里由于循环打印才能看到Role对象的真实面部，个人觉得麻烦，所以使用了fastJson格式化为Json，但是发现一个之前没有留意的问题：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-23_16-46-15.png" alt></p>
+<p>​    通过上面打印出的结果可以发现，list既然是Page对象，但是我们可以看到Page类中有诸多属性，为何通过JSON格式化工具之后，就没有了呢？通过查询fastJson的toJson源码就可以发现奥秘了，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">toJSON</span><span class="params">(Object javaObject, SerializeConfig config)</span> </span>&#123;</span><br><span class="line">        ......</span><br><span class="line">        <span class="keyword">if</span> (javaObject <span class="keyword">instanceof</span> Collection) &#123;</span><br><span class="line">            Collection&lt;Object&gt; collection = (Collection&lt;Object&gt;) javaObject;</span><br><span class="line">            JSONArray array = <span class="keyword">new</span> JSONArray(collection.size());</span><br><span class="line">            <span class="keyword">for</span> (Object item : collection) &#123;</span><br><span class="line">                Object jsonValue = toJSON(item, config);</span><br><span class="line">                array.add(jsonValue);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> array;</span><br><span class="line">        &#125;</span><br><span class="line">      	......</span><br><span class="line">        String text = JSON.toJSONString(javaObject);</span><br><span class="line">        <span class="keyword">return</span> JSON.parse(text);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    里面有这样一个判断，如果对象是Collection或其子类，则强转为Collection，所以我们会发现，在使用JSONObject.toJson或是toJsonString的时候，不管是ArrayList还是Page中的属性都没有了，这是因为取的是Collection。对于数据存储，需要进一步研究Collection系列集合，暂不涉及。</p>
+<h2 id="Page对象源码"><a href="#Page对象源码" class="headerlink" title="Page对象源码"></a>Page对象源码</h2><p>下面我们看一下Page对象源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Page</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Closeable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 页码，从1开始</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> pageNum;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 页面大小</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> pageSize;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 起始行</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> startRow;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 末行</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> endRow;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 总数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> total;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 总页数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> pages;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 包含count查询</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> count = <span class="keyword">true</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 分页合理化</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Boolean reasonable;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当设置为true的时候，如果pagesize设置为0（或RowBounds的limit=0），就不执行分页，返回全部结果</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Boolean pageSizeZero;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 进行count查询的列名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String countColumn;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 排序</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String orderBy;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 只增加排序</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> orderByOnly;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Page</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Page</span><span class="params">(<span class="keyword">int</span> pageNum, <span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(pageNum, pageSize, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Page</span><span class="params">(<span class="keyword">int</span> pageNum, <span class="keyword">int</span> pageSize, <span class="keyword">boolean</span> count)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(pageNum, pageSize, count, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Page</span><span class="params">(<span class="keyword">int</span> pageNum, <span class="keyword">int</span> pageSize, <span class="keyword">boolean</span> count, Boolean reasonable)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (pageNum == <span class="number">1</span> &amp;&amp; pageSize == Integer.MAX_VALUE) &#123;</span><br><span class="line">            pageSizeZero = <span class="keyword">true</span>;</span><br><span class="line">            pageSize = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.pageNum = pageNum;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">        calculateStartAndEndRow();</span><br><span class="line">        setReasonable(reasonable);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * int[] rowBounds</span></span><br><span class="line"><span class="comment">     * 0 : offset</span></span><br><span class="line"><span class="comment">     * 1 : limit</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Page</span><span class="params">(<span class="keyword">int</span>[] rowBounds, <span class="keyword">boolean</span> count)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (rowBounds[<span class="number">0</span>] == <span class="number">0</span> &amp;&amp; rowBounds[<span class="number">1</span>] == Integer.MAX_VALUE) &#123;</span><br><span class="line">            pageSizeZero = <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">this</span>.pageSize = <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.pageSize = rowBounds[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">this</span>.pageNum = rowBounds[<span class="number">1</span>] != <span class="number">0</span> </span><br><span class="line">              ? (<span class="keyword">int</span>) (Math.ceil(((<span class="keyword">double</span>) rowBounds[<span class="number">0</span>] + rowBounds[<span class="number">1</span>]) / rowBounds[<span class="number">1</span>])) : <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.startRow = rowBounds[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">        <span class="keyword">this</span>.endRow = <span class="keyword">this</span>.startRow + rowBounds[<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;E&gt; <span class="title">getResult</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPages</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pages;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setPages</span><span class="params">(<span class="keyword">int</span> pages)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pages = pages;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getEndRow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> endRow;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setEndRow</span><span class="params">(<span class="keyword">int</span> endRow)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.endRow = endRow;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPageNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageNum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setPageNum</span><span class="params">(<span class="keyword">int</span> pageNum)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//分页合理化，针对不合理的页码自动处理</span></span><br><span class="line">        <span class="keyword">this</span>.pageNum = ((reasonable != <span class="keyword">null</span> &amp;&amp; reasonable) &amp;&amp; pageNum &lt;= <span class="number">0</span>) ? <span class="number">1</span> : pageNum;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPageSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setPageSize</span><span class="params">(<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getStartRow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startRow;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setStartRow</span><span class="params">(<span class="keyword">int</span> startRow)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startRow = startRow;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getTotal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> total;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotal</span><span class="params">(<span class="keyword">long</span> total)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.total = total;</span><br><span class="line">        <span class="keyword">if</span> (total == -<span class="number">1</span>) &#123;</span><br><span class="line">            pages = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (pageSize &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            pages = (<span class="keyword">int</span>) (total / pageSize + ((total % pageSize == <span class="number">0</span>) ? <span class="number">0</span> : <span class="number">1</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            pages = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//分页合理化，针对不合理的页码自动处理</span></span><br><span class="line">        <span class="keyword">if</span> ((reasonable != <span class="keyword">null</span> &amp;&amp; reasonable) &amp;&amp; pageNum &gt; pages) &#123;</span><br><span class="line">            pageNum = pages;</span><br><span class="line">            calculateStartAndEndRow();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">getReasonable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> reasonable;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setReasonable</span><span class="params">(Boolean reasonable)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (reasonable == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.reasonable = reasonable;</span><br><span class="line">        <span class="comment">//分页合理化，针对不合理的页码自动处理</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.reasonable &amp;&amp; <span class="keyword">this</span>.pageNum &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.pageNum = <span class="number">1</span>;</span><br><span class="line">            calculateStartAndEndRow();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">getPageSizeZero</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pageSizeZero;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setPageSizeZero</span><span class="params">(Boolean pageSizeZero)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (pageSizeZero != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.pageSizeZero = pageSizeZero;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getOrderBy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> orderBy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;E&gt; <span class="function">Page&lt;E&gt; <span class="title">setOrderBy</span><span class="params">(String orderBy)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.orderBy = orderBy;</span><br><span class="line">        <span class="keyword">return</span> (Page&lt;E&gt;) <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOrderByOnly</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> orderByOnly;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOrderByOnly</span><span class="params">(<span class="keyword">boolean</span> orderByOnly)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.orderByOnly = orderByOnly;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 计算起止行号</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">calculateStartAndEndRow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startRow = <span class="keyword">this</span>.pageNum &gt; <span class="number">0</span> ? (<span class="keyword">this</span>.pageNum - <span class="number">1</span>) * <span class="keyword">this</span>.pageSize : <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">this</span>.endRow = <span class="keyword">this</span>.startRow + <span class="keyword">this</span>.pageSize * (<span class="keyword">this</span>.pageNum &gt; <span class="number">0</span> ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">setCount</span><span class="params">(<span class="keyword">boolean</span> count)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置页码</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pageNum</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">pageNum</span><span class="params">(<span class="keyword">int</span> pageNum)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//分页合理化，针对不合理的页码自动处理</span></span><br><span class="line">        <span class="keyword">this</span>.pageNum = ((reasonable != <span class="keyword">null</span> &amp;&amp; reasonable) &amp;&amp; pageNum &lt;= <span class="number">0</span>) ? <span class="number">1</span> : pageNum;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置页面大小</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pageSize</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">pageSize</span><span class="params">(<span class="keyword">int</span> pageSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = pageSize;</span><br><span class="line">        calculateStartAndEndRow();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否执行count查询</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> count</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">count</span><span class="params">(Boolean count)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置合理化</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> reasonable</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">reasonable</span><span class="params">(Boolean reasonable)</span> </span>&#123;</span><br><span class="line">        setReasonable(reasonable);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当设置为true的时候，如果pagesize设置为0（或RowBounds的limit=0），就不执行分页，返回全部结果</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pageSizeZero</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">pageSizeZero</span><span class="params">(Boolean pageSizeZero)</span> </span>&#123;</span><br><span class="line">        setPageSizeZero(pageSizeZero);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 指定 count 查询列</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> columnName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Page&lt;E&gt; <span class="title">countColumn</span><span class="params">(String columnName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.countColumn = columnName;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 转换为PageInfo</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PageInfo&lt;E&gt; <span class="title">toPageInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        PageInfo&lt;E&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;E&gt;(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">return</span> pageInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;E&gt; <span class="function">Page&lt;E&gt; <span class="title">doSelectPage</span><span class="params">(ISelect select)</span> </span>&#123;</span><br><span class="line">        select.doSelect();</span><br><span class="line">        <span class="keyword">return</span> (Page&lt;E&gt;) <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;E&gt; <span class="function">PageInfo&lt;E&gt; <span class="title">doSelectPageInfo</span><span class="params">(ISelect select)</span> </span>&#123;</span><br><span class="line">        select.doSelect();</span><br><span class="line">        <span class="keyword">return</span> (PageInfo&lt;E&gt;) <span class="keyword">this</span>.toPageInfo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">doCount</span><span class="params">(ISelect select)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pageSizeZero = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">this</span>.pageSize = <span class="number">0</span>;</span><br><span class="line">        select.doSelect();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.total;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCountColumn</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> countColumn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCountColumn</span><span class="params">(String countColumn)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.countColumn = countColumn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Page&#123;"</span> +</span><br><span class="line">                <span class="string">"count="</span> + count +</span><br><span class="line">                <span class="string">", pageNum="</span> + pageNum +</span><br><span class="line">                <span class="string">", pageSize="</span> + pageSize +</span><br><span class="line">                <span class="string">", startRow="</span> + startRow +</span><br><span class="line">                <span class="string">", endRow="</span> + endRow +</span><br><span class="line">                <span class="string">", total="</span> + total +</span><br><span class="line">                <span class="string">", pages="</span> + pages +</span><br><span class="line">                <span class="string">", reasonable="</span> + reasonable +</span><br><span class="line">                <span class="string">", pageSizeZero="</span> + pageSizeZero +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        PageHelper.clearPage();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/9Mybatis%E6%95%B4%E5%90%88PageHelper/">九、整合PageHelper实现分页</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/9Mybatis%E6%95%B4%E5%90%88PageHelper/">https://ooyhao.github.io/2020/01/18/SSM/mybatis/9Mybatis%E6%95%B4%E5%90%88PageHelper/</a></li>
+            <li><strong>发布时间：</strong>2020-01-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/mybatis/" rel="tag">mybatis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/18/RabbitMQ/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">RabbitMQ</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/18/SSM/mybatis/8Mybatis%E6%95%B4%E5%90%88Spring/">
+                <span class="level-item">八、Mybatis整合Spring操作DB</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '2c85c137f8ce4b0e5d87e0d611d9175b',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            38
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            7
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fas fa-wechat"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#XML配置方式">
+        <span class="has-mr-6">1</span>
+        <span>XML配置方式</span>
+        </a></li><li>
+        <a class="is-flex" href="#Java配置类方式">
+        <span class="has-mr-6">2</span>
+        <span>Java配置类方式</span>
+        </a></li><li>
+        <a class="is-flex" href="#Page对象源码">
+        <span class="has-mr-6">3</span>
+        <span>Page对象源码</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十三、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:23.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十三、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十二、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:22.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十二、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">38</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="九、整合PageHelper实现分页" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

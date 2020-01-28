@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>三、Mybatis映射文件 - Hexo</title>
+
+
+    <meta name="description" content="Mybatis映射文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三、Mybatis映射文件">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/18/SSM/mybatis/3Mybatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Mybatis映射文件">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-18T08:15:03.000Z">
+<meta property="article:modified_time" content="2020-01-28T03:26:17.456Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="三、Mybatis映射文件" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-18T08:15:03.000Z">2020-01-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/mybatis/">mybatis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    34 分钟 读完 (大约 5156 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                三、Mybatis映射文件
+            
+        </h1>
+        <div class="content">
+            <p>Mybatis映射文件</p>
+<a id="more"></a>
+
+<h2 id="基本CRUD"><a href="#基本CRUD" class="headerlink" title="基本CRUD"></a>基本CRUD</h2><h3 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"saveRole"</span> <span class="attr">resultType</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">  insert into tb_role</span><br><span class="line">  (</span><br><span class="line">  <span class="tag">&lt;<span class="name">trim</span> <span class="attr">suffixOverrides</span>=<span class="string">","</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"roleName!=null"</span>&gt;</span></span><br><span class="line">      role_name,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"description != null"</span>&gt;</span></span><br><span class="line">      description,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"status != null"</span>&gt;</span></span><br><span class="line">      status,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createTime != null"</span>&gt;</span></span><br><span class="line">      create_time,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createUser != null"</span>&gt;</span></span><br><span class="line">      create_user,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyTime != null"</span>&gt;</span></span><br><span class="line">      modify_time,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyUser != null"</span>&gt;</span></span><br><span class="line">      modify_user</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">trim</span>&gt;</span></span><br><span class="line">  ) VALUES</span><br><span class="line">  (</span><br><span class="line">  <span class="tag">&lt;<span class="name">trim</span> <span class="attr">suffixOverrides</span>=<span class="string">","</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"roleName!=null"</span>&gt;</span></span><br><span class="line">      #&#123;roleName&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"description != null"</span>&gt;</span></span><br><span class="line">      #&#123;description&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"status != null"</span>&gt;</span></span><br><span class="line">      #&#123;status&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createTime != null"</span>&gt;</span></span><br><span class="line">      #&#123;createTime&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createUser != null"</span>&gt;</span></span><br><span class="line">      #&#123;createUser&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyTime != null"</span>&gt;</span></span><br><span class="line">      #&#123;modifyTime&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyUser != null"</span>&gt;</span></span><br><span class="line">      #&#123;modifyUser&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">trim</span>&gt;</span></span><br><span class="line">  )</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个增加方法使用<em>if</em> 进行判断，所以只是将不为空的字段添加。</p>
+<h3 id="增加并返回ID"><a href="#增加并返回ID" class="headerlink" title="增加并返回ID"></a>增加并返回ID</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--设置保存的时候需要返回插入时的id--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">"saveUser"</span> <span class="attr">useGeneratedKeys</span>=<span class="string">"true"</span> <span class="attr">keyProperty</span>=<span class="string">"id"</span> <span class="attr">parameterType</span>=<span class="string">"User"</span> &gt;</span></span><br><span class="line">    insert into tb_user (user_id,</span><br><span class="line">    	username,password,email,phone,gender,birthday,create_time,</span><br><span class="line">    	create_user,modify_time,modify_user)</span><br><span class="line">    values (</span><br><span class="line">    	#&#123;user.userId&#125;,#&#123;user.username&#125;,#&#123;user.password&#125;,#&#123;user.email&#125;,#&#123;user.phone&#125;,#&#123;user.gender&#125;,</span><br><span class="line">    	#&#123;user.birthday&#125;,#&#123;user.createTime&#125;,#&#123;user.createUser&#125;,#&#123;user.modifyTime&#125;,#&#123;user.modifyUser&#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">"deleteRoleById"</span>&gt;</span></span><br><span class="line">  delete from tb_role where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这是一个非常简单的删除语句，这里不赘述。</p>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">"updateRole"</span>&gt;</span></span><br><span class="line">  update tb_role</span><br><span class="line">  <span class="tag">&lt;<span class="name">set</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"roleName!=null"</span>&gt;</span></span><br><span class="line">      role_name = #&#123;roleName&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"description != null"</span>&gt;</span></span><br><span class="line">      description = #&#123;description&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"status != null"</span>&gt;</span></span><br><span class="line">      status = #&#123;status&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createTime != null"</span>&gt;</span></span><br><span class="line">      create_time = #&#123;createTime&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"createUser != null"</span>&gt;</span></span><br><span class="line">      create_user = #&#123;createUser&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyTime != null"</span>&gt;</span></span><br><span class="line">      modify_time = #&#123;modifyTime&#125;,</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"modifyUser != null"</span>&gt;</span></span><br><span class="line">      modify_user = #&#123;modifyUser&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br><span class="line">  where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>提示：这里采用了选择性更新，即只有字段不为空的时候，才会进行更新操作。</p>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectRolesByStatus"</span> <span class="attr">resultType</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">  select * from tb_role where status = #&#123;status&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>提示：这里仅仅介绍一下最简单的查询，后面重点介绍与查询相关的。</p>
+<p>增删改查标签相关属性请参考：</p>
+<blockquote>
+<p>  <a href="https://mybatis.org/mybatis-3/zh/sqlmap-xml.html#insert_update_and_delete">https://mybatis.org/mybatis-3/zh/sqlmap-xml.html#insert_update_and_delete</a></p>
+</blockquote>
+<h3 id="增删改查标签属性"><a href="#增删改查标签属性" class="headerlink" title="增删改查标签属性"></a>增删改查标签属性</h3><h4 id="Select-元素的属性"><a href="#Select-元素的属性" class="headerlink" title="Select 元素的属性"></a>Select 元素的属性</h4><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>在命名空间中唯一的标识符，可以被用来引用这条语句。</td>
+</tr>
+<tr>
+<td>parameterType</td>
+<td>将会传入这条语句的参数类的完全限定名或别名。这个属性是可选的，因为 MyBatis 可以通过类型处理器（TypeHandler） 推断出具体传入语句的参数，默认值为未设置（unset）。</td>
+</tr>
+<tr>
+<td>resultType</td>
+<td>从这条语句中返回的期望类型的类的完全限定名或别名。 注意如果返回的是集合，那应该设置为集合包含的类型，而不是集合本身。可以使用 resultType 或 resultMap，但不能同时使用。</td>
+</tr>
+<tr>
+<td>resultMap</td>
+<td>外部 resultMap 的命名引用。结果集的映射是 MyBatis 最强大的特性，如果你对其理解透彻，许多复杂映射的情形都能迎刃而解。可以使用 resultMap 或 resultType，但不能同时使用。</td>
+</tr>
+<tr>
+<td>flushCache</td>
+<td>将其设置为 true 后，只要语句被调用，都会导致本地缓存和二级缓存被清空，默认值：false。</td>
+</tr>
+<tr>
+<td>useCache</td>
+<td>将其设置为 true 后，将会导致本条语句的结果被二级缓存缓存起来，默认值：对 select 元素为 true。</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>这个设置是在抛出异常之前，驱动程序等待数据库返回请求结果的秒数。默认值为未设置（unset）（依赖驱动）。</td>
+</tr>
+<tr>
+<td>fetchSize</td>
+<td>这是一个给驱动的提示，尝试让驱动程序每次批量返回的结果行数和这个设置值相等。 默认值为未设置（unset）（依赖驱动）。</td>
+</tr>
+<tr>
+<td>statementType</td>
+<td>STATEMENT，PREPARED 或 CALLABLE 中的一个。这会让 MyBatis 分别使用 Statement，PreparedStatement 或 CallableStatement，默认值：PREPARED。</td>
+</tr>
+<tr>
+<td>resultSetType</td>
+<td>FORWARD_ONLY，SCROLL_SENSITIVE, SCROLL_INSENSITIVE 或 DEFAULT（等价于 unset） 中的一个，默认值为 unset （依赖驱动）。</td>
+</tr>
+<tr>
+<td>databaseId</td>
+<td>如果配置了数据库厂商标识（databaseIdProvider），MyBatis 会加载所有的不带 databaseId 或匹配当前 databaseId 的语句；如果带或者不带的语句都有，则不带的会被忽略。</td>
+</tr>
+<tr>
+<td>resultOrdered</td>
+<td>这个设置仅针对嵌套结果 select 语句适用：如果为 true，就是假设包含了嵌套结果集或是分组，这样的话当返回一个主结果行的时候，就不会发生有对前面结果集的引用的情况。 这就使得在获取嵌套的结果集的时候不至于导致内存不够用。默认值：false。</td>
+</tr>
+<tr>
+<td>resultSets</td>
+<td>这个设置仅对多结果集的情况适用。它将列出语句执行后返回的结果集并给每个结果集一个名称，名称是逗号分隔的。</td>
+</tr>
+</tbody></table>
+<h4 id="Insert-Update-Delete-元素的属性"><a href="#Insert-Update-Delete-元素的属性" class="headerlink" title="Insert, Update, Delete 元素的属性"></a>Insert, Update, Delete 元素的属性</h4><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>命名空间中的唯一标识符，可被用来代表这条语句。</td>
+</tr>
+<tr>
+<td>parameterType</td>
+<td>将要传入语句的参数的完全限定类名或别名。这个属性是可选的，因为 MyBatis 可以通过类型处理器推断出具体传入语句的参数，默认值为未设置（unset）。</td>
+</tr>
+<tr>
+<td>parameterMap</td>
+<td>这是引用外部 parameterMap 的已经被废弃的方法。请使用内联参数映射和 parameterType 属性。</td>
+</tr>
+<tr>
+<td>flushCache</td>
+<td>将其设置为 true 后，只要语句被调用，都会导致本地缓存和二级缓存被清空，默认值：true（对于 insert、update 和 delete 语句）。</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>这个设置是在抛出异常之前，驱动程序等待数据库返回请求结果的秒数。默认值为未设置（unset）（依赖驱动）。</td>
+</tr>
+<tr>
+<td>statementType</td>
+<td>STATEMENT，PREPARED 或 CALLABLE 的一个。这会让 MyBatis 分别使用 Statement，PreparedStatement 或 CallableStatement，默认值：PREPARED。</td>
+</tr>
+<tr>
+<td>useGeneratedKeys</td>
+<td>（仅对 insert 和 update 有用）这会令 MyBatis 使用 JDBC 的 getGeneratedKeys 方法来取出由数据库内部生成的主键（比如：像 MySQL 和 SQL Server 这样的关系数据库管理系统的自动递增字段），默认值：false。</td>
+</tr>
+<tr>
+<td>keyProperty</td>
+<td>（仅对 insert 和 update 有用）唯一标记一个属性，MyBatis 会通过 getGeneratedKeys 的返回值或者通过 insert 语句的 selectKey 子元素设置它的键值，默认值：未设置（unset）。如果希望得到多个生成的列，也可以是逗号分隔的属性名称列表。</td>
+</tr>
+<tr>
+<td>keyColumn</td>
+<td>（仅对 insert 和 update 有用）通过生成的键值设置表中的列名，这个设置仅在某些数据库（像 PostgreSQL）是必须的，当主键列不是表中的第一列的时候需要设置。如果希望使用多个生成的列，也可以设置为逗号分隔的属性名称列表。</td>
+</tr>
+<tr>
+<td>databaseId</td>
+<td>如果配置了数据库厂商标识（databaseIdProvider），MyBatis 会加载所有的不带 databaseId 或匹配当前 databaseId 的语句；如果带或者不带的语句都有，则不带的会被忽略。</td>
+</tr>
+</tbody></table>
+<h2 id="结果映射"><a href="#结果映射" class="headerlink" title="结果映射"></a>结果映射</h2><h3 id="结果映射（resultMap）"><a href="#结果映射（resultMap）" class="headerlink" title="结果映射（resultMap）"></a>结果映射（resultMap）</h3><ul>
+<li>constructor - 用于在实例化类时，注入结果到构造方法中idArg - ID 参数；标记出作为 ID 的结果可以帮助提高整体性能arg - 将被注入到构造方法的一个普通结果</li>
+<li>id – 一个 ID 结果；标记出作为 ID 的结果可以帮助提高整体性能</li>
+<li>result – 注入到字段或 JavaBean 属性的普通结果</li>
+<li>association – 一个复杂类型的关联；许多结果将包装成这种类型嵌套结果映射 – 关联本身可以是一个 resultMap 元素，或者从别处引用一个</li>
+<li>collection – 一个复杂类型的集合嵌套结果映射 – 集合本身可以是一个 resultMap 元素，或者从别处引用一个</li>
+<li>discriminator – 使用结果值来决定使用哪个 resultMapcase – 基于某些值的结果映射嵌套结果映射 – case 本身可以是一个 resultMap 元素，因此可以具有相同的结构和元素，或者从别处引用一个</li>
+</ul>
+<h4 id="Id-和-Result-的属性"><a href="#Id-和-Result-的属性" class="headerlink" title="Id 和 Result 的属性"></a>Id 和 Result 的属性</h4><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>property</td>
+<td>映射到列结果的字段或属性。如果用来匹配的 JavaBean 存在给定名字的属性，那么它将会被使用。否则 MyBatis 将会寻找给定名称的字段。 无论是哪一种情形，你都可以使用通常的点式分隔形式进行复杂属性导航。 比如，你可以这样映射一些简单的东西：“username”，或者映射到一些复杂的东西上：“address.street.number”。</td>
+</tr>
+<tr>
+<td>column</td>
+<td>数据库中的列名，或者是列的别名。一般情况下，这和传递给 resultSet.getString(columnName) 方法的参数一样。</td>
+</tr>
+<tr>
+<td>javaType</td>
+<td>一个 Java 类的完全限定名，或一个类型别名（关于内置的类型别名，可以参考上面的表格）。 如果你映射到一个 JavaBean，MyBatis 通常可以推断类型。然而，如果你映射到的是 HashMap，那么你应该明确地指定 javaType 来保证行为与期望的相一致。</td>
+</tr>
+<tr>
+<td>jdbcType</td>
+<td>JDBC 类型，所支持的 JDBC 类型参见这个表格之后的“支持的 JDBC 类型”。 只需要在可能执行插入、更新和删除的且允许空值的列上指定 JDBC 类型。这是 JDBC 的要求而非 MyBatis 的要求。如果你直接面向 JDBC 编程，你需要对可能存在空值的列指定这个类型。</td>
+</tr>
+<tr>
+<td>typeHandler</td>
+<td>我们在前面讨论过默认的类型处理器。使用这个属性，你可以覆盖默认的类型处理器。 这个属性值是一个类型处理器实现类的完全限定名，或者是类型别名。</td>
+</tr>
+</tbody></table>
+<h4 id="支持的-JDBC-类型"><a href="#支持的-JDBC-类型" class="headerlink" title="支持的 JDBC 类型"></a>支持的 JDBC 类型</h4><p>为了以后可能的使用场景，MyBatis 通过内置的 jdbcType 枚举类型支持下面的 JDBC 类型。</p>
+<table>
+<thead>
+<tr>
+<th>BIT</th>
+<th>FLOAT</th>
+<th>CHAR</th>
+<th>TIMESTAMP</th>
+<th>OTHER</th>
+<th>UNDEFINED</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TINYINT</td>
+<td>REAL</td>
+<td>VARCHAR</td>
+<td>BINARY</td>
+<td>BLOB</td>
+<td>NVARCHAR</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>DOUBLE</td>
+<td>LONGVARCHAR</td>
+<td>VARBINARY</td>
+<td>CLOB</td>
+<td>NCHAR</td>
+</tr>
+<tr>
+<td>INTEGER</td>
+<td>NUMERIC</td>
+<td>DATE</td>
+<td>LONGVARBINARY</td>
+<td>BOOLEAN</td>
+<td>NCLOB</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>DECIMAL</td>
+<td>TIME</td>
+<td>NULL</td>
+<td>CURSOR</td>
+<td>ARRAY</td>
+</tr>
+</tbody></table>
+<h3 id="单表基本结果映射"><a href="#单表基本结果映射" class="headerlink" title="单表基本结果映射"></a>单表基本结果映射</h3><h4 id="属性设值"><a href="#属性设值" class="headerlink" title="属性设值"></a>属性设值</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"base_map"</span> <span class="attr">type</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"role_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"roleName"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"description"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"description"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectAllRoles"</span> <span class="attr">resultMap</span>=<span class="string">"base_map"</span>&gt;</span></span><br><span class="line">  select * from tb_role</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>java实体：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//空参数，全参数，get，set，toString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String roleName;</span><br><span class="line">    <span class="keyword">private</span> String description;</span><br><span class="line">    <span class="keyword">private</span> Integer status;</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line">    <span class="keyword">private</span> String createUser;</span><br><span class="line">    <span class="keyword">private</span> Date modifyTime;</span><br><span class="line">    <span class="keyword">private</span> String modifyUser;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>提示：可以看出，这里我们不再直接使用了user作为返回类型(resultType),而是使用了结果映射(resultMap)来映射实体。以上方式使用的实体映射是使用的setter进行设置参数的。我们在setId方法上加一段输入语句之后，再次运行，结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">  System.out.println(<span class="string">"setId of role is running"</span>);</span><br><span class="line">  <span class="keyword">this</span>.id = id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mybatis/Snipaste_2019-09-19_11-00-29.png" alt></p>
+<p>那么我们如何使用构造函数来进行属性设置赋值呢？</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"base_map"</span> <span class="attr">type</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">constructor</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">idArg</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">javaType</span>=<span class="string">"Integer"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">column</span>=<span class="string">"role_name"</span> <span class="attr">javaType</span>=<span class="string">"String"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">column</span>=<span class="string">"description"</span> <span class="attr">javaType</span>=<span class="string">"String"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">javaType</span>=<span class="string">"Integer"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">javaType</span>=<span class="string">"Date"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">javaType</span>=<span class="string">"String"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">javaType</span>=<span class="string">"Date"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">javaType</span>=<span class="string">"String"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">constructor</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="构造方法设值"><a href="#构造方法设值" class="headerlink" title="构造方法设值"></a>构造方法设值</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Role</span><span class="params">(Integer id, String roleName, String description, Integer status, Date createTime, String createUser, Date modifyTime, String modifyUser)</span> </span>&#123;</span><br><span class="line">  System.out.println(<span class="string">"all args' constructor of role is running "</span>);</span><br><span class="line">  <span class="keyword">this</span>.id = id;</span><br><span class="line">  <span class="keyword">this</span>.roleName = roleName;</span><br><span class="line">  <span class="keyword">this</span>.description = description;</span><br><span class="line">  <span class="keyword">this</span>.status = status;</span><br><span class="line">  <span class="keyword">this</span>.createTime = createTime;</span><br><span class="line">  <span class="keyword">this</span>.createUser = createUser;</span><br><span class="line">  <span class="keyword">this</span>.modifyTime = modifyTime;</span><br><span class="line">  <span class="keyword">this</span>.modifyUser = modifyUser;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-19_11-01-30.png" alt></p>
+<h3 id="关联关系一对一"><a href="#关联关系一对一" class="headerlink" title="关联关系一对一"></a>关联关系一对一</h3><p>​    前面我们看到了单表操作，我们通过直接返回对象或是使用resultMap的方式来映射实体。这里我们看一下实体一对一的关系如何映射。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">一对一关系的映射：association标签的属性元素</span><br><span class="line"></span><br><span class="line">property CDATA  			属性，必须</span><br><span class="line">column CDATA  				数据库表的字段名</span><br><span class="line">javaType CDATA  			属性的java类型</span><br><span class="line">jdbcType CDATA  			数据库表的字段的类型</span><br><span class="line">select CDATA  				嵌套查询时使用。</span><br><span class="line">resultMap CDATA  			关联外部的手动映射关系时使用</span><br><span class="line">typeHandler CDATA  			类型处理器</span><br><span class="line">notNullColumn CDATA  	</span><br><span class="line">columnPrefix CDATA  		字段前缀，一对一中有涉及到</span><br><span class="line">resultSet CDATA  		</span><br><span class="line">foreignColumn CDATA  	</span><br><span class="line">autoMapping (true|false)  	是否自定映射</span><br><span class="line">fetchType (lazy|eager)  	是否懒加载</span><br></pre></td></tr></table></figure>
+
+
+
+<p>业务：用户与身份证是一对一的关系。</p>
+<p>User类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String userId;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="keyword">private</span> Integer gender;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line">    <span class="keyword">private</span> Integer status;</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line">    <span class="keyword">private</span> String createUser;</span><br><span class="line">    <span class="keyword">private</span> Date modifyTime;</span><br><span class="line">    <span class="keyword">private</span> String modifyUser;</span><br><span class="line">    <span class="keyword">private</span> Card card;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>提示：这里使用了<code>lombok</code> 简化实例开发，依赖如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.18.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Card类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Card</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer uid;</span><br><span class="line">    <span class="keyword">private</span> String cardId;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line">    <span class="keyword">private</span> Date modifyTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="一对一自动映射"><a href="#一对一自动映射" class="headerlink" title="一对一自动映射"></a>一对一自动映射</h4><p>​    通过上面的实例类关系我们可以发现，card是User类中的一个属性，但是如何通过Mybatis的自动映射机制将card表中的数据之间填充到User属性中。我们可以在查询字段上使用别名来映射，如下，uid字段是user的card属性的属性，则可以通过<code>card.uid</code> 来映射到User类的card属性的uid字段。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserWithCardByUserId"</span> <span class="attr">resultType</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">    SELECT</span><br><span class="line">      a.id,a.user_id,a.username,a.password,a.email,a.phone,</span><br><span class="line">      a.gender,a.birthday,a.status,a.create_time,a.create_user,</span><br><span class="line">      a.modify_time,a.modify_user,</span><br><span class="line">      b.id as "card.id" ,</span><br><span class="line">      b.uid as "card.uid",</span><br><span class="line">      b.card_id as "card.cardId",</span><br><span class="line">      b.address as "card.address",</span><br><span class="line">      b.create_time as "card.createTime" ,</span><br><span class="line">      b.modify_time as "card.modifyTime"</span><br><span class="line">    FROM</span><br><span class="line">    	tb_user a</span><br><span class="line">    INNER JOIN tb_card b on a.id = b.uid where a.id = #&#123;id&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="一对一手动映射"><a href="#一对一手动映射" class="headerlink" title="一对一手动映射"></a>一对一手动映射</h4><p>手动映射就是通过结果集的方式列进行映射,如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BaseResultMapWithCard"</span> <span class="attr">type</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"password"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"password"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"email"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"email"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"phone"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"phone"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"gender"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"gender"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">jdbcType</span>=<span class="string">"DATE"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">"card"</span> <span class="attr">javaType</span>=<span class="string">"card"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"bid"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"uid"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"uid"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"card_id"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"cardId"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"address"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"address"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">association</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserWithCardByUserId"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMapWithCard"</span>&gt;</span></span><br><span class="line">        select</span><br><span class="line">            a.id,a.user_id,a.username,a.password,a.email,a.phone,a.gender,</span><br><span class="line">            a.birthday,a.status,a.create_time,a.create_user,a.modify_time,a.modify_user,</span><br><span class="line">            b.id bid,</span><br><span class="line">            b.uid,</span><br><span class="line">            b.card_id,</span><br><span class="line">            b.address,</span><br><span class="line">            b.create_time,</span><br><span class="line">            b.modify_time</span><br><span class="line">        FROM</span><br><span class="line">            tb_user a</span><br><span class="line">        INNER JOIN tb_card b on a.id = b.uid where a.id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过上述的SQL查询和结果集的手动映射关系，这样就可以实现字段和实体的查询了。</p>
+<p>当然，Mybatis还提供下面这种方式来实现：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BaseResultMapWithCard"</span> <span class="attr">type</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"password"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"password"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"email"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"email"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"phone"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"phone"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"gender"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"gender"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">jdbcType</span>=<span class="string">"DATE"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">"card"</span> <span class="attr">javaType</span>=<span class="string">"card"</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">select</span>=<span class="string">"selectCard"</span>&gt;</span><span class="tag">&lt;/<span class="name">association</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserWithCardByUserId"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMapWithCard"</span>&gt;</span></span><br><span class="line">    select</span><br><span class="line">      a.id,a.user_id,a.username,a.password,a.email,a.phone,a.gender,</span><br><span class="line">      a.birthday,a.status,a.create_time,a.create_user,a.modify_time,a.modify_user</span><br><span class="line">    FROM</span><br><span class="line">    	tb_user a</span><br><span class="line">    where a.id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectCard"</span> <span class="attr">resultType</span>=<span class="string">"card"</span>&gt;</span></span><br><span class="line">  	select * from tb_card where uid = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样的操作其实就是先查询出User的信息，然后在取user表的id字段来查询card表的数据，这样就相当于向MySQL发送了两条SQL，我们通过日志可以观察到现象：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-19_14-25-01.png" alt></p>
+<p>​    两种方式都可以实现同样地结果，如果需要控制SQL发送条数的话，可以使用关联方式，如果需要在一定程度上降低SQL的查询时间，则可以将其拆分为多个查询SQL。</p>
+<p>拓展：</p>
+<p>下面我们看一下下面这个SQL如何进行映射，我们假设，一个User有一个主身份证和一个副身份证，那么我们需要如何查询映射：</p>
+<p>User:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String userId;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="keyword">private</span> Integer gender;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line">    <span class="keyword">private</span> Integer status;</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line">    <span class="keyword">private</span> String createUser;</span><br><span class="line">    <span class="keyword">private</span> Date modifyTime;</span><br><span class="line">    <span class="keyword">private</span> String modifyUser;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Card card;<span class="comment">//主</span></span><br><span class="line">    <span class="keyword">private</span> Card card1;<span class="comment">//副</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的SQL映射如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BaseResultMapWithCard"</span> <span class="attr">type</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"password"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"password"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"email"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"email"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"phone"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"phone"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"gender"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"gender"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">jdbcType</span>=<span class="string">"DATE"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">"card"</span> <span class="attr">javaType</span>=<span class="string">"card"</span> <span class="attr">resultMap</span>=<span class="string">"cardResultMap"</span> <span class="attr">columnPrefix</span>=<span class="string">"b1_"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">"card1"</span> <span class="attr">javaType</span>=<span class="string">"card"</span> <span class="attr">resultMap</span>=<span class="string">"cardResultMap"</span> <span class="attr">columnPrefix</span>=<span class="string">"b2_"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"cardResultMap"</span> <span class="attr">type</span>=<span class="string">"card"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"uid"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"uid"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"card_id"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"cardId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"address"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"address"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserWithCardByUserId"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMapWithCard"</span> &gt;</span></span><br><span class="line">    select</span><br><span class="line">      a.id,a.user_id,a.username,a.password,a.email,a.phone,a.gender,</span><br><span class="line">      a.birthday,a.status,a.create_time,a.create_user,a.modify_time,a.modify_user,</span><br><span class="line">      b1.id b1_id,</span><br><span class="line">      b1.uid b1_uid,</span><br><span class="line">      b1.card_id b1_card_id,</span><br><span class="line">      b1.address b1_address,</span><br><span class="line">      b1.create_time b1_create_time,</span><br><span class="line">      b1.modify_time b1_modify_time,</span><br><span class="line">      b2.id b2_id,</span><br><span class="line">      b2.uid b2_uid,</span><br><span class="line">      b2.card_id b2_card_id,</span><br><span class="line">      b2.address b2_address,</span><br><span class="line">      b2.create_time b2_create_time,</span><br><span class="line">      b2.modify_time b2_modify_time</span><br><span class="line">    from tb_user a</span><br><span class="line">    inner join tb_card b1 on a.id = b1.uid</span><br><span class="line">    inner join tb_card b2 on a.id = b2.uid</span><br><span class="line">    where a.id = 1</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    </p>
+<p>​    当连接多个表时，我们可能会不得不使用列别名来避免在 ResultSet 中产生重复的列名。指定 association标签的columnPrefix 列名前缀允许你将带有这些前缀的列映射到一个外部的结果映射中。 </p>
+<h3 id="关联关系一对多"><a href="#关联关系一对多" class="headerlink" title="关联关系一对多"></a>关联关系一对多</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 下面是collection标签的各个属性元素</span><br><span class="line"></span><br><span class="line">property CDATA #REQUIRED 	必须，指定的是java实体类的属性名</span><br><span class="line">column CDATA 				指定的是表的字段名（查询出来的，有可能是字段别名）</span><br><span class="line">javaType CDATA  			集合一般不使用这个</span><br><span class="line">ofType CDATA 				属性的java类型，例如：string，integer</span><br><span class="line">jdbcType CDATA  			数据库的字段类型</span><br><span class="line">select CDATA 				当我们需要进行嵌套查询的时候，执行另外一个查询语句</span><br><span class="line">resultMap CDATA 			返回值的映射关</span><br><span class="line">typeHandler CDATA 			类型处理</span><br><span class="line">notNullColumn CDATA 		</span><br><span class="line">columnPrefix CDATA 			当我们需要进行区分的时候，可以指定前缀，后面有案例</span><br><span class="line">resultSet CDATA 			</span><br><span class="line">foreignColumn CDATA			外键</span><br><span class="line">autoMapping (true|false) 	是否需要自动映射</span><br><span class="line">fetchType (lazy|eager) 		是否进行懒加载</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>​    在实际开发中，权限往往是无关业务，但是又是至关重要的一环。在设计权限的时候，我们往往不会讲权限之间与用户之前关联，为了更加好的管理，我们会在用户与权限之间引入一个角色，用角色来统一管理具有相同权限的用户，一般一个用户存在于多个角色，比如即使CEO又是系统开发人员（哈哈），这里就是一个一对多的关系，下面我们看看，在Mybatis中一对多的关系如何映射：</p>
+<p>User:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String userId;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="keyword">private</span> Integer gender;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line">    <span class="keyword">private</span> Integer status;</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line">    <span class="keyword">private</span> String createUser;</span><br><span class="line">    <span class="keyword">private</span> Date modifyTime;</span><br><span class="line">    <span class="keyword">private</span> String modifyUser;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Role&gt; roles;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Role:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String roleName;</span><br><span class="line">    <span class="keyword">private</span> String description;</span><br><span class="line">    <span class="keyword">private</span> Integer status;</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line">    <span class="keyword">private</span> String createUser;</span><br><span class="line">    <span class="keyword">private</span> Date modifyTime;</span><br><span class="line">    <span class="keyword">private</span> String modifyUser;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>根据id查询的SQLxml文件：</p>
+<p>这里与前面的一对多的关联关系有所不同 ，一对多关联关系使用的是association，java类型使用的是javaType。而多对多关联关系使用的标签是collection，java类型属性使用的是ofType。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BaseResultWithRole"</span> <span class="attr">type</span>=<span class="string">"com.ooyhao.mybatis.bean.User"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"password"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"password"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"email"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"email"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"phone"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"phone"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"gender"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"gender"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">jdbcType</span>=<span class="string">"DATE"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">"roles"</span> <span class="attr">ofType</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"cid"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"role_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"roleName"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"description"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"description"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserWithRolesByUserId"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultWithRole"</span>&gt;</span></span><br><span class="line">    select</span><br><span class="line">      a.id,a.user_id,a.username,a.password,a.email,a.phone,a.gender,</span><br><span class="line">      a.birthday,a.status,a.create_time,a.create_user,a.modify_time,a.create_user,</span><br><span class="line">      c.id cid,</span><br><span class="line">      c.role_name,</span><br><span class="line">      c.description,</span><br><span class="line">      c.status,</span><br><span class="line">      c.create_time,</span><br><span class="line">      c.create_user,</span><br><span class="line">      c.modify_time,</span><br><span class="line">      c.create_user</span><br><span class="line">    from tb_user a</span><br><span class="line">    left join tb_user_role b on a.id = b.user_id</span><br><span class="line">    left join tb_role c on c.id = b.role_id</span><br><span class="line">    where a.id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试结果如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"birthday"</span>: <span class="number">1551369600000</span>,</span><br><span class="line">	<span class="attr">"createTime"</span>: <span class="number">1551433926000</span>,</span><br><span class="line">	<span class="attr">"createUser"</span>: <span class="string">"admin"</span>,</span><br><span class="line">	<span class="attr">"email"</span>: <span class="string">"12345678@qq.com"</span>,</span><br><span class="line">	<span class="attr">"gender"</span>: <span class="number">1</span>,</span><br><span class="line">	<span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">	<span class="attr">"modifyTime"</span>: <span class="number">1551679675000</span>,</span><br><span class="line">	<span class="attr">"password"</span>: <span class="string">"admin123456789"</span>,</span><br><span class="line">	<span class="attr">"phone"</span>: <span class="string">"12345678901"</span>,</span><br><span class="line">	<span class="attr">"roles"</span>: [&#123;</span><br><span class="line">		<span class="attr">"createTime"</span>: <span class="number">1551433926000</span>,</span><br><span class="line">		<span class="attr">"createUser"</span>: <span class="string">"admin"</span>,</span><br><span class="line">		<span class="attr">"description"</span>: <span class="string">"超级管理员"</span>,</span><br><span class="line">		<span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">		<span class="attr">"modifyTime"</span>: <span class="number">1551679675000</span>,</span><br><span class="line">		<span class="attr">"roleName"</span>: <span class="string">"admin"</span>,</span><br><span class="line">		<span class="attr">"status"</span>: <span class="number">0</span></span><br><span class="line">	&#125;, &#123;</span><br><span class="line">		<span class="attr">"createTime"</span>: <span class="number">1551433926000</span>,</span><br><span class="line">		<span class="attr">"createUser"</span>: <span class="string">"admin"</span>,</span><br><span class="line">		<span class="attr">"description"</span>: <span class="string">"开发人员"</span>,</span><br><span class="line">		<span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">		<span class="attr">"modifyTime"</span>: <span class="number">1551679675000</span>,</span><br><span class="line">		<span class="attr">"roleName"</span>: <span class="string">"develop"</span>,</span><br><span class="line">		<span class="attr">"status"</span>: <span class="number">0</span></span><br><span class="line">	&#125;],</span><br><span class="line">	<span class="attr">"status"</span>: <span class="number">0</span>,</span><br><span class="line">	<span class="attr">"userId"</span>: <span class="string">"oms20190001"</span>,</span><br><span class="line">	<span class="attr">"username"</span>: <span class="string">"admin"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>除了上述方式进行关联查询，我们还可以将SQL进行拆分：</p>
+<p>关联嵌套查询：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BaseResultWithRole"</span> <span class="attr">type</span>=<span class="string">"com.ooyhao.mybatis.bean.User"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"password"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"password"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"email"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"email"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"phone"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"phone"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"gender"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"gender"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">jdbcType</span>=<span class="string">"DATE"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">"roles"</span> <span class="attr">ofType</span>=<span class="string">"role"</span>  <span class="attr">column</span>=<span class="string">"id"</span>  <span class="attr">select</span>=<span class="string">"selectRole"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"selectRole"</span> <span class="attr">type</span>=<span class="string">"role"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"cid"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"role_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"roleName"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"description"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"description"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"status"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"createTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"create_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"createUser"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_time"</span> <span class="attr">jdbcType</span>=<span class="string">"TIMESTAMP"</span> <span class="attr">property</span>=<span class="string">"modifyTime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"modify_user"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">property</span>=<span class="string">"modifyUser"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserWithRolesByUserId"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultWithRole"</span>&gt;</span></span><br><span class="line">    select</span><br><span class="line">      a.id,a.user_id,a.username,a.password,a.email,a.phone,a.gender,</span><br><span class="line">      a.birthday,a.status,a.create_time,a.create_user,a.modify_time,a.create_user</span><br><span class="line">    from tb_user a</span><br><span class="line">    where a.id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectRole"</span> <span class="attr">resultType</span>=<span class="string">"role"</span> &gt;</span></span><br><span class="line">    select b.* from tb_user_role a</span><br><span class="line">    left join tb_role b on a.role_id = b.id</span><br><span class="line">    where a.user_id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/mybatis/Snipaste_2019-09-19_15-40-22.png" alt></p>
+<p>注：多对多其实就是双向的一对多关系，不再赘述。</p>
+<h2 id="鉴别器"><a href="#鉴别器" class="headerlink" title="鉴别器"></a>鉴别器</h2><p>摘自官网：</p>
+<p>有时候，一个数据库查询可能会返回多个不同的结果集（但总体上还是有一定的联系的）。 鉴别器（discriminator）元素就是被设计来应对这种情况的，另外也能处理其它情况，例如类的继承层次结构。 鉴别器的概念很好理解——它很像 Java 语言中的 switch 语句。</p>
+<p>一个鉴别器的定义需要指定 column 和 javaType 属性。column 指定了 MyBatis 查询被比较值的地方。 而 javaType 用来确保使用正确的相等测试（虽然很多情况下字符串的相等测试都可以工作）。例如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"vehicleResult"</span> <span class="attr">type</span>=<span class="string">"Vehicle"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"vin"</span> <span class="attr">column</span>=<span class="string">"vin"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"year"</span> <span class="attr">column</span>=<span class="string">"year"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"make"</span> <span class="attr">column</span>=<span class="string">"make"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"model"</span> <span class="attr">column</span>=<span class="string">"model"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"color"</span> <span class="attr">column</span>=<span class="string">"color"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">discriminator</span> <span class="attr">javaType</span>=<span class="string">"int"</span> <span class="attr">column</span>=<span class="string">"vehicle_type"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"1"</span> <span class="attr">resultMap</span>=<span class="string">"carResult"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">resultMap</span>=<span class="string">"truckResult"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"3"</span> <span class="attr">resultMap</span>=<span class="string">"vanResult"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"4"</span> <span class="attr">resultMap</span>=<span class="string">"suvResult"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">discriminator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line">---------------------------------------也可以这样-----------------------------------------</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"vehicleResult"</span> <span class="attr">type</span>=<span class="string">"Vehicle"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"vin"</span> <span class="attr">column</span>=<span class="string">"vin"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"year"</span> <span class="attr">column</span>=<span class="string">"year"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"make"</span> <span class="attr">column</span>=<span class="string">"make"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"model"</span> <span class="attr">column</span>=<span class="string">"model"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"color"</span> <span class="attr">column</span>=<span class="string">"color"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">discriminator</span> <span class="attr">javaType</span>=<span class="string">"int"</span> <span class="attr">column</span>=<span class="string">"vehicle_type"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"1"</span> <span class="attr">resultType</span>=<span class="string">"carResult"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"doorCount"</span> <span class="attr">column</span>=<span class="string">"door_count"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">resultType</span>=<span class="string">"truckResult"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"boxSize"</span> <span class="attr">column</span>=<span class="string">"box_size"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"extendedCab"</span> <span class="attr">column</span>=<span class="string">"extended_cab"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"3"</span> <span class="attr">resultType</span>=<span class="string">"vanResult"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"powerSlidingDoor"</span> <span class="attr">column</span>=<span class="string">"power_sliding_door"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"4"</span> <span class="attr">resultType</span>=<span class="string">"suvResult"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"allWheelDrive"</span> <span class="attr">column</span>=<span class="string">"all_wheel_drive"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">discriminator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>提示：请注意，这些都是结果映射，如果你完全不设置任何的 result 元素，MyBatis 将为你自动匹配列和属性。所以上面的例子大多都要比实际的更复杂。 这也表明，大多数数据库的复杂度都比较高，我们不太可能一直依赖于这种机制。</p>
+<p>下面通过一个案例来使用一下鉴别器：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-19_16-59-03.png" alt></p>
+<p>数据如下：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-19_16-59-34.png" alt></p>
+<p>我们通过接口的方式来使用鉴别器创建不同的交通工具实体：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Vehicle</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bus</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">implements</span> <span class="title">Vehicle</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Subway</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">  	<span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Sql.xml文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BaseResultMap"</span> <span class="attr">type</span>=<span class="string">"com.ooyhao.mybatis.bean.Vehicle"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">discriminator</span> <span class="attr">javaType</span>=<span class="string">"INTEGER"</span> <span class="attr">jdbcType</span>=<span class="string">"INTEGER"</span> <span class="attr">column</span>=<span class="string">"vehicle_type"</span> &gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"1"</span> <span class="attr">resultType</span>=<span class="string">"car"</span>&gt;</span></span><br><span class="line">         	 <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"name"</span> <span class="attr">column</span>=<span class="string">"vehicle_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">resultType</span>=<span class="string">"bus"</span>&gt;</span></span><br><span class="line">         	 <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"name"</span> <span class="attr">column</span>=<span class="string">"vehicle_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">case</span> <span class="attr">value</span>=<span class="string">"3"</span> <span class="attr">resultType</span>=<span class="string">"subway"</span>&gt;</span></span><br><span class="line">        	  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"name"</span> <span class="attr">column</span>=<span class="string">"vehicle_name"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">discriminator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findVehicleById"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span>&gt;</span></span><br><span class="line">  	select * from tb_vehicle where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在case以外的，就相当于在每一个case中都会存在，而在case中的则是根据条件来选择的。</p>
+<p>id为1时：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-19_17-03-40.png" alt></p>
+<p>id为3时：</p>
+<p><img src="/images/mybatis/Snipaste_2019-09-19_17-04-42.png" alt></p>
+<blockquote>
+<p>  源码地址：</p>
+<p>  <a href="https://gitee.com/ooyhao/JavaRepo_Public/tree/master/Mybatis">https://gitee.com/ooyhao/JavaRepo_Public/tree/master/Mybatis</a></p>
+</blockquote>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/3Mybatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/">三、Mybatis映射文件</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/18/SSM/mybatis/3Mybatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/">https://ooyhao.github.io/2020/01/18/SSM/mybatis/3Mybatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/</a></li>
+            <li><strong>发布时间：</strong>2020-01-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/mybatis/" rel="tag">mybatis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/18/SSM/mybatis/4Mybatis%E5%8A%A8%E6%80%81SQL/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">四、Mybatis动态SQL</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/18/SSM/mybatis/2Mybatis%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">
+                <span class="level-item">二、Mybatis配置文件</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '8a245038ddbdb83bcc390898513baac0',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            38
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            7
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fas fa-wechat"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#基本CRUD">
+        <span class="has-mr-6">1</span>
+        <span>基本CRUD</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#增加">
+        <span class="has-mr-6">1.1</span>
+        <span>增加</span>
+        </a></li><li>
+        <a class="is-flex" href="#增加并返回ID">
+        <span class="has-mr-6">1.2</span>
+        <span>增加并返回ID</span>
+        </a></li><li>
+        <a class="is-flex" href="#删除">
+        <span class="has-mr-6">1.3</span>
+        <span>删除</span>
+        </a></li><li>
+        <a class="is-flex" href="#更新">
+        <span class="has-mr-6">1.4</span>
+        <span>更新</span>
+        </a></li><li>
+        <a class="is-flex" href="#查询">
+        <span class="has-mr-6">1.5</span>
+        <span>查询</span>
+        </a></li><li>
+        <a class="is-flex" href="#增删改查标签属性">
+        <span class="has-mr-6">1.6</span>
+        <span>增删改查标签属性</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Select-元素的属性">
+        <span class="has-mr-6">1.6.1</span>
+        <span>Select 元素的属性</span>
+        </a></li><li>
+        <a class="is-flex" href="#Insert-Update-Delete-元素的属性">
+        <span class="has-mr-6">1.6.2</span>
+        <span>Insert, Update, Delete 元素的属性</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#结果映射">
+        <span class="has-mr-6">2</span>
+        <span>结果映射</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#结果映射（resultMap）">
+        <span class="has-mr-6">2.1</span>
+        <span>结果映射（resultMap）</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Id-和-Result-的属性">
+        <span class="has-mr-6">2.1.1</span>
+        <span>Id 和 Result 的属性</span>
+        </a></li><li>
+        <a class="is-flex" href="#支持的-JDBC-类型">
+        <span class="has-mr-6">2.1.2</span>
+        <span>支持的 JDBC 类型</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#单表基本结果映射">
+        <span class="has-mr-6">2.2</span>
+        <span>单表基本结果映射</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#属性设值">
+        <span class="has-mr-6">2.2.1</span>
+        <span>属性设值</span>
+        </a></li><li>
+        <a class="is-flex" href="#构造方法设值">
+        <span class="has-mr-6">2.2.2</span>
+        <span>构造方法设值</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#关联关系一对一">
+        <span class="has-mr-6">2.3</span>
+        <span>关联关系一对一</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#一对一自动映射">
+        <span class="has-mr-6">2.3.1</span>
+        <span>一对一自动映射</span>
+        </a></li><li>
+        <a class="is-flex" href="#一对一手动映射">
+        <span class="has-mr-6">2.3.2</span>
+        <span>一对一手动映射</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#关联关系一对多">
+        <span class="has-mr-6">2.4</span>
+        <span>关联关系一对多</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#鉴别器">
+        <span class="has-mr-6">3</span>
+        <span>鉴别器</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十三、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:23.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/21.gateway%E8%B7%AF%E7%94%B1%E8%B0%93%E8%AF%8D/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十三、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十二、SpringCloud Gateway 的初体验">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:22.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/20.gateway%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十二、SpringCloud Gateway 的初体验</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">38</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="三、Mybatis映射文件" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
