@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>MySQL基础 - Hexo</title>
+
+
+    <meta name="description" content="SQL笔记数据库相关概念 1.DB：数据库，保存一组有组织的数据的容器 2.DBMS：数据库管理系统，又称为数据库软件（产品），用于管理DB中的数据 3.SQL：结构化查询语言，用于和DBMS通信的语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基础">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/29/db/mysql/MySQL%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SQL笔记数据库相关概念 1.DB：数据库，保存一组有组织的数据的容器 2.DBMS：数据库管理系统，又称为数据库软件（产品），用于管理DB中的数据 3.SQL：结构化查询语言，用于和DBMS通信的语言">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-29T08:15:35.000Z">
+<meta property="article:modified_time" content="2020-01-29T08:15:31.854Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="MySQL基础" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-29T08:15:35.000Z">2020-01-29</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/DB/mysql/">mysql</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    19 分钟 读完 (大约 2785 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                MySQL基础
+            
+        </h1>
+        <div class="content">
+            <h2 id="SQL笔记"><a href="#SQL笔记" class="headerlink" title="SQL笔记"></a>SQL笔记</h2><p>数据库相关概念</p>
+<p>1.DB：数据库，保存一组有组织的数据的容器</p>
+<p>2.DBMS：数据库管理系统，又称为数据库软件（产品），用于管理DB中的数据</p>
+<p>3.SQL：结构化查询语言，用于和DBMS通信的语言</p>
+<a id="more"></a>
+
+<h3 id="基本SQL操作"><a href="#基本SQL操作" class="headerlink" title="基本SQL操作"></a>基本SQL操作</h3><h4 id="1-操作数据库"><a href="#1-操作数据库" class="headerlink" title="1.操作数据库"></a>1.操作数据库</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询数据库</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span>;</span><br><span class="line"><span class="comment">-- 创建数据库</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> newDatabase;</span><br><span class="line"><span class="comment">-- 删除数据库</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">database</span> newDatabase;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-操作数据表"><a href="#2-操作数据表" class="headerlink" title="2.操作数据表"></a>2.操作数据表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 选择指定数据库</span></span><br><span class="line"><span class="keyword">use</span> testDB;	</span><br><span class="line"><span class="comment">-- 查询当前数据库下的全部数据表</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">tables</span>;</span><br><span class="line"><span class="comment">-- 创建表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tb_user(</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="literal">null</span> auto_increment primary <span class="keyword">key</span>,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	age <span class="built_in">int</span>(<span class="number">11</span>)</span><br><span class="line">);</span><br><span class="line"><span class="comment">-- 创建表，存在则不会创建</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> tb_user2(</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="literal">null</span> auto_increment primary <span class="keyword">key</span>,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	age <span class="built_in">int</span>(<span class="number">11</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用旧表创建新表(只复制表的结构，不复制表的数据)</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> newTable <span class="keyword">like</span> tb_user;</span><br><span class="line"><span class="comment">-- 使用旧表（部分列）创建新的表(既复制表的结构又复制表的数据)</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> newTables <span class="keyword">as</span> <span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,age,matching <span class="keyword">from</span> tb_user;</span><br><span class="line"><span class="comment">-- 使用就表创建新表（全部列，既复制表的结构又复制表的数据）</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> newTable1 <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> tb_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询表的结构</span></span><br><span class="line">desc testAlter;</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">columns</span> <span class="keyword">from</span> testAlter;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将A表的查询结果插入到B表中。</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_new_user <span class="keyword">select</span> * <span class="keyword">from</span> tb_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 清除表中的数据</span></span><br><span class="line"><span class="comment">-- 注意：删除表的所有行，但表的结构、列、约束、索引等不会被删除；不能用于有外建约束引用的表</span></span><br><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> tb_new_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除表如果存在</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> tb_new_user2;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 对数据表的列进行操作</span></span><br><span class="line"><span class="comment">-- 对表的重命名</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user1 <span class="keyword">rename</span> [<span class="keyword">TO</span>] tb_new_user1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 增加列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">add</span> new_column <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">comment</span> <span class="string">'这是新增列'</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">add</span> <span class="keyword">column</span> new_column <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">comment</span> <span class="string">'这是新增列'</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">add</span> <span class="keyword">column</span> new_column <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">'这是新增的非空列'</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">add</span> <span class="keyword">column</span> new_column <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="number">0</span> <span class="keyword">comment</span> <span class="string">'这是新增非空默认为0的列'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">drop</span> <span class="keyword">column</span> newColumn;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">drop</span> newColumn;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">change</span> <span class="keyword">column</span> new_column newColumn <span class="built_in">varchar</span>(<span class="number">256</span>) <span class="keyword">not</span> <span class="literal">null</span> ;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_user <span class="keyword">change</span> <span class="keyword">column</span> new_column newColumn <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="number">0</span> <span class="keyword">comment</span> <span class="string">'修改列名'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 添加主键</span></span><br><span class="line"><span class="keyword">Alter</span> <span class="keyword">table</span> tabname <span class="keyword">add</span> primary <span class="keyword">key</span>(<span class="keyword">col</span>)</span><br><span class="line"><span class="comment">-- 删除主键</span></span><br><span class="line"><span class="keyword">Alter</span> <span class="keyword">table</span> tabname <span class="keyword">drop</span> primary <span class="keyword">key</span>(<span class="keyword">col</span>)</span><br><span class="line"><span class="comment">-- 创建索引</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">unique</span>] <span class="keyword">index</span> idxname <span class="keyword">on</span> tabname(<span class="keyword">col</span>….)</span><br><span class="line"><span class="comment">-- 删除索引</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">index</span> idxname</span><br><span class="line">注：索引是不可更改的，想更改必须删除重新建。</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建视图</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> viewname <span class="keyword">as</span> <span class="keyword">select</span> <span class="keyword">statement</span></span><br><span class="line"><span class="comment">-- 删除视图</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> viewname</span><br><span class="line">选择：<span class="keyword">select</span> * <span class="keyword">from</span> table1 <span class="keyword">where</span> 范围</span><br><span class="line">插入：<span class="keyword">insert</span> <span class="keyword">into</span> table1(field1,field2) <span class="keyword">values</span>(value1,value2)</span><br><span class="line">删除：<span class="keyword">delete</span> <span class="keyword">from</span> table1 <span class="keyword">where</span> 范围</span><br><span class="line">更新：<span class="keyword">update</span> table1 <span class="keyword">set</span> field1=value1 <span class="keyword">where</span> 范围</span><br><span class="line">查找：<span class="keyword">select</span> * <span class="keyword">from</span> table1 <span class="keyword">where</span> field1 <span class="keyword">like</span> ’%value1%’ <span class="comment">---like的语法很精妙，查资料!</span></span><br><span class="line">排序：<span class="keyword">select</span> * <span class="keyword">from</span> table1 <span class="keyword">order</span> <span class="keyword">by</span> field1,field2 [<span class="keyword">desc</span>]</span><br><span class="line">总数：<span class="keyword">select</span> <span class="keyword">count</span> <span class="keyword">as</span> totalcount <span class="keyword">from</span> table1</span><br><span class="line">求和：<span class="keyword">select</span> <span class="keyword">sum</span>(field1) <span class="keyword">as</span> sumvalue <span class="keyword">from</span> table1</span><br><span class="line">平均：<span class="keyword">select</span> <span class="keyword">avg</span>(field1) <span class="keyword">as</span> avgvalue <span class="keyword">from</span> table1</span><br><span class="line">最大：<span class="keyword">select</span> <span class="keyword">max</span>(field1) <span class="keyword">as</span> maxvalue <span class="keyword">from</span> table1</span><br><span class="line">最小：<span class="keyword">select</span> <span class="keyword">min</span>(field1) <span class="keyword">as</span> <span class="keyword">minvalue</span> <span class="keyword">from</span> table1</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-select语句"><a href="#3-select语句" class="headerlink" title="3.select语句"></a>3.select语句</h4><h5 id="1-普通查询"><a href="#1-普通查询" class="headerlink" title="1.普通查询"></a>1.普通查询</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询整张表的所有列</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询指定列</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>, <span class="keyword">name</span> <span class="keyword">from</span> tb_user;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> top <span class="number">5</span> * <span class="keyword">from</span> (<span class="keyword">select</span> top <span class="number">15</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">asc</span>) table_别名 <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-distinct"><a href="#2-distinct" class="headerlink" title="2.distinct"></a>2.distinct</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用 distinict语句 (获得不同的值)（查询结果的所有列与别的记录）</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">name</span>,age <span class="keyword">from</span> tb_user;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">name</span> <span class="keyword">from</span> tb_user;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-where"><a href="#3-where" class="headerlink" title="3.where"></a>3.where</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- where 子句  筛选</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-order-by"><a href="#4-order-by" class="headerlink" title="4.order by"></a>4.order by</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 按id降序</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">desc</span>;</span><br><span class="line"><span class="comment">-- 按id升序</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">asc</span>;</span><br><span class="line"><span class="comment">-- 多条件排序</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">name</span>,age <span class="keyword">asc</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-and-or"><a href="#5-and-or" class="headerlink" title="5.and , or"></a>5.and , or</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- and 子句</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">'yanghao'</span> <span class="keyword">and</span> age = <span class="number">21</span>;</span><br><span class="line"><span class="comment">-- or 子句</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">'yanghao1'</span> <span class="keyword">or</span> age = <span class="number">21</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="6-like"><a href="#6-like" class="headerlink" title="6.like"></a>6.like</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- like 子句 模糊查询</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%hao'</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'yang%'</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%yang%'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ％ - 百分号表示零个，一个或多个字符</span></span><br><span class="line"><span class="comment">-- _ - 下划线表示单个字符</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'yanghao_'</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-between-and"><a href="#7-between-and" class="headerlink" title="7.between and"></a>7.between and</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- BETWEEN运算符是包含性的：包括开始和结束值。</span></span><br><span class="line"><span class="comment">-- between and</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">2</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">not</span> <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="8-null"><a href="#8-null" class="headerlink" title="8.null"></a>8.null</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- is null ，is not null </span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> matching <span class="keyword">is</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> matching <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="9-limit"><a href="#9-limit" class="headerlink" title="9.limit"></a>9.limit</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- limit </span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">limit</span> <span class="number">2</span>;</span><br><span class="line"><span class="comment">-- 去下标为1的开始，2条。注意与between and 进行区分</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="10-in"><a href="#10-in" class="headerlink" title="10.in"></a>10.in</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--  IN 运算符</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">in</span> (<span class="string">'yanghao'</span>, <span class="string">'lisi'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 利用子查询的结果作为in的元素</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	* </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	tb_user </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	<span class="keyword">NAME</span> <span class="keyword">IN</span> ( <span class="keyword">SELECT</span> <span class="keyword">NAME</span> <span class="keyword">FROM</span> tb_user <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> ( <span class="number">2</span>, <span class="number">3</span> ) );</span><br><span class="line">	</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user;</span><br></pre></td></tr></table></figure>
+
+<h5 id="11-case"><a href="#11-case" class="headerlink" title="11.case"></a>11.case</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- switch（case） 语句 </span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	<span class="keyword">id</span>,</span><br><span class="line">	<span class="keyword">NAME</span>,</span><br><span class="line">	age,</span><br><span class="line">	(<span class="keyword">CASE</span> matching <span class="keyword">WHEN</span> <span class="number">0</span> <span class="keyword">THEN</span> <span class="string">'零'</span> <span class="keyword">WHEN</span> <span class="number">1</span> <span class="keyword">THEN</span> <span class="string">'壹'</span> <span class="keyword">WHEN</span> <span class="number">2</span> <span class="keyword">THEN</span> <span class="string">'贰'</span> <span class="keyword">end</span>)  <span class="keyword">AS</span> <span class="built_in">number</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	tb_user;</span><br></pre></td></tr></table></figure>
+
+<h5 id="12-if"><a href="#12-if" class="headerlink" title="12.if"></a>12.if</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">if</span>(<span class="literal">true</span>,<span class="string">'yes'</span>,<span class="string">'no'</span>) <span class="keyword">as</span> <span class="keyword">status</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- if 函数</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,age,matching , <span class="keyword">if</span>(sex = <span class="string">'w'</span>,<span class="string">'女'</span>,<span class="string">'男'</span>) <span class="keyword">as</span> <span class="string">'姓别'</span> <span class="keyword">from</span> tb_user;</span><br></pre></td></tr></table></figure>
+
+<h5 id="12-group-by"><a href="#12-group-by" class="headerlink" title="12.group by"></a>12.group by</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- group by</span></span><br><span class="line"><span class="keyword">select</span> sex, <span class="keyword">count</span>(sex) <span class="keyword">count</span> <span class="keyword">from</span> tb_user <span class="keyword">group</span> <span class="keyword">by</span> sex;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, <span class="keyword">count</span>(*) <span class="keyword">count</span> <span class="keyword">from</span> tb_user <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,age,<span class="keyword">count</span>(*) <span class="keyword">count</span> <span class="keyword">from</span> tb_user <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>,age;</span><br></pre></td></tr></table></figure>
+
+<h5 id="13-union"><a href="#13-union" class="headerlink" title="13.union"></a>13.union</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 并集，将多个结果连接起来</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%hao%'</span></span><br><span class="line"><span class="keyword">union</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user <span class="keyword">where</span> age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-insert语句"><a href="#4-insert语句" class="headerlink" title="4.insert语句"></a>4.insert语句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- insert插入语句</span></span><br><span class="line"><span class="comment">-- (两种，一种是插入全部字段，则可以简化为如下)</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_user <span class="keyword">values</span>(<span class="number">6</span>,<span class="string">'zhangsan'</span>,<span class="number">18</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_user (<span class="keyword">name</span>,age,matching, newColumn) <span class="keyword">values</span>( <span class="string">'zhangsan'</span>,<span class="number">20</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-update语句"><a href="#5-update语句" class="headerlink" title="5.update语句"></a>5.update语句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- update 更新语句</span></span><br><span class="line"><span class="keyword">update</span>  tb_user <span class="keyword">set</span> <span class="keyword">name</span> = <span class="string">'lisi'</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-delete语句"><a href="#6-delete语句" class="headerlink" title="6.delete语句"></a>6.delete语句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- delete 删除语句</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> tb_user <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-函数"><a href="#7-函数" class="headerlink" title="7.函数"></a>7.函数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 个数</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">as</span> totalCount <span class="keyword">from</span> tb_user;</span><br><span class="line"><span class="comment">-- 总和</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sum</span>(age) <span class="keyword">as</span> totalAge <span class="keyword">from</span> tb_user;</span><br><span class="line"><span class="comment">-- 平均值</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">avg</span>(age) <span class="keyword">as</span> avgAge <span class="keyword">from</span> tb_user;</span><br><span class="line"><span class="comment">-- 最大</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">max</span>(age) <span class="keyword">as</span> maxAge <span class="keyword">from</span> tb_user;</span><br><span class="line"><span class="comment">-- 最小</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">min</span>(age) <span class="keyword">as</span> minAge <span class="keyword">from</span> tb_user;</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-事务"><a href="#8-事务" class="headerlink" title="8.事务"></a>8.事务</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> runoob_transaction_test ( <span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">5</span>)) <span class="keyword">engine</span> = <span class="keyword">innodb</span>; <span class="comment"># 创建数据库</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> runoob_transaction_test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> runoob_transaction_test (<span class="keyword">id</span>) <span class="keyword">values</span> (<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> runoob_transaction_test (<span class="keyword">id</span>) <span class="keyword">values</span> (<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> runoob_transaction_test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> runoob_transaction_test (<span class="keyword">id</span>) <span class="keyword">values</span> (<span class="number">7</span>);</span><br><span class="line"><span class="keyword">rollback</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> runoob_transaction_test;</span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="SQL-连接-JOIN"><a href="#SQL-连接-JOIN" class="headerlink" title="SQL 连接(JOIN)"></a>SQL 连接(JOIN)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INNER JOIN：如果表中有至少一个匹配，则返回行</span><br><span class="line">LEFT JOIN：即使右表中没有匹配，也从左表返回所有的行</span><br><span class="line">RIGHT JOIN：即使左表中没有匹配，也从右表返回所有的行</span><br><span class="line">FULL JOIN：只要其中一个表中存在匹配，则返回行</span><br></pre></td></tr></table></figure>
+
+<h4 id="0-Sql-之-笛卡尔积"><a href="#0-Sql-之-笛卡尔积" class="headerlink" title="0.Sql 之 笛卡尔积"></a>0.Sql 之 笛卡尔积</h4><p><strong>注释：INNER JOIN 与 JOIN 是相同的。</strong></p>
+<p>数据库表：</p>
+<p><img src="/images/mysql/sql000.png" alt></p>
+<p><img src="/images/mysql/sql111.png" alt></p>
+<p>首先，我们需要先明白一个概念——笛卡尔积：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">笛卡尔积是指在数学中，两个集合X和Y的笛卡尓积（Cartesian product），又称直积，表示为X × Y，第一个对象是X的成员而第二个对象是Y的所有可能有序对的其中一个成员。</span><br><span class="line">例子：</span><br><span class="line">假设集合A=&#123;a, b&#125;，集合B=&#123;0, 1, 2&#125;，则两个集合的笛卡尔积为</span><br><span class="line">&#123;</span><br><span class="line">(a, 0),</span><br><span class="line">(a, 1), </span><br><span class="line">(a, 2), </span><br><span class="line">(b, 0), </span><br><span class="line">(b, 1), </span><br><span class="line">(b, 2)</span><br><span class="line">&#125;。</span><br></pre></td></tr></table></figure>
+
+<p>现在来观察上面两个表形成的笛卡尔积：</p>
+<p><img src="/images/mysql/%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF.png" alt></p>
+<h4 id="1-Sql-之-inner-join"><a href="#1-Sql-之-inner-join" class="headerlink" title="1.Sql 之  inner join"></a>1.Sql 之  inner join</h4><p><strong>注释：INNER JOIN 与 JOIN 是相同的。</strong>（相当于取交集）</p>
+<p><strong>注释：INNER JOIN 关键字在表中存在至少一个匹配时返回行。</strong></p>
+<p><img src="/images/mysql/%E4%BA%A4%E9%9B%86.png" alt></p>
+<p>SQL  join 用于把来自两个或多个表的行结合起来。</p>
+<p>最简单的就是内连接，inner join. </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用where连接</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	p.id,</span><br><span class="line">	p.NAME,</span><br><span class="line">	pd.id <span class="keyword">AS</span> _id,</span><br><span class="line">	pd.pid,</span><br><span class="line">	pd.price,</span><br><span class="line">	pd.num </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	product p,</span><br><span class="line">	product_detail pd </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	p.id = pd.pid;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/sql1.png" alt="1533982185526"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 	inner join or join</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">SELECT</span></span><br><span class="line">	p.id,</span><br><span class="line">	p.NAME,</span><br><span class="line">	pd.id <span class="keyword">AS</span> _id,</span><br><span class="line">	pd.pid,</span><br><span class="line">	pd.price,</span><br><span class="line">	pd.num </span><br><span class="line">	<span class="keyword">from</span> product p</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">join</span> product_detail pd</span><br><span class="line">	<span class="keyword">on</span> p.id = pd.pid;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/sql1.png" alt="1533982185526"></p>
+<p>以上两种方式查询的结果是一样的。（两个都相当于内连接）</p>
+<p>总结：内连接inner join是将两个或两个以上的表连接起来，用on来连接，只用当on所限制的条件满足的时候，笛卡尔积组成的结果行才会返回。</p>
+<p>如下图：(只有on后面的条件，p.id = pd.pid成立的时候)</p>
+<p><img src="/images/mysql/InnerJoin.png" alt></p>
+<h4 id="2-Sql-之-left-join-left-outer-join"><a href="#2-Sql-之-left-join-left-outer-join" class="headerlink" title="2.Sql 之  left join  | left outer join"></a>2.Sql 之  left join  | left outer join</h4><p><img src="/images/mysql/leftjoin.png" alt></p>
+<p><strong>注释：LEFT JOIN 关键字从左表（Websites）返回所有的行，即使右表（access_log）中没有匹配。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- left join or left outer join</span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	p.id,</span><br><span class="line">	p.NAME,</span><br><span class="line">	pd.id <span class="keyword">AS</span> _id,</span><br><span class="line">	pd.pid,</span><br><span class="line">	pd.price,</span><br><span class="line">	pd.num </span><br><span class="line">	<span class="keyword">from</span> product p</span><br><span class="line">	<span class="keyword">left</span> <span class="keyword">join</span> product_detail pd</span><br><span class="line">	<span class="keyword">on</span> p.id = pd.pid;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/sql2.png" alt></p>
+<p>在左连接的基础上加上过滤条件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	p.id,</span><br><span class="line">	p.NAME,</span><br><span class="line">	pd.id <span class="keyword">AS</span> _id,</span><br><span class="line">	pd.pid,</span><br><span class="line">	pd.price,</span><br><span class="line">	pd.num </span><br><span class="line">	<span class="keyword">from</span> product p</span><br><span class="line">	<span class="keyword">left</span> <span class="keyword">join</span> product_detail pd</span><br><span class="line">	<span class="keyword">on</span> p.id = pd.pid <span class="keyword">and</span> p.id = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/sql3.png" alt></p>
+<p>使用where进行过滤的</p>
+<p><img src="/images/mysql/sql4.png" alt></p>
+<p><strong>注意：</strong>在使用 left jion 时，<strong>on</strong> 和 <strong>where</strong> 条件的区别如下：</p>
+<ul>
+<li>1、 <strong>on</strong> 条件是在生成临时表时使用的条件，它不管 <strong>on</strong> 中的条件是否为真，都会返回左边表中的记录。</li>
+<li>2、<strong>where</strong> 条件是在临时表生成好后，再对临时表进行过滤的条件。这时已经没有 left join 的含义（必须返回左边表的记录）了，条件不为真的就全部过滤掉。</li>
+</ul>
+<h4 id="3-Sql-之-right-join-right-outer-join"><a href="#3-Sql-之-right-join-right-outer-join" class="headerlink" title="3.Sql 之  right join |  right outer join"></a>3.Sql 之  right join |  right outer join</h4><p><strong>注释：RIGHT JOIN 关键字从右表（table2）返回所有的行，即使左表（table1）中没有匹配。如果左表中没有匹配，则结果为 NULL。</strong></p>
+<p><img src="/images/mysql/rightjoin.png" alt></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> </span><br><span class="line">p.id,</span><br><span class="line">p.name,</span><br><span class="line">pd.id <span class="keyword">as</span> _id,</span><br><span class="line">pd.pid,</span><br><span class="line">pd.price,</span><br><span class="line">pd.num</span><br><span class="line"><span class="keyword">from</span> product p</span><br><span class="line"><span class="keyword">right</span> <span class="keyword">join</span> product_detail pd</span><br><span class="line"><span class="keyword">on</span> p.id = pd.pid</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/sql5.png" alt></p>
+<p>加入过滤条件的有连接 on 后面接and进行过滤</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> </span><br><span class="line">p.id,</span><br><span class="line">p.name,</span><br><span class="line">pd.id <span class="keyword">as</span> _id,</span><br><span class="line">pd.pid,</span><br><span class="line">pd.price,</span><br><span class="line">pd.num</span><br><span class="line"><span class="keyword">from</span> product p</span><br><span class="line"><span class="keyword">right</span> <span class="keyword">join</span> product_detail pd</span><br><span class="line"><span class="keyword">on</span> p.id = pd.pid</span><br><span class="line"><span class="keyword">and</span> pd.pid = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/sql6.png" alt></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> </span><br><span class="line">p.id,</span><br><span class="line">p.name,</span><br><span class="line">pd.id <span class="keyword">as</span> _id,</span><br><span class="line">pd.pid,</span><br><span class="line">pd.price,</span><br><span class="line">pd.num</span><br><span class="line"><span class="keyword">from</span> product p</span><br><span class="line"><span class="keyword">right</span> <span class="keyword">join</span> product_detail pd</span><br><span class="line"><span class="keyword">on</span> p.id = pd.pid</span><br><span class="line"><span class="comment">-- and pd.pid = 1</span></span><br><span class="line"><span class="keyword">where</span> pd.pid = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/sql7.png" alt></p>
+<p>使用on过滤和where过滤跟上面的左连接是一样的。</p>
+<h4 id="4-Sql-之-full-join-full-outer-join"><a href="#4-Sql-之-full-join-full-outer-join" class="headerlink" title="4.Sql 之  full join | full outer join"></a>4.Sql 之  full join | full outer join</h4><p><strong>注释：FULL OUTER JOIN 关键字返回左表（Websites）和右表（access_log）中所有的行</strong></p>
+<p>（使用方式如上面两种那样，但是mysql不支持全连接）</p>
+<h4 id="5-Sql-之-union-and-union-all"><a href="#5-Sql-之-union-and-union-all" class="headerlink" title="5.Sql 之  union and union all"></a>5.Sql 之  union and union all</h4><p>但是可以使用union关键字来实现所谓的全连接</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	p.id,</span><br><span class="line">	p.NAME,</span><br><span class="line">	pd.id <span class="keyword">AS</span> _id,</span><br><span class="line">	pd.pid,</span><br><span class="line">	pd.price,</span><br><span class="line">	pd.num </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	product <span class="keyword">as</span> p</span><br><span class="line">	<span class="keyword">left</span> <span class="keyword">JOIN</span> product_detail pd</span><br><span class="line">	<span class="keyword">ON</span> p.id = pd.pid</span><br><span class="line">	</span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"> </span><br><span class="line"> <span class="keyword">SELECT</span> </span><br><span class="line"> p.id,</span><br><span class="line">	p.NAME,</span><br><span class="line">	pd.id <span class="keyword">AS</span> _id,</span><br><span class="line">	pd.pid,</span><br><span class="line">	pd.price,</span><br><span class="line">	pd.num </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line"> product p</span><br><span class="line"> <span class="keyword">right</span> <span class="keyword">join</span> product_detail pd</span><br><span class="line"> <span class="keyword">on</span> p.id = pd.pid;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/union.png" alt></p>
+<p>上面是使用的是union，不显示重复行，但是如果把union换成union all 那么就会把重复行显示出来，</p>
+<p>效果如下图：（union all）</p>
+<p><img src="/images/mysql/unionall.png" alt></p>
+<h4 id="6-Sql-之-natural-join"><a href="#6-Sql-之-natural-join" class="headerlink" title="6.Sql 之  natural join"></a>6.Sql 之  natural join</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	* </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	product</span><br><span class="line">	<span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> product_detail</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mysql/naturaljoin.png" alt></p>
+<p><strong>注释：</strong>自然连接默认是匹配两个表列名相同的，然后不重复显示。</p>
+<p>如下图，将数据库表设计改变：（改变第一个表的id名为pid）</p>
+<p><img src="/images/mysql/sql0000.png" alt></p>
+<p><img src="/images/mysql/sql1111.png" alt></p>
+<p>结果如下：</p>
+<p><img src="/images/mysql/sql8.png" alt></p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/29/db/mysql/MySQL%E5%9F%BA%E7%A1%80/">MySQL基础</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/29/db/mysql/MySQL%E5%9F%BA%E7%A1%80/">https://ooyhao.github.io/2020/01/29/db/mysql/MySQL%E5%9F%BA%E7%A1%80/</a></li>
+            <li><strong>发布时间：</strong>2020-01-29</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/mysql/" rel="tag">mysql</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/29/middleWare/hessian/SpringBoot%E6%95%B4%E5%90%88Hessian/">
+                <span class="level-item">SpringBoot 整合 Hessian</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '0795f737cc5b9802bb108fa1a833020b',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            40
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            8
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            9
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#SQL笔记">
+        <span class="has-mr-6">1</span>
+        <span>SQL笔记</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#基本SQL操作">
+        <span class="has-mr-6">1.1</span>
+        <span>基本SQL操作</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#1-操作数据库">
+        <span class="has-mr-6">1.1.1</span>
+        <span>1.操作数据库</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-操作数据表">
+        <span class="has-mr-6">1.1.2</span>
+        <span>2.操作数据表</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-select语句">
+        <span class="has-mr-6">1.1.3</span>
+        <span>3.select语句</span>
+        </a></li><li>
+        <a class="is-flex" href="#4-insert语句">
+        <span class="has-mr-6">1.1.4</span>
+        <span>4.insert语句</span>
+        </a></li><li>
+        <a class="is-flex" href="#5-update语句">
+        <span class="has-mr-6">1.1.5</span>
+        <span>5.update语句</span>
+        </a></li><li>
+        <a class="is-flex" href="#6-delete语句">
+        <span class="has-mr-6">1.1.6</span>
+        <span>6.delete语句</span>
+        </a></li><li>
+        <a class="is-flex" href="#7-函数">
+        <span class="has-mr-6">1.1.7</span>
+        <span>7.函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#8-事务">
+        <span class="has-mr-6">1.1.8</span>
+        <span>8.事务</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#SQL-连接-JOIN">
+        <span class="has-mr-6">1.2</span>
+        <span>SQL 连接(JOIN)</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#0-Sql-之-笛卡尔积">
+        <span class="has-mr-6">1.2.1</span>
+        <span>0.Sql 之 笛卡尔积</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-Sql-之-inner-join">
+        <span class="has-mr-6">1.2.2</span>
+        <span>1.Sql 之  inner join</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-Sql-之-left-join-left-outer-join">
+        <span class="has-mr-6">1.2.3</span>
+        <span>2.Sql 之  left join  | left outer join</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-Sql-之-right-join-right-outer-join">
+        <span class="has-mr-6">1.2.4</span>
+        <span>3.Sql 之  right join |  right outer join</span>
+        </a></li><li>
+        <a class="is-flex" href="#4-Sql-之-full-join-full-outer-join">
+        <span class="has-mr-6">1.2.5</span>
+        <span>4.Sql 之  full join | full outer join</span>
+        </a></li><li>
+        <a class="is-flex" href="#5-Sql-之-union-and-union-all">
+        <span class="has-mr-6">1.2.6</span>
+        <span>5.Sql 之  union and union all</span>
+        </a></li><li>
+        <a class="is-flex" href="#6-Sql-之-natural-join">
+        <span class="has-mr-6">1.2.7</span>
+        <span>6.Sql 之  natural join</span>
+        </a></li></ul></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">35</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 12px;">feign</a> <a href="/tags/gateway/" style="font-size: 14px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 18px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 20px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 16px;">sentinel</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/db/mysql/MySQL%E5%9F%BA%E7%A1%80/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="MySQL基础">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T08:15:35.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/db/mysql/MySQL%E5%9F%BA%E7%A1%80/" class="title has-link-black-ter is-size-6 has-text-weight-normal">MySQL基础</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/mysql/">mysql</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/middleWare/hessian/SpringBoot%E6%95%B4%E5%90%88Hessian/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="SpringBoot 整合 Hessian">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T08:15:34.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/middleWare/hessian/SpringBoot%E6%95%B4%E5%90%88Hessian/" class="title has-link-black-ter is-size-6 has-text-weight-normal">SpringBoot 整合 Hessian</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a> / <a class="has-link-grey -link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">hessian</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十六、Gateway 配置实例">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:26.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/24.Gateway/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十六、Gateway 配置实例</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十五、Gateway全局过滤器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:25.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/23.gateway%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十五、Gateway全局过滤器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="二十四、GatewayFilter 工厂">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-18T08:55:24.000Z">2020-01-18</time></div>
+                    <a href="/2020/01/18/SSM/springcloudalibaba/22.gateway%E8%BF%87%E6%BB%A4%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二十四、GatewayFilter 工厂</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springcloudbalibaba/">springcloudbalibaba</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">40</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="MySQL基础" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
