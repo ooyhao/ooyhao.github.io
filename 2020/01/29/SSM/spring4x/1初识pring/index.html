@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>一、初识Spring - Hexo</title>
+
+
+    <meta name="description" content="本篇主要是简单的尝试一下Spring的两大功能，来感受一下Spring的强大，后面将进行更加详细的介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一、初识Spring">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/29/SSM/spring4x/1%E5%88%9D%E8%AF%86pring/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本篇主要是简单的尝试一下Spring的两大功能，来感受一下Spring的强大，后面将进行更加详细的介绍。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-29T09:55:01.000Z">
+<meta property="article:modified_time" content="2020-01-29T10:34:48.494Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="spring4x">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="一、初识Spring" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-29T09:55:01.000Z">2020-01-29</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    24 分钟 读完 (大约 3534 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                一、初识Spring
+            
+        </h1>
+        <div class="content">
+            <p>本篇主要是简单的尝试一下Spring的两大功能，来感受一下Spring的强大，后面将进行更加详细的介绍。</p>
+<a id="more"></a>
+
+<h2 id="spring的两大功能"><a href="#spring的两大功能" class="headerlink" title="spring的两大功能"></a>spring的两大功能</h2><p>​        我们都知道，Spring两大核心功能就是控制反转/依赖注入、面向切面编程。下面介绍一下两大功能。</p>
+<h2 id="IoC-DI"><a href="#IoC-DI" class="headerlink" title="IoC/DI"></a>IoC/DI</h2><blockquote>
+<p>  Don’t call me , I will call you!    </p>
+</blockquote>
+<p>控制反转(Inversion of Control)/依赖注入(Dependency Injection)，简称IoC/DI.</p>
+<p>控制反转不是一种技术，而是一种设计思想：<strong>将原来程序需要什么对象自己创建</strong> 转变为 <strong>需要什么对象向IoC容器获取</strong>，创建对象的工作由原来程序自身控制，反转到了由IoC容器进行创建。把相关的控制权进行了反转，反转给了Spring IoC容器。</p>
+<p>DI：Dependency Injection。即依赖注入。对象(组件)之间的依赖关系由IoC容器来进行决定。</p>
+<p>比如：</p>
+<p>​        在UserController中需要调用UserService(暂不考虑接口设计)。则在UserController中需要其自身通过new来创建UserService对象。</p>
+<p>如下：</p>
+<p>UserService:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> PrintStream printStream;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UserService</span><span class="params">(PrintStream printStream)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.printStream = printStream;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span></span>&#123;</span><br><span class="line">		printStream.println(<span class="string">"sayHello!"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>UserController:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> UserService userService;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UserController</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.userService = <span class="keyword">new</span> UserService(System.out);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHi</span><span class="params">()</span></span>&#123;</span><br><span class="line">		userService.sayHello();</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        在Spring中，程序的对象控制权由其自身反转到了Spring容器，也就是不需要应用程序来new对象。既然不需要应用程序自身来创建Bean了，那么程序在运行的过程中，Bean从何而来呢？此时就是DI的show time了。</p>
+<p>​        Spring中的DI正是来实现IoC的一种方式：Spring容器负责维护对象(Bean)之间的依赖关系，并通过DI来向对象中注入其所依赖的对象。</p>
+<h3 id="Xml方式"><a href="#Xml方式" class="headerlink" title="Xml方式"></a>Xml方式</h3><p>下面使用Spring的方式来设计:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> PrintStream printStream;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UserService</span><span class="params">(PrintStream printStream)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.printStream = printStream;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span></span>&#123;</span><br><span class="line">		printStream.println(<span class="string">"sayHello!"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> UserService userService;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UserController</span><span class="params">(UserService userService)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.userService = userService;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHi</span><span class="params">()</span></span>&#123;</span><br><span class="line">		userService.sayHello();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>spring.xml文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="tag"><span class="string">       http://www.springframework.org/schema/beans/spring-beans.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userService"</span> <span class="attr">class</span>=<span class="string">"com.ooyhao.spring.bean.UserService"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">"#&#123;T(System).out&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"UserController"</span> <span class="attr">class</span>=<span class="string">"com.ooyhao.spring.bean.UserController"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">ref</span>=<span class="string">"userService"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> 测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testXml</span><span class="params">()</span></span>&#123;</span><br><span class="line">  	ClassPathXmlApplicationContext ctx = </span><br><span class="line">      					<span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"spring.xml"</span>);</span><br><span class="line">  	UserController userController = ctx.getBean(UserController<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  	userController.sayHi();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​        如果需要面向接口设计的话，接口由于无法实例化，所以在编码的时候必须指定具体的实现类，如此一来，导致无法自由动态的切换实现类,耦合度太高。而Spring xml方式的话，实现类松耦合，简化了开发，后期如果需要修改的话，直接修改xml文件，不用修改代码。</p>
+<h3 id="Java配置类方式"><a href="#Java配置类方式" class="headerlink" title="Java配置类方式"></a>Java配置类方式</h3><p>SpringConfig配置类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringConfig</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  	<span class="meta">@Bean</span></span><br><span class="line">  	<span class="function"><span class="keyword">public</span> UserService <span class="title">userService</span><span class="params">()</span></span>&#123;</span><br><span class="line">      	UserService userService = <span class="keyword">new</span> UserService(System.out);</span><br><span class="line">      	<span class="keyword">return</span> userService;</span><br><span class="line">  	&#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="meta">@Bean</span></span><br><span class="line">  	<span class="function"><span class="keyword">public</span> UserController <span class="title">userController</span><span class="params">()</span></span>&#123;</span><br><span class="line">      	UserController userController = <span class="keyword">new</span> UserController(userService());</span><br><span class="line">      	<span class="keyword">return</span> userController;</span><br><span class="line">  	&#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testJavaConfig</span><span class="params">()</span></span>&#123;</span><br><span class="line">  	AnnotationConfigApplicationContext ctx </span><br><span class="line">      			= <span class="keyword">new</span> AnnotationConfigApplicationContext(SpringConfig<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  	UserController userController = ctx.getBean(UserController<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  	userController.sayHi();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​确实Spring xml文件实现了松耦合，但是实际项目中可以发现，往往xml很少修改。所以，SpringBoot又主张Java配置类的方式，但是Java配置类的绝大部分都是由Spring xml转化过来的。所以，不管是Java配置类方式还是Spring xml文件方式都有必要了解，当然我觉得，由于为了后期更好的学习和使用SpringBoot，可以以Java配置类方式为主。</p>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><blockquote>
+<p>  参考自：阿古拉斯啦啦 <a href="https://blog.csdn.net/q982151756/article/details/80513340">https://blog.csdn.net/q982151756/article/details/80513340</a></p>
+</blockquote>
+<p>​    Aop：是Aspect oriented Programming的缩写，即面向切面编程。通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP(面向切面编程)是OOP(面向对象编程)的一种补充，而不是一种替代品。利用AOP可以对业务逻辑的各个部分进行隔离，从而降低各个模块之间的耦合度，简化维护。常见使用AOP的场景：事务控制，日志管理，权限控制等等。</p>
+<h3 id="Aop简单介绍"><a href="#Aop简单介绍" class="headerlink" title="Aop简单介绍"></a>Aop简单介绍</h3><p>下面先用几张图熟悉一下AOP是怎么回事。（图片来源于网络）</p>
+<p><img src="/images/spring4x/20180530172331597.png" alt></p>
+<ol>
+<li>从图中可以看出：不管是 【获取活动相关数据】还是 【根据条件活动奖励发放】都需要先【检测活动有效性】和【检测活动是否需要登录】这两步操作。</li>
+</ol>
+<p><img src="/images/spring4x/20180530172427993.png" alt></p>
+<ol start="2">
+<li>可以将【检测活动有效性】和【检测活动是否需要登录】两部操作封装到一个方法，然后在两个不同的业务中进行调用，但是这样虽然重用了代码，但是还是将两步不是必须耦合在一起的代码耦合在了一起。</li>
+</ol>
+<p><img src="/images/spring4x/20180530172528617.png" alt></p>
+<ol start="3">
+<li>而第三幅图则使用了AOP的思想，将【检测活动有效性】和【检测活动是否需要登录】两个操作封装到一个单独的类（切面）。只需要在需要执行的地方，进行切入即可达到前面一样的效果。这样最大程度的降低了模块之间的耦合度。</li>
+</ol>
+<h3 id="Aop中的术语"><a href="#Aop中的术语" class="headerlink" title="Aop中的术语"></a>Aop中的术语</h3><ul>
+<li>Aspect（切面）： Aspect 声明类似于 Java 中的类声明，在 Aspect 中会包含着一些 Pointcut 以及相应的 Advice。</li>
+<li>Joint point（连接点）：表示在程序中明确定义的点，典型的包括方法调用，对类成员的访问以及异常处理程序块的执行等等，它自身还可以嵌套其它 joint point。</li>
+<li>Pointcut（切点）：表示一组 joint point，这些 joint point 或是通过逻辑关系组合起来，或是通过通配、正则表达式等方式集中起来，它定义了相应的 Advice 将要发生的地方。</li>
+<li>Advice（增强）：Advice 定义了在 Pointcut 里面定义的程序点具体要做的操作，它通过 before、after 和 around 来区别是在每个 joint point 之前、之后还是代替执行的代码。</li>
+<li>Target（目标对象）：织入 Advice 的目标对象.。</li>
+<li>Weaving（织入）：将 Aspect 和其他对象连接起来, 并创建 Adviced object 的过程</li>
+</ul>
+<h3 id="举一个容易理解的例子"><a href="#举一个容易理解的例子" class="headerlink" title="举一个容易理解的例子"></a>举一个容易理解的例子</h3><p>​    看完了上面的理论部分知识, 我相信还是会有不少朋友感觉到 AOP 的概念还是很模糊, 对 AOP 中的各种概念理解的还不是很透彻. 其实这很正常, 因为 AOP 中的概念是在是太多了, 我当时也是花了老大劲才梳理清楚的. </p>
+<p><strong>下面我以一个简单的例子来比喻一下 AOP 中 Aspect, Joint point, Pointcut 与 Advice之间的关系.</strong><br>​    让我们来假设一下, 从前有一个叫爪哇的小县城, 在一个月黑风高的晚上, 这个县城中发生了命案. 作案的凶手十分狡猾, 现场没有留下什么有价值的线索. 不过万幸的是, 刚从隔壁回来的老王恰好在这时候无意中发现了凶手行凶的过程, 但是由于天色已晚, 加上凶手蒙着面, 老王并没有看清凶手的面目, 只知道凶手是个男性, 身高约七尺五寸. 爪哇县的县令根据老王的描述, 对守门的士兵下命令说: 凡是发现有身高七尺五寸的男性, 都要抓过来审问. 士兵当然不敢违背县令的命令, 只好把进出城的所有符合条件的人都抓了起来.</p>
+<p>​    <strong>来让我们看一下上面的一个小故事和 AOP 到底有什么对应关系.</strong><br>首先我们知道, 在 Spring AOP 中 Joint point 指代的是所有方法的执行点, 而 point cut 是一个描述信息, 它修饰的是 Joint point, 通过 point cut, 我们就可以确定哪些 Joint point 可以被织入 Advice. 对应到我们在上面举的例子, 我们可以做一个简单的类比, Joint point 就相当于 爪哇的小县城里的百姓,pointcut 就相当于 老王所做的指控, 即凶手是个男性, 身高约七尺五寸, 而 Advice 则是施加在符合老王所描述的嫌疑人的动作: 抓过来审问. </p>
+<p><strong>为什么可以这样类比呢?</strong></p>
+<ul>
+<li>Join point ： 爪哇的小县城里的百姓: 因为根据定义, Join point 是所有可能被织入 Advice 的候选的点, 在 Spring AOP中, 则可以认为所有方法执行点都是 Joinpoint. 而在我们上面的例子中, 命案发生在小县城中, 按理说在此县城中的所有人都有可能是嫌疑人.</li>
+<li>Pointcut ：男性, 身高约七尺五寸: 我们知道, 所有的方法(joinpoint) 都可以织入 Advice, 但是我们并不希望在所有方法上都织入 Advice, 而 Pointcut 的作用就是提供一组规则来匹配joinpoint, 给满足规则的 joinpoint 添加 Advice. 同理, 对于县令来说, 他再昏庸, 也知道不能把县城中的所有百姓都抓起来审问, 而是根据凶手是个男性, 身高约七尺五寸, 把符合条件的人抓起来. 在这里 凶手是个男性, 身高约七尺五寸 就是一个修饰谓语, 它限定了凶手的范围, 满足此修饰规则的百姓都是嫌疑人, 都需要抓起来审问.</li>
+<li>Advice ：抓过来审问, Advice 是一个动作, 即一段 Java 代码, 这段 Java 代码是作用于 point cut 所限定的那些 Joint point 上的. 同理, 对比到我们的例子中, 抓过来审问 这个动作就是对作用于那些满足 男性, 身高约七尺五寸 的爪哇的小县城里的百姓.</li>
+<li>Aspect:：Aspect 是 pointcut 与 Advice 的组合, 因此在这里我们就可以类比: “根据老王的线索, 凡是发现有身高七尺五寸的男性, 都要抓过来审问” 这一整个动作可以被认为是一个 Aspect.</li>
+</ul>
+<p><img src="/images/spring4x/20180530175605692.png" alt></p>
+<h3 id="其他的一些内容"><a href="#其他的一些内容" class="headerlink" title="其他的一些内容"></a>其他的一些内容</h3><p>AOP中的<code>Joinpoint</code>可以有多种类型：构造方法调用，字段的设置和获取，方法的调用，方法的执行，异常的处理执行，类的初始化。也就是说在AOP的概念中我们可以在上面的这些<code>Joinpoint</code>上织入我们自定义的<code>Advice</code>，但是在Spring中却没有实现上面所有的<code>joinpoint</code>，确切的说，Spring只支持方法执行类型的<code>Joinpoint</code>。</p>
+<p><strong>Advice 的类型</strong></p>
+<ul>
+<li><code>before advice</code>, 在 <code>join point</code>前被执行的 <code>advice</code>. 虽然 <code>before advice</code> 是在 <code>join point</code> 前被执行, 但是它并不能够阻止<code>join point</code> 的执行, 除非发生了异常(即我们在 <code>before advice</code> 代码中, 不能人为地决定是否继续执行 <code>join point</code> 中的代码)</li>
+<li><code>after return advice</code>, 在一个 <code>join point</code> 正常返回后执行的 <code>advice</code></li>
+<li><code>after throwing advice</code>, 当一个 <code>join point</code> 抛出异常后执行的 <code>advice</code></li>
+<li><code>after(final) advice</code>, 无论一个 <code>join point</code>是正常退出还是发生了异常, 都会被执行的 <code>advice</code>.</li>
+<li><code>around advice</code>, 在 <code>join point</code> 前和 <code>joint point</code> 退出后都执行的 <code>advice</code>. 这个是最常用的 <code>advice</code>.</li>
+<li><code>introduction</code>，<code>introduction</code>可以为原有的对象增加新的属性和方法。</li>
+</ul>
+<p>在Spring中，通过动态代理和动态字节码技术实现了<code>AOP</code>，这些内容，我们将在以后进行讲解。</p>
+<p>下面分别使用XML和Java配置类实现AOP</p>
+<h3 id="XmlAOP方式"><a href="#XmlAOP方式" class="headerlink" title="XmlAOP方式"></a>XmlAOP方式</h3><p>目标类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Person say Hello!"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"sayHelloMethod"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayBye</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Person say ByeBye!"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"sayByeMethod"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>切面类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XmlLoggerAspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;before"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;after"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">(Object returnVal)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;afterReturning : "</span> + returnVal);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterThrowing</span><span class="params">(Exception exception)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"---&gt;afterTrowing:"</span>+exception.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">around</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;around before"</span>);</span><br><span class="line"></span><br><span class="line">        Object proceed = joinPoint.proceed();</span><br><span class="line">        System.out.println(<span class="string">"around result : "</span>+proceed);</span><br><span class="line">        System.out.println(<span class="string">"---&gt;around after"</span>);</span><br><span class="line">        <span class="keyword">return</span> proceed;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>xml配置文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/aop</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/aop/spring-aop.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context/spring-context.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--业务类Target--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"person"</span> <span class="attr">class</span>=<span class="string">"com.ooyhao.spring.aop.Person"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--切面类--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"loggerAspect"</span> <span class="attr">class</span>=<span class="string">"com.ooyhao.spring.aspect.XmlLoggerAspect"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">"loggerAspect"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--public String com.ooyhao.spring.aop.Person.sayHello()</span></span><br><span class="line"><span class="comment">                * String com.ooyhao.spring.aop.Person.sayHello()</span></span><br><span class="line"><span class="comment">                * com.ooyhao.spring.aop.Person.sayHello()</span></span><br><span class="line"><span class="comment">                * *.sayHello()</span></span><br><span class="line"><span class="comment">                * *.say*()</span></span><br><span class="line"><span class="comment">                * *.say*(..)</span></span><br><span class="line"><span class="comment">            --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"pointCut"</span> <span class="attr">expression</span>=<span class="string">"execution(* *.say*(..))"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">"before"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointCut"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">"after"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointCut"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">"afterReturning"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointCut"</span> <span class="attr">returning</span>=<span class="string">"returnVal"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">"afterThrowing"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointCut"</span> <span class="attr">throwing</span>=<span class="string">"exception"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">method</span>=<span class="string">"around"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointCut"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testXmlAop</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  ClassPathXmlApplicationContext context</span><br><span class="line">    = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"spring-aop.xml"</span>);</span><br><span class="line">  Person bean = context.getBean(Person<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  bean.sayHello();</span><br><span class="line">  System.out.println(<span class="string">"================="</span>);</span><br><span class="line">  bean.sayBye();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         *              ---&gt;before</span></span><br><span class="line"><span class="comment">         *             ---&gt;around before</span></span><br><span class="line"><span class="comment">         *             Person say Hello!</span></span><br><span class="line"><span class="comment">         *             around result : sayHelloMethod</span></span><br><span class="line"><span class="comment">         *             ---&gt;around after</span></span><br><span class="line"><span class="comment">         *             ---&gt;afterReturning : sayHelloMethod</span></span><br><span class="line"><span class="comment">         *             ---&gt;after</span></span><br><span class="line"><span class="comment">         *             =================</span></span><br><span class="line"><span class="comment">         *             ---&gt;before</span></span><br><span class="line"><span class="comment">         *             ---&gt;around before</span></span><br><span class="line"><span class="comment">         *             Person say ByeBye!</span></span><br><span class="line"><span class="comment">         *             around result : sayByeMethod</span></span><br><span class="line"><span class="comment">         *             ---&gt;around after</span></span><br><span class="line"><span class="comment">         *             ---&gt;afterReturning : sayByeMethod</span></span><br><span class="line"><span class="comment">         *             ---&gt;after</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//sayHello出现 int i = 1/0;时</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         *          ---&gt;before</span></span><br><span class="line"><span class="comment">         *          ---&gt;around before</span></span><br><span class="line"><span class="comment">         *          Person say Hello!</span></span><br><span class="line"><span class="comment">         *          ---&gt;afterTrowing:/ by zero</span></span><br><span class="line"><span class="comment">         *          ---&gt;after</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         *          java.lang.ArithmeticException: / by zero</span></span><br><span class="line"><span class="comment">         *          at com.ooyhao.spring.aop.Person.sayHello(Person.java:7)</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>由上测试结果可以看出：</p>
+<ul>
+<li><p>正常执行的执行过程</p>
+<p><code>before</code> – &gt; <code>around before</code> –&gt; <code>target method</code> –&gt; <code>around after</code> –&gt; <code>afterReturning</code> –&gt; <code>after</code></p>
+</li>
+<li><p>出现异常的执行过程</p>
+<p><code>before</code> –&gt; <code>around before</code> –&gt; <code>target method</code> –&gt; <code>afterTrowing</code> –&gt; <code>after</code></p>
+</li>
+</ul>
+<h3 id="Java配置类方式-1"><a href="#Java配置类方式-1" class="headerlink" title="Java配置类方式"></a>Java配置类方式</h3><p>java配置方式的切面：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@EnableAspectJAutoProxy</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigLoggerAspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"execution(**.say*()))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointCut</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span>(<span class="string">"pointCut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;before"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@After</span>(<span class="string">"pointCut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;after"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterReturning</span>(value = <span class="string">"pointCut()"</span>, returning = <span class="string">"returnVal"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">(Object returnVal)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;afterReturning : "</span> + returnVal);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterThrowing</span>(value = <span class="string">"pointCut()"</span>, throwing = <span class="string">"exception"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterThrowing</span><span class="params">(Exception exception)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;afterTrowing:"</span>+exception.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(value = <span class="string">"pointCut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">around</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---&gt;around before"</span>);</span><br><span class="line">        Object proceed = joinPoint.proceed();</span><br><span class="line">        System.out.println(<span class="string">"around result : "</span>+proceed);</span><br><span class="line">        System.out.println(<span class="string">"---&gt;around after"</span>);</span><br><span class="line">        <span class="keyword">return</span> proceed;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Aspect</code>: 定义为一个切面</li>
+<li><code>@Component</code>：定义为一个<code>Spring</code>组件</li>
+<li><code>@EnableAspectJAutoProxy</code>：开启<code>Aop</code>自动代理模式</li>
+</ul>
+<p>Java配置类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ComponentScan</span>(basePackages = <span class="string">"com.ooyhao.spring"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AopConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Person <span class="title">person</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Person();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><code>@ComponentScan(basePackages = &quot;com.ooyhao.spring&quot;)</code>: 将前面的切面进行扫描成组件。</li>
+</ul>
+<p>测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testJavaConfigAop</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  AnnotationConfigApplicationContext context</span><br><span class="line">    = <span class="keyword">new</span> AnnotationConfigApplicationContext(AopConfig<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  Person bean = context.getBean(Person<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  bean.sayHello();</span><br><span class="line">  bean.sayBye();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>提示:</p>
+<p>​    前面均使用的是AspectJ表达式，这样可以定位到有一定规律的目标方法，降低程序耦合，但是操作不是特别灵活，个人比较使用注解方式，可以指定到某一个目标方法。</p>
+<p><code>@pointcut(&quot;@annotation(com.sample.security.AdminOnly)&quot;)</code> // 匹配注解有AdminOnly注解的方法</p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/29/SSM/spring4x/1%E5%88%9D%E8%AF%86pring/">一、初识Spring</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/29/SSM/spring4x/1%E5%88%9D%E8%AF%86pring/">https://ooyhao.github.io/2020/01/29/SSM/spring4x/1%E5%88%9D%E8%AF%86pring/</a></li>
+            <li><strong>发布时间：</strong>2020-01-29</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/spring4x/" rel="tag">spring4x</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/29/SSM/spring4x/2%E8%A3%85%E9%85%8DBean/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">二、装配Bean</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/29/db/mysql/MySQL%E5%9F%BA%E7%A1%80/">
+                <span class="level-item">MySQL基础</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'f0dd02a2a72b95b7b6354e30c1780714',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            51
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            9
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            10
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#spring的两大功能">
+        <span class="has-mr-6">1</span>
+        <span>spring的两大功能</span>
+        </a></li><li>
+        <a class="is-flex" href="#IoC-DI">
+        <span class="has-mr-6">2</span>
+        <span>IoC/DI</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Xml方式">
+        <span class="has-mr-6">2.1</span>
+        <span>Xml方式</span>
+        </a></li><li>
+        <a class="is-flex" href="#Java配置类方式">
+        <span class="has-mr-6">2.2</span>
+        <span>Java配置类方式</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#AOP">
+        <span class="has-mr-6">3</span>
+        <span>AOP</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Aop简单介绍">
+        <span class="has-mr-6">3.1</span>
+        <span>Aop简单介绍</span>
+        </a></li><li>
+        <a class="is-flex" href="#Aop中的术语">
+        <span class="has-mr-6">3.2</span>
+        <span>Aop中的术语</span>
+        </a></li><li>
+        <a class="is-flex" href="#举一个容易理解的例子">
+        <span class="has-mr-6">3.3</span>
+        <span>举一个容易理解的例子</span>
+        </a></li><li>
+        <a class="is-flex" href="#其他的一些内容">
+        <span class="has-mr-6">3.4</span>
+        <span>其他的一些内容</span>
+        </a></li><li>
+        <a class="is-flex" href="#XmlAOP方式">
+        <span class="has-mr-6">3.5</span>
+        <span>XmlAOP方式</span>
+        </a></li><li>
+        <a class="is-flex" href="#Java配置类方式-1">
+        <span class="has-mr-6">3.6</span>
+        <span>Java配置类方式</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">46</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 11.67px;">feign</a> <a href="/tags/gateway/" style="font-size: 13.33px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 16.67px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 18.33px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 15px;">sentinel</a> <a href="/tags/spring4x/" style="font-size: 20px;">spring4x</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十一、SSM + Redis">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:11.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十一、SSM + Redis</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十、Spring发送eMail">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:10.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十、Spring发送eMail</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="九、SpringCache">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:09.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="title has-link-black-ter is-size-6 has-text-weight-normal">九、SpringCache</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/8Spring%E5%92%8CJDBC%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="八、Spring和JDBC操作数据库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:08.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/8Spring%E5%92%8CJDBC%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" class="title has-link-black-ter is-size-6 has-text-weight-normal">八、Spring和JDBC操作数据库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/7SpringMVC%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="七、SpringMVC高级技术">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:07.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/7SpringMVC%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/" class="title has-link-black-ter is-size-6 has-text-weight-normal">七、SpringMVC高级技术</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">51</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="一、初识Spring" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

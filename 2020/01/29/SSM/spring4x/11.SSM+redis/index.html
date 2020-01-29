@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>十一、SSM + Redis - Hexo</title>
+
+
+    <meta name="description" content="这里我们先介绍一下如何整合Redis，后面再整合一个SSM+redis的项目，无spring配置文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="十一、SSM + Redis">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/29/SSM/spring4x/11.SSM+redis/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这里我们先介绍一下如何整合Redis，后面再整合一个SSM+redis的项目，无spring配置文件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-29T09:55:11.000Z">
+<meta property="article:modified_time" content="2020-01-29T10:40:07.217Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="spring4x">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="十一、SSM + Redis" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-29T09:55:11.000Z">2020-01-29</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    9 分钟 读完 (大约 1422 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                十一、SSM + Redis
+            
+        </h1>
+        <div class="content">
+            <p>这里我们先介绍一下如何整合Redis，后面再整合一个SSM+redis的项目，无spring配置文件。</p>
+<a id="more"></a>
+
+<h2 id="SpringDataRedis"><a href="#SpringDataRedis" class="headerlink" title="SpringDataRedis"></a>SpringDataRedis</h2><p>SpringDataRedis提供了两个模板：</p>
+<ul>
+<li>RedisTemplate</li>
+<li>StringRedisTemplate</li>
+</ul>
+<p>RedisTemplate 的很多功能是以子API的形式提供的，他们区分了单个值和集合值的场景；</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>子API接口</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>opsForValue()</td>
+<td>ValueOperations&lt;K,V&gt;</td>
+<td>操作具有简单值得条目</td>
+</tr>
+<tr>
+<td>opsForList()</td>
+<td>ListOperations&lt;K,V&gt;</td>
+<td>操作具有list的值的条目</td>
+</tr>
+<tr>
+<td>opsForSet()</td>
+<td>SetOperations&lt;K,V&gt;</td>
+<td>操作具有set的值的条目</td>
+</tr>
+<tr>
+<td>opsForZSet()</td>
+<td>ZSetOperations&lt;K,V&gt;</td>
+<td>操作具有ZSet值（排序的set）的条目</td>
+</tr>
+<tr>
+<td>opsForHash()</td>
+<td>HashOperations&lt;K,V&gt;</td>
+<td>操作具有hash的条目</td>
+</tr>
+<tr>
+<td>boundValueOps(K)</td>
+<td>BoundValueOperations&lt;K,V&gt;</td>
+<td>以绑定指定key的方式，操作具有简单值的条目</td>
+</tr>
+<tr>
+<td>boundListOps(K)</td>
+<td>BoundListOperations&lt;K,V&gt;</td>
+<td>以绑定指定key的方式，操作具有List值的条目</td>
+</tr>
+<tr>
+<td>boundSetOps(K)</td>
+<td>BoundSetOperations&lt;K,V&gt;</td>
+<td>以绑定指定key的方式，操作具有Set值的条目</td>
+</tr>
+<tr>
+<td>boundZSetOps(K)</td>
+<td>BoundZSetOperations&lt;K,V&gt;</td>
+<td>以绑定指定key的方式，操作具有ZSet值(排序的Set)的条目</td>
+</tr>
+<tr>
+<td>boundHashOps(K)</td>
+<td>BoundHashOperations&lt;K,V&gt;</td>
+<td>以绑定指定key的方式，操作具有Hash值的条目</td>
+</tr>
+</tbody></table>
+<p>使用key和value的序列化器</p>
+<p>当某个条目保存到Redis key-value存储的时候，key和value都会使用Redis的序列化器(Serializer)进行序列化。SpringDataRedis提供了多个这样的序列化器，包括：</p>
+<ul>
+<li>GenericToStringSerializer：使用Spring转换服务进行序列化；</li>
+<li>JacksonJsonRedisSerializer：使用Jackson1，将对象序列化为JSON；</li>
+<li>Jackson2JsonRedisSerializer：使用Jackson2，将对象序列化为JSON；</li>
+<li>JdkSerializationRedisSerializer：使用Java序列化；</li>
+<li>OxmSerializer：使用Spring O/X映射的编排器和解排器（marshaler和unmarshaler）实现序列化，用于XML序列化。</li>
+<li>StringRedisSerializer：序列化String类型的key和value。</li>
+</ul>
+<p>这些序列化器都实现了RedisSerializer接口，如果其中没有符合需求的序列化器，那么可以自行创建。</p>
+<p>下面看一个列子：</p>
+<p>例如：假设当使用RedisTemplate的时候，我们希望将Product类型的value序列化为json，而key是String类型。RedisTemplate的setKeySerializer()和setValueSerializer()方法就需要如下所示了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> RedisTemplate&lt;String,Product&gt; <span class="title">redisTemplate</span><span class="params">(RedisConnectionFactory cf)</span></span>&#123;</span><br><span class="line">  RedisTemplate&lt;String,Product&gt; redis = <span class="keyword">new</span> RedisTemplate&lt;String,Product&gt;();</span><br><span class="line">  redis.setConnectionFactory(cf);</span><br><span class="line">  redis.setKeySerializer(<span class="keyword">new</span> StringRedisSerializer());</span><br><span class="line">  redis.setValueSerializer(<span class="keyword">new</span> Jackson2JsonRedisSerializer&lt;Product&gt;(Product<span class="class">.<span class="keyword">class</span>))</span></span><br><span class="line"><span class="class">  <span class="title">return</span> <span class="title">redis</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们设置RedisTemplate在序列化key的时候，使用StringRedisSerializer，并且设置了在序列化Product的时候，使用的是Jackson2JsonRedisSerializer。</p>
+<h2 id="项目整合"><a href="#项目整合" class="headerlink" title="项目整合"></a>项目整合</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p><img src="/images/spring4x/Snipaste_2019-09-14_10-44-36.png" alt></p>
+<h3 id="InitWebApplication"><a href="#InitWebApplication" class="headerlink" title="InitWebApplication"></a>InitWebApplication</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InitWebApplication</span> <span class="keyword">extends</span> <span class="title">AbstractAnnotationConfigDispatcherServletInitializer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*加载applicationContext.xml/rootConfig*/</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getRootConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Class[]&#123;</span><br><span class="line">                RootConfig<span class="class">.<span class="keyword">class</span></span></span><br><span class="line"><span class="class">        &#125;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*加载springmvc.xml/ servletConfig.java*/</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getServletConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Class[]&#123;</span><br><span class="line">                ServletConfig<span class="class">.<span class="keyword">class</span></span></span><br><span class="line"><span class="class">        &#125;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*DispatcherServlet 的servletMapping*/</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> String[] getServletMappings() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String[]&#123;</span><br><span class="line">                <span class="string">"/"</span></span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*添加编码过滤器*/</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Filter[] getServletFilters() &#123;</span><br><span class="line">        CharacterEncodingFilter filter = <span class="keyword">new</span> CharacterEncodingFilter();</span><br><span class="line">        filter.setForceEncoding(<span class="keyword">true</span>);</span><br><span class="line">        filter.setEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Filter[]&#123;</span><br><span class="line">                filter</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个文件的作用主要是替代了原有传统web项目中web.xml文件的角色</p>
+<h3 id="RootConfig"><a href="#RootConfig" class="headerlink" title="RootConfig"></a>RootConfig</h3><p>RootConfig 则替代了原有的applicationContext.xml文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ooyhao.spring.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 描述:</span></span><br><span class="line"><span class="comment"> * 类【RootConfig】</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> ouYangHao</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span> 2019-09-12 15:01</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages = <span class="string">"com.ooyhao.spring"</span>) <span class="comment">//组件扫描</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RootConfig</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="ServletCofig-xml"><a href="#ServletCofig-xml" class="headerlink" title="ServletCofig.xml"></a>ServletCofig.xml</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages = <span class="string">"com.ooyhao.spring.controller"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*开启静态文件映射处理*/</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureDefaultServletHandling</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      DefaultServletHandlerConfigurer configurer)</span> </span>&#123;</span><br><span class="line">        configurer.enable();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="DataSourceConfig"><a href="#DataSourceConfig" class="headerlink" title="DataSourceConfig"></a>DataSourceConfig</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = <span class="string">"com.ooyhao.spring.mapper"</span>) <span class="comment">//扫描Mybatis的Mapper接口</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span> <span class="comment">//开启事务管理</span></span><br><span class="line"><span class="meta">@PropertySource</span>(value = <span class="string">"classpath:application.properties"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSourceConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.maxActive&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer dataSourceMaxActive;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.maxWait&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer dataSourceMaxWait;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.minIdle&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer dataSourceMinIdle;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.initialSize&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer dataSourceInitialSize;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.url&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String dataSourceUrl;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.username&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String dataSourceUsername;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String dataSourcePassword;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;dataSource.driverClassName&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String dataSourceDriverClassName;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.typeAliasesPackage&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mybatisTypeAliasesPackage;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.configLocation&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mybatisConfigLocation;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.mapperLocations&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mybatisMapperLocations;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;redis.maxTotal&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisMaxTotal;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;redis.maxWaitMillis&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisMaxWaitMillis;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;redis.minIdle&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisMinIdle;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;redis.maxIdle&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisMaxIdle;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;redis.hostName&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String redisUsername;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;redis.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String redisPassword;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;redis.port&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisPort;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置Druid数据源*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">dataSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        DruidDataSource dataSource = <span class="keyword">new</span> DruidDataSource();</span><br><span class="line">        dataSource.setMaxActive(dataSourceMaxActive);</span><br><span class="line">        dataSource.setMaxWait(dataSourceMaxWait);</span><br><span class="line">        dataSource.setMinIdle(dataSourceMinIdle);</span><br><span class="line">        dataSource.setInitialSize(dataSourceInitialSize);</span><br><span class="line">        dataSource.setUrl(dataSourceUrl);</span><br><span class="line">        dataSource.setUsername(dataSourceUsername);</span><br><span class="line">        dataSource.setPassword(dataSourcePassword);</span><br><span class="line">        dataSource.setDriverClassName(dataSourceDriverClassName);</span><br><span class="line">        <span class="keyword">return</span> dataSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置事务*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSourceTransactionManager <span class="title">dataSourceTransactionManager</span><span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        DataSourceTransactionManager transactionManager =</span><br><span class="line">                <span class="keyword">new</span> DataSourceTransactionManager();</span><br><span class="line">        transactionManager.setDataSource(dataSource);</span><br><span class="line">        <span class="keyword">return</span> transactionManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置Mybatis的SQLSessionFactoryBean*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionFactoryBean <span class="title">sqlSessionFactoryBean</span><span class="params">(DataSource dataSource)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        SqlSessionFactoryBean bean = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        bean.setDataSource(dataSource);</span><br><span class="line">        bean.setTypeAliasesPackage(mybatisTypeAliasesPackage);</span><br><span class="line">        bean.getObject().getConfiguration().setCacheEnabled(<span class="keyword">true</span>);</span><br><span class="line">        bean.getObject().getConfiguration().setMapUnderscoreToCamelCase(<span class="keyword">true</span>);<span class="comment">//测试无效</span></span><br><span class="line">        bean.getObject().getConfiguration().setLogImpl(Slf4jImpl<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        bean.getObject().getConfiguration().setLogPrefix(<span class="string">"###SPRING###MYBATIS###"</span>);</span><br><span class="line">        <span class="comment">/*读取Mybatis的配置文件*/</span></span><br><span class="line">        bean.setConfigLocation(<span class="keyword">new</span> ClassPathResource(mybatisConfigLocation));</span><br><span class="line">        <span class="comment">/*适用于通配符情况，读取Mybatis的Mapper文件*/</span></span><br><span class="line">        PathMatchingResourcePatternResolver resourcePatternResolver =</span><br><span class="line">                <span class="keyword">new</span> PathMatchingResourcePatternResolver();</span><br><span class="line">        Resource[] resources = resourcePatternResolver.getResources(mybatisMapperLocations);</span><br><span class="line">        bean.setMapperLocations(resources);</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置SpringJDBCTemplate*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JdbcTemplate <span class="title">jdbcTemplate</span><span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JdbcTemplate(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JedisClientConfiguration <span class="title">poolConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(<span class="number">20</span>);</span><br><span class="line">        config.setMaxWaitMillis(<span class="number">3000</span>);</span><br><span class="line">        config.setMinIdle(<span class="number">5</span>);</span><br><span class="line">        config.setMaxIdle(<span class="number">8</span>);</span><br><span class="line">        JedisClientConfiguration.JedisPoolingClientConfigurationBuilder </span><br><span class="line">          builder= (JedisClientConfiguration.JedisPoolingClientConfigurationBuilder)</span><br><span class="line">          JedisClientConfiguration.builder();</span><br><span class="line">        builder.poolConfig(config);</span><br><span class="line">        <span class="keyword">return</span> builder.build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisStandaloneConfiguration <span class="title">standaloneConfiguration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RedisStandaloneConfiguration configuration = <span class="keyword">new</span> RedisStandaloneConfiguration();</span><br><span class="line">        configuration.setHostName(<span class="string">"120.79.167.88"</span>);</span><br><span class="line">        configuration.setPassword(<span class="string">""</span>);</span><br><span class="line">        configuration.setPort(<span class="number">6379</span>);</span><br><span class="line">        <span class="keyword">return</span> configuration;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JedisConnectionFactory <span class="title">connectionFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JedisConnectionFactory(standaloneConfiguration(),poolConfig());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisTemplate <span class="title">redisTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RedisTemplate redisTemplate = <span class="keyword">new</span> RedisTemplate();</span><br><span class="line">        redisTemplate.setConnectionFactory(connectionFactory());</span><br><span class="line">        <span class="comment">//可以设置序列化的类型</span></span><br><span class="line">        redisTemplate.setKeySerializer(<span class="keyword">new</span> StringRedisSerializer());</span><br><span class="line">        redisTemplate.setValueSerializer(<span class="keyword">new</span> JdkSerializationRedisSerializer());</span><br><span class="line">        <span class="keyword">return</span> redisTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>开启事务管理 @EnableTransactionManagement</li>
+<li>加载配置文件 @PropertySource(value = “classpath:application.properties”)</li>
+<li>配置了Mybatis的数据源，使用的是alibaba的Druid数据源</li>
+<li>配置了事务管理 DataSourceTransactionManager</li>
+<li>整合mybatis SqlSessionFactoryBean</li>
+<li>将DataSource注入到了JdbcTemplate</li>
+<li>整合redis</li>
+</ul>
+<p>这里需要配合配置文件application.properties.</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置数据源</span></span><br><span class="line"><span class="meta">dataSource.maxActive</span> = <span class="string">20</span></span><br><span class="line"><span class="meta">dataSource.maxWait</span> = <span class="string">5</span></span><br><span class="line"><span class="meta">dataSource.minIdle</span> = <span class="string">5</span></span><br><span class="line"><span class="meta">dataSource.initialSize</span> = <span class="string">5</span></span><br><span class="line"><span class="meta">dataSource.url</span> = <span class="string">jdbc:mysql://120.79.167.88:3306/spring_in_action?useUnicode=true&amp;amp;characterEncoding=utf-8</span></span><br><span class="line"><span class="meta">dataSource.username</span> = <span class="string">root</span></span><br><span class="line"><span class="meta">dataSource.password</span> = <span class="string">root</span></span><br><span class="line"><span class="meta">dataSource.driverClassName</span> = <span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置mybatis</span></span><br><span class="line"><span class="meta">mybatis.typeAliasesPackage</span> = <span class="string">com.ooyhao.spring.bean</span></span><br><span class="line"><span class="meta">mybatis.configLocation</span> = <span class="string">mybatis/config/mybatis-config.xml</span></span><br><span class="line"><span class="meta">mybatis.mapperLocations</span> = <span class="string">mybatis/mapper/*.xml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置redis</span></span><br><span class="line"><span class="meta">redis.maxTotal</span> = <span class="string">20</span></span><br><span class="line"><span class="meta">redis.maxWaitMillis</span> = <span class="string">3000</span></span><br><span class="line"><span class="meta">redis.minIdle</span> = <span class="string">5</span></span><br><span class="line"><span class="meta">redis.maxIdle</span> = <span class="string">8</span></span><br><span class="line"><span class="meta">redis.hostName</span> = <span class="string">120.79.167.88</span></span><br><span class="line"><span class="meta">redis.password</span> =<span class="string"></span></span><br><span class="line"><span class="meta">redis.port</span> = <span class="string">6379</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="mybatis-config-xml"><a href="#mybatis-config-xml" class="headerlink" title="mybatis-config.xml"></a>mybatis-config.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--驼峰命名法，即：create_time 与 createTime自动映射--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"mapUnderscoreToCamelCase"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 类型别名 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--已在配置类中配置--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    &lt;typeAliases&gt;</span></span><br><span class="line"><span class="comment">        &lt;package name="com.ooyhao.spring.bean"/&gt;</span></span><br><span class="line"><span class="comment">    &lt;/typeAliases&gt;</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>mapUnderscoreToCamelCase 驼峰命名法在java配置中没有生效。</p>
+<p>剩下的就是简单的Bean，dao，service，controller了。</p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/29/SSM/spring4x/11.SSM+redis/">十一、SSM + Redis</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/29/SSM/spring4x/11.SSM+redis/">https://ooyhao.github.io/2020/01/29/SSM/spring4x/11.SSM+redis/</a></li>
+            <li><strong>发布时间：</strong>2020-01-29</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/spring4x/" rel="tag">spring4x</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/">
+                <span class="level-item">十、Spring发送eMail</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '362d8261f84b131dda1f5e77f4e3aead',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            51
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            9
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            10
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#SpringDataRedis">
+        <span class="has-mr-6">1</span>
+        <span>SpringDataRedis</span>
+        </a></li><li>
+        <a class="is-flex" href="#项目整合">
+        <span class="has-mr-6">2</span>
+        <span>项目整合</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#项目结构">
+        <span class="has-mr-6">2.1</span>
+        <span>项目结构</span>
+        </a></li><li>
+        <a class="is-flex" href="#InitWebApplication">
+        <span class="has-mr-6">2.2</span>
+        <span>InitWebApplication</span>
+        </a></li><li>
+        <a class="is-flex" href="#RootConfig">
+        <span class="has-mr-6">2.3</span>
+        <span>RootConfig</span>
+        </a></li><li>
+        <a class="is-flex" href="#ServletCofig-xml">
+        <span class="has-mr-6">2.4</span>
+        <span>ServletCofig.xml</span>
+        </a></li><li>
+        <a class="is-flex" href="#DataSourceConfig">
+        <span class="has-mr-6">2.5</span>
+        <span>DataSourceConfig</span>
+        </a></li><li>
+        <a class="is-flex" href="#mybatis-config-xml">
+        <span class="has-mr-6">2.6</span>
+        <span>mybatis-config.xml</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">46</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 11.67px;">feign</a> <a href="/tags/gateway/" style="font-size: 13.33px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 16.67px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 18.33px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 15px;">sentinel</a> <a href="/tags/spring4x/" style="font-size: 20px;">spring4x</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十一、SSM + Redis">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:11.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十一、SSM + Redis</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十、Spring发送eMail">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:10.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十、Spring发送eMail</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="九、SpringCache">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:09.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="title has-link-black-ter is-size-6 has-text-weight-normal">九、SpringCache</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/8Spring%E5%92%8CJDBC%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="八、Spring和JDBC操作数据库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:08.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/8Spring%E5%92%8CJDBC%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" class="title has-link-black-ter is-size-6 has-text-weight-normal">八、Spring和JDBC操作数据库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/7SpringMVC%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="七、SpringMVC高级技术">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:07.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/7SpringMVC%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/" class="title has-link-black-ter is-size-6 has-text-weight-normal">七、SpringMVC高级技术</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">51</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="十一、SSM + Redis" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

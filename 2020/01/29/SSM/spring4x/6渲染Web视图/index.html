@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>六、渲染Web视图 - Hexo</title>
+
+
+    <meta name="description" content="渲染Web视图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="六、渲染Web视图">
+<meta property="og:url" content="https://ooyhao.github.io/2020/01/29/SSM/spring4x/6%E6%B8%B2%E6%9F%93Web%E8%A7%86%E5%9B%BE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="渲染Web视图">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-29T09:55:06.000Z">
+<meta property="article:modified_time" content="2020-01-29T10:53:54.301Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="spring4x">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="六、渲染Web视图" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-29T09:55:06.000Z">2020-01-29</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    30 分钟 读完 (大约 4513 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                六、渲染Web视图
+            
+        </h1>
+        <div class="content">
+            <p>渲染Web视图</p>
+<a id="more"></a>
+
+
+<h2 id="理解视图解析"><a href="#理解视图解析" class="headerlink" title="理解视图解析"></a>理解视图解析</h2><p>在前面我们已经接触了一个Springmvc中的视图解析器，InternalResourceViewResolver。下图是其继承结构：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-01_14-52-46.png" alt></p>
+<p>InternalResourceViewResolver：这个视图解析器应该不陌生，在SSM项目中整合JSP的时候，一般都会使用到这个视图解析器。下面这段代码应该也似曾相识，在SpringMVC.xml文件中都会配置到，这里只是以代码的方式进行配置，最熟悉的莫过于prefix 和 suffix ，分别是指定视图的前缀和后缀，即当视图解析器根据逻辑视图名映射视图的时候，会在Controller的返回值分别在其前后拼接配置好的前后缀，就形成了物理视图，比如Controller中返回的是home.其物理地址就是/WEB-INF/views/home.jsp 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ViewResolver <span class="title">viewResolver</span><span class="params">()</span></span>&#123;</span><br><span class="line">  InternalResourceViewResolver resolver =</span><br><span class="line">    <span class="keyword">new</span> InternalResourceViewResolver();</span><br><span class="line">  resolver.setPrefix(<span class="string">"/WEB-INF/views/"</span>);</span><br><span class="line">  resolver.setSuffix(<span class="string">".jsp"</span>);</span><br><span class="line">  resolver.setExposeContextBeansAsAttributes(<span class="keyword">true</span>);</span><br><span class="line">  <span class="comment">/*将视图解析为JstlView</span></span><br><span class="line"><span class="comment">        * 查看源码可以看出，默认解析为InternalResourceView</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">  resolver.setViewClass(JstlView<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  <span class="keyword">return</span> resolver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们看一下视图解析器返回的ViewResolver的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ViewResolver</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="function">View <span class="title">resolveViewName</span><span class="params">(String viewName, Locale locale)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当给resolveViewName方法传入一个视图名和Locale对象时，会返回一个View实例，View是另外一个接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">View</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	String RESPONSE_STATUS_ATTRIBUTE = View<span class="class">.<span class="keyword">class</span>.<span class="title">getName</span>() +</span></span><br><span class="line">      										".responseStatus";</span><br><span class="line"></span><br><span class="line">	String PATH_VARIABLES = View.class.getName() + ".pathVariables";</span><br><span class="line"></span><br><span class="line">	String SELECTED_CONTENT_TYPE = View<span class="class">.<span class="keyword">class</span>.<span class="title">getName</span>() +</span></span><br><span class="line">      										".selectedContentType";</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> String <span class="title">getContentType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">render</span><span class="params">(@Nullable Map&lt;String, ?&gt; model, HttpServletRequest</span></span></span><br><span class="line"><span class="function"><span class="params">                request, HttpServletResponse response)</span><span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>View接口的任务就是接受模型以及Servlet的request和response对象，并将输出结果渲染到response中。</p>
+<p><a href="https://docs.spring.io/spring/docs/5.1.9.RELEASE/spring-framework-reference/web.html#mvc-viewresolver">https://docs.spring.io/spring/docs/5.1.9.RELEASE/spring-framework-reference/web.html#mvc-viewresolver</a></p>
+<p>spring官网介绍了几种视图解析器。InternalResourceViewResolver一般会用于JSP。TilesViewResolver用于Apache Tiles视图，而FreeMarkerViewResolver和VelocityViewResolver分别用于FreeMarker和Velocity模板视图。</p>
+<h2 id="解析JSTL视图"><a href="#解析JSTL视图" class="headerlink" title="解析JSTL视图"></a>解析JSTL视图</h2><p>使用InternalResourceViewResolver进行视图解析，默认会将视图解析为InternalResourceView实例，但是如果我们在JSP文件中使用JSTL标签去处理了例如国际化的这个格式化和信息的化，我们希望将视图解析为JSTLView。JSTL的格式化标签需要一个Locale对象，以便于恰当的格式化地域相关的值，如日期和货币。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">"c"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> %&gt;</span><br><span class="line">&lt;%@ taglib prefix=<span class="string">"fmt"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/fmt"</span> %&gt;</span><br><span class="line">....</span><br><span class="line">&lt;body&gt;</span><br><span class="line">       &lt;!--    &lt;fmt:setLocale value=<span class="string">"$&#123;param.setLocale&#125;"</span>/&gt;  区域语言的值从传过来的参数中得到 --&gt; </span><br><span class="line">       &lt;fmt:setLocale value=<span class="string">"en_US"</span>/&gt;           &lt;!--指定区域语言--&gt;</span><br><span class="line">       &lt;fmt:bundle basename=<span class="string">"globalMessages"</span>&gt;   &lt;!-- 指定使用basename为globalMessages的资源文件，也即资源文件第一个单词为globalMessages--&gt;</span><br><span class="line">           &lt;center&gt;</span><br><span class="line">           &lt;table&gt;</span><br><span class="line">               &lt;tr&gt;</span><br><span class="line">                   &lt;td&gt;&lt;fmt:message key="email"/&gt;&lt;/td&gt;</span><br><span class="line">                   &lt;td&gt;&lt;input type="text" name="email"&gt;&lt;/td&gt;   </span><br><span class="line">               &lt;/tr&gt; </span><br><span class="line">           &lt;/table&gt;</span><br><span class="line">           &lt;/center&gt;   </span><br><span class="line">       &lt;/fmt:bundle&gt;</span><br><span class="line">  &lt;/body&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果我们想要将视图渲染为JSTL视图，只需要在下面添加配置：setViewClass即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ViewResolver <span class="title">viewResolver</span><span class="params">()</span></span>&#123;</span><br><span class="line">  InternalResourceViewResolver resolver =</span><br><span class="line">    <span class="keyword">new</span> InternalResourceViewResolver();</span><br><span class="line">  resolver.setPrefix(<span class="string">"/WEB-INF/views/"</span>);</span><br><span class="line">  resolver.setSuffix(<span class="string">".jsp"</span>);</span><br><span class="line">  resolver.setExposeContextBeansAsAttributes(<span class="keyword">true</span>);</span><br><span class="line">  <span class="comment">/*将视图解析为JstlView</span></span><br><span class="line"><span class="comment">        * 查看源码可以看出，默认解析为InternalResourceView</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">  resolver.setViewClass(JstlView<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">  <span class="keyword">return</span> resolver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Spring的JSP库"><a href="#Spring的JSP库" class="headerlink" title="Spring的JSP库"></a>Spring的JSP库</h2><p>​    Spring提供了两个JSP标签库，用来帮助定义SpringMVC Web的视图。其中一个标签库会用来渲染HTML表单标签，这些标签可以绑定model中的某个属性。另外一个标签库包含了一些工具类标签，我们随时都可以非常便利地使用它们。</p>
+<h3 id="JSP标签"><a href="#JSP标签" class="headerlink" title="JSP标签"></a>JSP标签</h3><p>借助Spring表单绑定标签库中所包含的标签，我们能够将模型对象绑定到渲染后的HTML表单中。</p>
+<table>
+<thead>
+<tr>
+<th>JSP标签</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&lt;sf:checkbox&gt;</td>
+<td>渲染成一个HTML&lt;input&gt;标签，其中type属性设置为checkbox</td>
+</tr>
+<tr>
+<td>&lt;sf:checkboxs&gt;</td>
+<td>渲染成多个HTML&lt;input&gt;标签，其中type属性设置为checkbox</td>
+</tr>
+<tr>
+<td>&lt;sf:errors&gt;</td>
+<td>在一个HTML&lt;span&gt;中输入输入域的错误</td>
+</tr>
+<tr>
+<td>&lt;sf:form&gt;</td>
+<td>渲染成一个HTML&lt;form&gt;标签，并为其内部标签暴露绑定路径，用于数据绑定</td>
+</tr>
+<tr>
+<td>&lt;sf:hidden&gt;</td>
+<td>渲染成一个HTML&lt;input&gt;标签，其中type属性设置为hidden</td>
+</tr>
+<tr>
+<td>&lt;sf:input&gt;</td>
+<td>渲染成一个HTML&lt;input&gt;标签，其中type属性设置为text</td>
+</tr>
+<tr>
+<td>&lt;sf:label&gt;</td>
+<td>渲染成一个HTML&lt;label&gt;标签</td>
+</tr>
+<tr>
+<td>&lt;sf:option&gt;</td>
+<td>渲染成一个HTML&lt;option&gt;标签，其selected属性根据所绑定的执行设置</td>
+</tr>
+<tr>
+<td>&lt;sf:options&gt;</td>
+<td>按照绑定的集合、数组或Map，渲染成一个HTML&lt;option&gt;标签列表</td>
+</tr>
+<tr>
+<td>&lt;sf:password&gt;</td>
+<td>渲染成一个HTML&lt;input&gt;标签，其中type属性设置为password</td>
+</tr>
+<tr>
+<td>&lt;sf:radiobutton&gt;</td>
+<td>渲染成一个HTML&lt;input&gt;标签，其中type属性设置为radio</td>
+</tr>
+<tr>
+<td>&lt;sf:radiobuttons&gt;</td>
+<td>渲染成多个HTML&lt;input&gt;标签，其中type属性设置为radio</td>
+</tr>
+<tr>
+<td>&lt;sf:select&gt;</td>
+<td>渲染为一个HTML&lt;select&gt;标签</td>
+</tr>
+<tr>
+<td>&lt;sf:textarea&gt;</td>
+<td>渲染为一个HTML&lt;textarea&gt;标签</td>
+</tr>
+</tbody></table>
+<h3 id="将标签绑定到模型上"><a href="#将标签绑定到模型上" class="headerlink" title="将标签绑定到模型上"></a>将标签绑定到模型上</h3><p>如果在jsp中引入spring标签呢？</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">"sf"</span> uri=<span class="string">"http://www.springframework.org/tags/form"</span> %&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a href="sf:form">sf:form</a>会渲染成一个HTML <form>标签，但它也会通过 modelAttribute 属性构建针对某个模型对象的上下文信息。在其他的表单绑定标签，会引用这个模型对象的属性。</form></p>
+<p>最初的注册表单：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;form method=<span class="string">"post"</span> &gt;</span><br><span class="line">  	用户名：&lt;input name=<span class="string">"username"</span> type=<span class="string">"text"</span> &gt;&lt;br&gt;</span><br><span class="line">  	密码：&lt;input name=<span class="string">"password"</span> type=<span class="string">"password"</span> &gt;&lt;br&gt;</span><br><span class="line">  	年龄：&lt;input name=<span class="string">"age"</span> type=<span class="string">"number"</span> &gt;&lt;br&gt;</span><br><span class="line">  	&lt;input type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;&lt;br&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用Spring的标签库：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;sf:form method=<span class="string">"post"</span> modelAttribute=<span class="string">"user"</span> &gt;</span><br><span class="line">    账号：&lt;sf:input path=<span class="string">"username"</span>/&gt;</span><br><span class="line">    &lt;sf:errors path=<span class="string">"username"</span> cssClass=<span class="string">"error"</span> /&gt;&lt;br&gt;</span><br><span class="line">    密码：&lt;sf:password path=<span class="string">"password"</span>/&gt;</span><br><span class="line">    &lt;sf:errors path=<span class="string">"password"</span> cssClass=<span class="string">"error"</span> /&gt;&lt;br&gt;</span><br><span class="line">    年龄：&lt;sf:input path=<span class="string">"age"</span>/&gt;</span><br><span class="line">    &lt;sf:errors path=<span class="string">"age"</span> cssClass=<span class="string">"error"</span>  /&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=<span class="string">"submit"</span> value=<span class="string">"提交"</span> &gt;&lt;br&gt;</span><br><span class="line">&lt;/sf:form&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要自定义一个error的css样式</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">span</span><span class="selector-class">.error</span>&#123;</span><br><span class="line"> 	<span class="attribute">color</span>:red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果不填数据提交，则会出现响应的错误提示。</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-04_22-08-09.png" alt></p>
+<p>为什么会出现这种提示信息呢？当然不仅仅是因为将前面的标签换成了Spring的标签。还有就是在Controller中绑定了对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/register"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toRegister</span><span class="params">(Model model)</span></span>&#123;</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>,<span class="keyword">new</span> User());</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"register"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*处理表单数据，并验证*/</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/register"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">register</span><span class="params">(@Valid User user, Errors errors)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (errors.hasErrors())&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"register"</span>;<span class="comment">//注册失败，重新返回到注册页面</span></span><br><span class="line">    &#125;</span><br><span class="line">    userService.saveUser(user);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/registerSuccess"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>User：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@NotNull</span></span><br><span class="line">    <span class="meta">@Size</span>(min = <span class="number">4</span>,max = <span class="number">20</span>, message = <span class="string">"&#123;username.size&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@NotNull</span></span><br><span class="line">    <span class="meta">@Size</span>(min = <span class="number">6</span>,max = <span class="number">32</span>,message = <span class="string">"密码需要在&#123;min&#125; 到 &#123;max&#125; 位之间"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@NotNull</span>(message = <span class="string">"年龄不能为空"</span>)</span><br><span class="line">    <span class="meta">@Min</span>(value = <span class="number">1</span>,message = <span class="string">"年龄要大于等于1"</span>)</span><br><span class="line">    <span class="meta">@Max</span>(value = <span class="number">150</span>,message = <span class="string">"年龄需要小于150"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">	</span><br><span class="line">  	<span class="comment">//all or noArgsConstructor</span></span><br><span class="line">  	<span class="comment">//getter and setter</span></span><br><span class="line">  	<span class="comment">//toString</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，username的@size使用{}大括号来读取配置文件信息，解决了硬编码问题。由于这是输入数据验证，所以默认读取的是classpath下的，ValidationMessages.properties文件。如下：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">username.size</span> = <span class="string">账号需要在&#123;min&#125; 到 &#123;max&#125; 位之间</span></span><br></pre></td></tr></table></figure>
+
+<p>而{min}和{max}可以读取到@size中的min和max属性。</p>
+<p>如何将错误信息显示到一个地方呢？</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;sf:form method=<span class="string">"post"</span> modelAttribute=<span class="string">"user"</span> &gt;</span><br><span class="line">    &lt;sf:errors element=<span class="string">"div"</span> path=<span class="string">"*"</span> cssClass=<span class="string">"errors"</span>/&gt;</span><br><span class="line">    账号：&lt;sf:input path=<span class="string">"username"</span>/&gt;&lt;br&gt;</span><br><span class="line">    密码：&lt;sf:password path=<span class="string">"password"</span>  /&gt;&lt;br&gt;</span><br><span class="line">    年龄：&lt;sf:input path=<span class="string">"age"</span>/&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=<span class="string">"submit"</span> value=<span class="string">"提交"</span> &gt;&lt;br&gt;</span><br><span class="line">&lt;/sf:form&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，将之前每一个输入框后都有一个对应的<a href="sf:errors">sf:errors</a> 用来显示错误信息。而这里进行修改了，将错误信息全部放到了一个div元素中，并且path使用通配符*来描述。</p>
+<p>并且css样式定义为了errors:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span><span class="selector-class">.errors</span>&#123;</span><br><span class="line"> 	<span class="attribute">background-color</span>: <span class="number">#ffcccc</span>;</span><br><span class="line">  	<span class="attribute">border</span>: <span class="number">2px</span> solid red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时，测试结果如下：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-04_23-28-59.png" alt></p>
+<p>通过上面的测试结果图片可以看出，此时虽然错误信息全部显示在一起了，但是并没有明显的显示是哪一个输入框或是输入属性填写有问题。下面，再次修改：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;sf:form method=<span class="string">"post"</span> modelAttribute=<span class="string">"user"</span> &gt;</span><br><span class="line">  &lt;sf:errors element=<span class="string">"div"</span> path=<span class="string">"*"</span> cssClass=<span class="string">"errors"</span>/&gt;</span><br><span class="line">  &lt;sf:label path="username" cssErrorClass="error"&gt;账号：&lt;/sf:label&gt;	</span><br><span class="line">  &lt;sf:input cssErrorClass=<span class="string">"error"</span> path=<span class="string">"username"</span>/&gt;&lt;br&gt;</span><br><span class="line">  &lt;sf:label path="password" cssErrorClass="error"&gt;密码：&lt;/sf:label&gt;</span><br><span class="line">  &lt;sf:password cssErrorClass=<span class="string">"error"</span> path=<span class="string">"password"</span>  /&gt;&lt;br&gt;</span><br><span class="line">  &lt;sf:label path="age" cssErrorClass="error"&gt;年龄：&lt;/sf:label&gt;</span><br><span class="line">  &lt;sf:input cssErrorClass=<span class="string">"error"</span> path=<span class="string">"age"</span>/&gt;&lt;br&gt;</span><br><span class="line">  &lt;input type=<span class="string">"submit"</span> value=<span class="string">"提交"</span> &gt;&lt;br&gt;</span><br><span class="line">&lt;/sf:form&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如上代码，我们已经使用div类型的<a href="sf:errors">sf:errors</a>来统一显示错误信息，并且将提示信息使用了<a href="sf:label">sf:label</a>进行修饰，使用path进行绑定数据，同时使用cssErrorClass属性来引用出现错误时的css样式。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">label</span><span class="selector-class">.error</span>&#123;</span><br><span class="line">  	<span class="attribute">color</span>:red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">input</span><span class="selector-class">.error</span>&#123;</span><br><span class="line">  	<span class="attribute">background-color</span>: <span class="number">#ffcccc</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>所以，上述的代码运行结果如：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-04_23-37-12.png" alt></p>
+<p>至此，Spring的JSP标签就告一段落了。</p>
+<h3 id="Spring-通用的标签库"><a href="#Spring-通用的标签库" class="headerlink" title="Spring 通用的标签库"></a>Spring 通用的标签库</h3><p>如何引入在JSP文件中引入spring通用的标签库？</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">"s"</span> uri=<span class="string">"http://www.springframework.org/tags"</span> %&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/spring4x/Snipaste_2019-09-05_18-28-35.png" alt></p>
+<p><img src="/images/spring4x/Snipaste_2019-09-05_18-29-59.png" alt></p>
+<p>以上标签大部分使用得很少，因为部分标签已被Spring所淘汰了。</p>
+<h4 id="展现国际化信息"><a href="#展现国际化信息" class="headerlink" title="展现国际化信息"></a>展现国际化信息</h4><p>​    我们都知道，如果将文本内容硬编码到网页里面，就无法实现动态改变网页显示内容，比如我们在没学习JavaScript之前，构建网页只是使用了HTML+CSS，那么我们的页面一旦写好了，在运行过程中是无法动态修改的。而我们后台系统中，绝大部分数据是以图表的形式展示，而表格的数据是动态切换的，比如：表格分页。分页的时候，网页URL并没有变化，而数据却修改了。而我们如果需要实现国际化也是一样的。所有需要进行国际化编码显示的内容都不可以硬编码到网页中，那么如何实现呢？下面看看Spring提供的方式：</p>
+<p>使用到的标签是上面表格中的&lt;s:message code = “”&gt;</p>
+<p>home.jsp</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">"s"</span> uri=<span class="string">"http://www.springframework.org/tags"</span> %&gt;</span><br><span class="line">&lt;%@ taglib prefix=<span class="string">"c"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> %&gt;</span><br><span class="line">&lt;%@ taglib prefix=<span class="string">"sf"</span> uri=<span class="string">"http://www.springframework.org/tags/form"</span> %&gt;</span><br><span class="line">&lt;%@ page contentType=<span class="string">"text/html;charset=UTF-8"</span> language=<span class="string">"java"</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Blog&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h1&gt;&lt;s:message code="article.welcome"/&gt;&lt;/h1&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置文件中配置引用文件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*查询类路径下的message.properties文件*/</span></span><br><span class="line"><span class="comment">/*@Bean</span></span><br><span class="line"><span class="comment">    public MessageSource messageSource()&#123;</span></span><br><span class="line"><span class="comment">        ResourceBundleMessageSource messageSource =</span></span><br><span class="line"><span class="comment">                new ResourceBundleMessageSource();</span></span><br><span class="line"><span class="comment">        messageSource.setBasename("message");</span></span><br><span class="line"><span class="comment">        return messageSource;</span></span><br><span class="line"><span class="comment">    &#125;*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> MessageSource <span class="title">messageSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ReloadableResourceBundleMessageSource messageSource =</span><br><span class="line">    <span class="keyword">new</span> ReloadableResourceBundleMessageSource();</span><br><span class="line">  messageSource.setBasenames(<span class="string">"classpath:message"</span>);</span><br><span class="line">  messageSource.setCacheSeconds(<span class="number">10</span>);</span><br><span class="line">  <span class="keyword">return</span> messageSource;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述配置类中，这两个类都可以使用，但是有一定的区别：ResourceBundleMessageSource是从classpath中查询message文件，但是ReloadableResourceBundleMessageSource既可以从文件系统file:/，也可以使用classpath来指定类路径下引用，或是web应用的根目录下（没有前缀）查找。</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_10-30-04.png" alt></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">--</span> <span class="string">zh-CN:</span></span><br><span class="line"><span class="meta">article.welcome</span> = <span class="string">欢迎来到spring的大世界</span></span><br><span class="line"></span><br><span class="line"><span class="meta">--</span> <span class="string">en-US:</span></span><br><span class="line"><span class="meta">article.welcome</span> = <span class="string">welcome to Spring's world</span></span><br></pre></td></tr></table></figure>
+
+<p>如上图所示：创建两个properties文件，名称如上，en-US表示英文，zh-CN表示中文，由于浏览器更改语言环境不方便，这里我们使用Postman来测试。如下：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_10-35-07.png" alt></p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_10-35-55.png" alt></p>
+<p>注意：Accept-Language的value值，比如zh-CN,需要将-写成中划线，不能写成下划线，否则不会生效。</p>
+<h4 id="创建URL"><a href="#创建URL" class="headerlink" title="创建URL"></a>创建URL</h4><p>链接对于HTML页面来说，是一种最寻常不过的元素了，下面我们来了解一下spring URL标签的神奇：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">"s"</span> uri=<span class="string">"http://www.springframework.org/tags"</span> %&gt;</span><br><span class="line">&lt;%@ taglib prefix=<span class="string">"c"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> %&gt;</span><br><span class="line">&lt;%@ taglib prefix=<span class="string">"sf"</span> uri=<span class="string">"http://www.springframework.org/tags/form"</span> %&gt;</span><br><span class="line">&lt;%@ page contentType=<span class="string">"text/html;charset=UTF-8"</span> language=<span class="string">"java"</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Blog&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;a href="&lt;s:url value="/articles"/&gt;" &gt; 所有文章 &lt;/a&gt;   |</span><br><span class="line">&lt;a href="&lt;s:url value="/register"/&gt;"&gt; 注册 &lt;/a&gt;</span><br><span class="line">&lt;br&gt;</span><br><span class="line"></span><br><span class="line">&lt;h2&gt;使用spring的标签库&lt;/h2&gt;</span><br><span class="line">&lt;%--定义一个变量，url的作用域默认在页面，但是可以通过scope进行修改--%&gt;</span><br><span class="line">&lt;s:url value=<span class="string">"/articles"</span> scope=<span class="string">"session"</span> <span class="keyword">var</span>=<span class="string">"articlesUrl"</span>/&gt;</span><br><span class="line">&lt;%--在连接中使用，--%&gt;</span><br><span class="line">&lt;a href="&lt;s:url value="$&#123;articlesUrl&#125;"/&gt; "&gt;所有文章&lt;/a&gt;&lt;br&gt;</span><br><span class="line">&lt;%--传参数--%&gt;</span><br><span class="line">&lt;s:url value=<span class="string">"/article"</span> <span class="keyword">var</span>=<span class="string">"article"</span> &gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"page"</span> value=<span class="string">"1"</span>/&gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"size"</span> value=<span class="string">"2"</span>/&gt;</span><br><span class="line">&lt;/s:url&gt;</span><br><span class="line">&lt;a href="$&#123;article&#125;"&gt;分页查询文章，page=1 size=2&lt;/a&gt;&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;%--路径参数,如果有参数不匹配，则会转为普通参数传递。http:<span class="comment">//localhost:8080/article/3?name=ouyang--%&gt;</span></span><br><span class="line">&lt;s:url value=<span class="string">"/article/&#123;id&#125;"</span> <span class="keyword">var</span>=<span class="string">"articleId"</span>&gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"id"</span> value=<span class="string">"3"</span>/&gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"name"</span> value=<span class="string">"ouyang"</span>/&gt;</span><br><span class="line">&lt;/s:url&gt;</span><br><span class="line">&lt;a href="$&#123;articleId&#125;"&gt;使用路径变量来获取文章&#123;id = 3&#125;&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>普通使用</li>
+</ol>
+<p>&lt;a href=”&lt;s:url value=”/articles”/&gt;” &gt;` ，使用spring url标签，jsp页面渲染时，会将项目名自动与/articles 拼接。当我们将鼠标放在所有文章上面，可以看到下面的提示：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_10-53-07.png" alt></p>
+<p>即：单纯普通使用spring的url标签，与jstl标签类似，也会自动拼接上项目名。</p>
+<ol start="2">
+<li>定义成变量，设置scope</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--定义一个变量，url的作用域默认在页面，但是可以通过scope进行修改--%&gt;</span><br><span class="line">&lt;s:url value=<span class="string">"/articles"</span> scope=<span class="string">"session"</span> <span class="keyword">var</span>=<span class="string">"articlesUrl"</span>/&gt;</span><br><span class="line">&lt;%--在连接中使用，--%&gt;</span><br><span class="line">&lt;a href="&lt;s:url value="$&#123;articlesUrl&#125;"/&gt; "&gt;所有文章&lt;/a&gt;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上述两行代码则说明，可以先将连接独立成一个变量，然后在进行引用，如使用var来定义连接变量。则在需要使用的地方可以使用${}来引用。同时我们可以看到，可以进行scope的设置，即：设置链接的作用域，链接本身的默认的作用域是page，而我们可以设置为request,session,application等作用域。</p>
+<ol start="3">
+<li>查询参数传递</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--传参数--%&gt;</span><br><span class="line">&lt;s:url value=<span class="string">"/article"</span> <span class="keyword">var</span>=<span class="string">"article"</span> &gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"page"</span> value=<span class="string">"1"</span>/&gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"size"</span> value=<span class="string">"2"</span>/&gt;</span><br><span class="line">&lt;/s:url&gt;</span><br><span class="line">&lt;a href="$&#123;article&#125;"&gt;分页查询文章，page=1 size=2&lt;/a&gt;&lt;br/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们直接看效果：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_11-01-26.png" alt></p>
+<ol start="4">
+<li>传递路径参数</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--路径参数,如果有参数不匹配，则会转为普通参数传递。http:<span class="comment">//localhost:8080/article/3?name=ouyang--%&gt;</span></span><br><span class="line">&lt;s:url value=<span class="string">"/article/&#123;id&#125;"</span> <span class="keyword">var</span>=<span class="string">"articleId"</span>&gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"id"</span> value=<span class="string">"3"</span>/&gt;</span><br><span class="line">    &lt;s:param name=<span class="string">"name"</span> value=<span class="string">"ouyang"</span>/&gt;</span><br><span class="line">&lt;/s:url&gt;</span><br><span class="line">&lt;a href="$&#123;articleId&#125;"&gt;使用路径变量来获取文章&#123;id = 3&#125;&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_11-02-36.png" alt></p>
+<p>结合上述说明和效果图可以发现，我们可以使用{}来定义路径参数，如果存在参数匹配不到路径变量，则自动转为查询参数拼接到请求URL上。</p>
+<h4 id="转义内容"><a href="#转义内容" class="headerlink" title="转义内容"></a>转义内容</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--内容转义--%&gt;</span><br><span class="line">&lt;s:escapeBody htmlEscape=<span class="string">"true"</span>&gt;</span><br><span class="line">    &lt;h1&gt;这是转义的一级标题标签&lt;/h1&gt;</span><br><span class="line">&lt;/s:escapeBody&gt;</span><br><span class="line">&lt;h1&gt;这是没有转义的一级标题标签&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们可以使用&lt;s:escapeBody&gt;来进行内容转义。效果如下：</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_11-05-32.png" alt></p>
+<h2 id="使用Thymeleaf"><a href="#使用Thymeleaf" class="headerlink" title="使用Thymeleaf"></a>使用Thymeleaf</h2><p>如今我们可以发现，jsp慢慢不再使用了，而转向了Thymeleaf，jsp本质来说不是HTML，并且它是依赖于Servlet的，这也就说明，JSP不能独立于Servlet,必须建立于基于Servlet的web容器上。JSP模板不能作为通用的模板（如格式化EMail），也不能用于非Servlet的web应用。</p>
+<blockquote>
+<p>官网：<a href="https://www.thymeleaf.org/">https://www.thymeleaf.org/</a></p>
+</blockquote>
+<h3 id="Spring整合Thymeleaf"><a href="#Spring整合Thymeleaf" class="headerlink" title="Spring整合Thymeleaf"></a>Spring整合Thymeleaf</h3><ol>
+<li>添加POM依赖。</li>
+</ol>
+<p>可以进到Thymeleaf官网：<a href="https://www.thymeleaf.org/download.html">https://www.thymeleaf.org/download.html</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.thymeleaf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>thymeleaf<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.11.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.thymeleaf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>thymeleaf-spring5<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.9.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时，项目的完整POM文件如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.ooyhao.spring<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-in-action-06-01<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>spring-in-action-06-01 Maven Webapp<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.example.com<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--导入SpringMVC依赖--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-webmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.9.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--导入Servlet依赖--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--hibernate参数校验依赖--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate.validator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-validator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.1.0.Alpha3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--导入Jstl标签依赖--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jstl<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jstl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--导入Jackson依赖--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--Junit测试依赖--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--整合Thymeleaf--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.thymeleaf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>thymeleaf<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.11.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.thymeleaf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>thymeleaf-spring5<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.9.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">finalName</span>&gt;</span>spring-in-action-06-01<span class="tag">&lt;/<span class="name">finalName</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pluginManagement</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-clean-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-resources-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.8.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.22.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-war-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-install-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-deploy-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">pluginManagement</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="配置整合Thymeleaf"><a href="#配置整合Thymeleaf" class="headerlink" title="配置整合Thymeleaf"></a>配置整合Thymeleaf</h3><p>在ServletConfig配置文件中配置相应的信息来整合Thymeleaf模板。</p>
+<p>配置Thymeleaf视图解析器：</p>
+<p>为了要在Spring中使用Thymeleaf，我们需要配置三个启用Thymeleaf与Spring集成的bean：</p>
+<ul>
+<li>ThymeleafViewResolver：将逻辑视图名称解析为Thymeleaf模式视图；</li>
+<li>SpringTemplateEngine：处理模板并渲染结果；</li>
+<li>TemplateResolver：加载Thymeleaf模板；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*-------------配置Thymeleaf模板引擎------------*/</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SpringResourceTemplateResolver <span class="title">templateResolver</span><span class="params">()</span></span>&#123;</span><br><span class="line">  SpringResourceTemplateResolver resolver = <span class="keyword">new</span> SpringResourceTemplateResolver();</span><br><span class="line">  resolver.setTemplateMode(TemplateMode.HTML);</span><br><span class="line">  resolver.setPrefix(<span class="string">"/WEB-INF/templates/"</span>);</span><br><span class="line">  resolver.setSuffix(<span class="string">".html"</span>);</span><br><span class="line">  resolver.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">  resolver.setCacheable(<span class="keyword">true</span>);</span><br><span class="line">  <span class="keyword">return</span> resolver;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SpringTemplateEngine <span class="title">templateEngine</span><span class="params">()</span></span>&#123;</span><br><span class="line">  SpringTemplateEngine engine = <span class="keyword">new</span> SpringTemplateEngine();</span><br><span class="line">  engine.setTemplateResolver(templateResolver());</span><br><span class="line">  engine.setEnableSpringELCompiler(<span class="keyword">true</span>);</span><br><span class="line">  <span class="keyword">return</span> engine;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ThymeleafViewResolver <span class="title">viewResolver</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ThymeleafViewResolver resolver = <span class="keyword">new</span> ThymeleafViewResolver();</span><br><span class="line">  resolver.setTemplateEngine(templateEngine());</span><br><span class="line">  resolver.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">  <span class="keyword">return</span> resolver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：需要在templateResolver和viewResolver中设置字符编码，否则会出现中文乱码的情况。</p>
+<p>此时，ServletConfig.java的完整文件如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*相当于springmvc.xml*/</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages = <span class="string">"com.ooyhao.spring.**.controller"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置JSP视图解析器*/</span></span><br><span class="line">    <span class="comment">/*@Bean</span></span><br><span class="line"><span class="comment">    public ViewResolver viewResolver()&#123;</span></span><br><span class="line"><span class="comment">        InternalResourceViewResolver resolver =</span></span><br><span class="line"><span class="comment">                new InternalResourceViewResolver();</span></span><br><span class="line"><span class="comment">        resolver.setPrefix("/WEB-INF/views/");</span></span><br><span class="line"><span class="comment">        resolver.setSuffix(".jsp");</span></span><br><span class="line"><span class="comment">        resolver.setExposeContextBeansAsAttributes(true);</span></span><br><span class="line"><span class="comment">        */</span><span class="comment">/*将视图解析为JstlView</span></span><br><span class="line"><span class="comment">        * 查看源码可以看出，默认解析为InternalResourceView</span></span><br><span class="line"><span class="comment">        * */</span><span class="comment">/*</span></span><br><span class="line"><span class="comment">        resolver.setViewClass(JstlView.class);</span></span><br><span class="line"><span class="comment">        return resolver;</span></span><br><span class="line"><span class="comment">    &#125;*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*查询类路径下的message.properties文件*/</span></span><br><span class="line">    <span class="comment">/*@Bean</span></span><br><span class="line"><span class="comment">    public MessageSource messageSource()&#123;</span></span><br><span class="line"><span class="comment">        ResourceBundleMessageSource messageSource =</span></span><br><span class="line"><span class="comment">                new ResourceBundleMessageSource();</span></span><br><span class="line"><span class="comment">        messageSource.setBasename("message");</span></span><br><span class="line"><span class="comment">        return messageSource;</span></span><br><span class="line"><span class="comment">    &#125;*/</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> MessageSource <span class="title">messageSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ReloadableResourceBundleMessageSource messageSource =</span><br><span class="line">                <span class="keyword">new</span> ReloadableResourceBundleMessageSource();</span><br><span class="line">        messageSource.setBasenames(<span class="string">"classpath:message"</span>);</span><br><span class="line">        messageSource.setCacheSeconds(<span class="number">10</span>);</span><br><span class="line">        <span class="keyword">return</span> messageSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*配置静态资源的处理*/</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureDefaultServletHandling</span><span class="params">(DefaultServletHandlerConfigurer configurer)</span> </span>&#123;</span><br><span class="line">        configurer.enable();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*使用Apache Tiles来进行布局，此处不做研究*/</span></span><br><span class="line">   <span class="comment">/* @Bean</span></span><br><span class="line"><span class="comment">    public TilesConfigurer tilesConfigurer()&#123;</span></span><br><span class="line"><span class="comment">        TilesConfigurer tilesConfigurer = new TilesConfigurer();</span></span><br><span class="line"><span class="comment">        tilesConfigurer.setDefinitions("/WEB-INF/layout/tiles.xml");</span></span><br><span class="line"><span class="comment">        tilesConfigurer.setCheckRefresh(true);</span></span><br><span class="line"><span class="comment">        return tilesConfigurer;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    @Bean</span></span><br><span class="line"><span class="comment">    public TilesViewResolver tilesViewResolver()&#123;</span></span><br><span class="line"><span class="comment">        return new TilesViewResolver();</span></span><br><span class="line"><span class="comment">    &#125;*/</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/*-------------配置Thymeleaf模板引擎------------*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SpringResourceTemplateResolver <span class="title">templateResolver</span><span class="params">()</span></span>&#123;</span><br><span class="line">        SpringResourceTemplateResolver resolver = <span class="keyword">new</span> SpringResourceTemplateResolver();</span><br><span class="line">        resolver.setTemplateMode(TemplateMode.HTML);</span><br><span class="line">        resolver.setPrefix(<span class="string">"/WEB-INF/templates/"</span>);</span><br><span class="line">        resolver.setSuffix(<span class="string">".html"</span>);</span><br><span class="line">        resolver.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">        resolver.setCacheable(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> resolver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SpringTemplateEngine <span class="title">templateEngine</span><span class="params">()</span></span>&#123;</span><br><span class="line">        SpringTemplateEngine engine = <span class="keyword">new</span> SpringTemplateEngine();</span><br><span class="line">        engine.setTemplateResolver(templateResolver());</span><br><span class="line">        engine.setEnableSpringELCompiler(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> engine;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ThymeleafViewResolver <span class="title">viewResolver</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ThymeleafViewResolver resolver = <span class="keyword">new</span> ThymeleafViewResolver();</span><br><span class="line">        resolver.setTemplateEngine(templateEngine());</span><br><span class="line">        resolver.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">        <span class="keyword">return</span> resolver;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过上述配置 Thymeleaf templateResolver 视图解析器，与之前配置JSP视图解析器类似，都是通过逻辑视图名来定位文件，但是这里需要依赖templateEngine。</p>
+<p><img src="/images/spring4x/Snipaste_2019-09-09_14-44-26.png" alt></p>
+<p>接下来按照上述代码配置或图中所示的位置编写相应的html页面即可。</p>
+<h2 id="Thymeleaf实现表单绑定"><a href="#Thymeleaf实现表单绑定" class="headerlink" title="Thymeleaf实现表单绑定"></a>Thymeleaf实现表单绑定</h2><h3 id="html文件"><a href="#html文件" class="headerlink" title="html文件"></a>html文件</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html  xmlns=<span class="string">"http://www.w3.org/1999/xhtml"</span></span><br><span class="line">       xmlns:th=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Blog&lt;/title&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        span.error&#123;</span><br><span class="line">            color:red;</span><br><span class="line">        &#125;</span><br><span class="line">        div.errors&#123;</span><br><span class="line">            background-color: #ffcccc;</span><br><span class="line">            border: <span class="number">2</span>px solid red;</span><br><span class="line">        &#125;</span><br><span class="line">        label.error&#123;</span><br><span class="line">            color:red;</span><br><span class="line">        &#125;</span><br><span class="line">        input.error&#123;</span><br><span class="line">            background-color: #ffcccc;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line"></span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h1&gt;欢迎加入Spring的大家庭&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">    &lt;form method=<span class="string">"post"</span> th:object=<span class="string">"$&#123;user&#125;"</span> &gt;</span><br><span class="line"></span><br><span class="line">        &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"errors"</span> th:<span class="keyword">if</span>=<span class="string">"$&#123;#fields.hasErrors('*')&#125;"</span> &gt;</span><br><span class="line">            &lt;ul&gt;</span><br><span class="line">                &lt;li th:each=<span class="string">"err : $&#123;#fields.errors('*')&#125;"</span> th:text=<span class="string">"$&#123;err&#125;"</span>  &gt;</span><br><span class="line">                    Input is Incorrect</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">            &lt;/ul&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">        &lt;label th:class="$&#123;#fields.hasErrors('username')&#125; ? 'error' "&gt;账号：&lt;/label&gt;</span><br><span class="line">        &lt;input type=<span class="string">"text"</span>  th:field=<span class="string">"*&#123;username&#125;"</span>  th:<span class="class"><span class="keyword">class</span></span>=<span class="string">"$&#123;#fields.hasErrors('username')&#125; ? 'error'"</span>/&gt;&lt;br&gt;</span><br><span class="line"></span><br><span class="line">        &lt;label th:class="$&#123;#fields.hasErrors('password')&#125; ? 'error' "&gt;密码：&lt;/label&gt;</span><br><span class="line">        &lt;input type=<span class="string">"password"</span> th:field=<span class="string">"*&#123;password&#125;"</span>  th:<span class="class"><span class="keyword">class</span></span>=<span class="string">"$&#123;#fields.hasErrors('password')&#125; ? 'error'"</span> /&gt;&lt;br&gt;</span><br><span class="line"></span><br><span class="line">        &lt;label th:class="$&#123;#fields.hasErrors('age')&#125; ? 'error' "&gt;年龄：&lt;/label&gt;</span><br><span class="line">        &lt;input th:field=<span class="string">"*&#123;age&#125;"</span>  th:<span class="class"><span class="keyword">class</span></span>=<span class="string">"$&#123;#fields.hasErrors('age')&#125; ? 'error'"</span>/&gt;&lt;br&gt;</span><br><span class="line"></span><br><span class="line">        &lt;input type=<span class="string">"submit"</span> value=<span class="string">"提交"</span> &gt;&lt;br&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出：代码中是通过使用fields.hasErrors以及后台的数据校验来判断是否有错误的。后台代码与之前的jsp略有不同：</p>
+<h3 id="Controller文件"><a href="#Controller文件" class="headerlink" title="Controller文件"></a>Controller文件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//jsp</span></span><br><span class="line"><span class="comment">//处理表单数据，并验证*//*</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/register"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">register</span><span class="params">(@Valid User user, Errors errors)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (errors.hasErrors())&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"register"</span>;<span class="comment">//注册失败，重新返回到注册页面</span></span><br><span class="line">    &#125;</span><br><span class="line">    userService.saveUser(user);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/registerSuccess"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//thymeleaf</span></span><br><span class="line"><span class="comment">/*处理表单数据，并验证*/</span></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/register"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">register</span><span class="params">(@Valid User user, BindingResult bindingResult,Model model)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (bindingResult.hasErrors())&#123;</span><br><span class="line">      System.out.println(<span class="string">"错误数目:"</span> + bindingResult.getErrorCount());</span><br><span class="line">      model.addAttribute(user);</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"register"</span>;<span class="comment">//注册失败，重新返回到注册页面</span></span><br><span class="line">    &#125;</span><br><span class="line">    userService.saveUser(user);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/registerSuccess"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>jsp使用spring的标签时是用Errors来判断，而html使用Thymeleaf时是使用BindingResult来进行判断。上述代码显示了不同之处。</p>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><img src="/images/spring4x/Snipaste_2019-09-09_15-45-09.png" alt></p>
+<p>总结：</p>
+<p>​    至此，本节已经学习了Spring如何整合JSP，使用Spring的标签，同时也接触了当前正在逐渐替代JSP的Thymeleaf，也实现了之前使用JSP同样地表单双向绑定的效果。</p>
+<p>使用Thymeleaf实现表单双向绑定参考了</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/z28126308/article/details/54429853">https://blog.csdn.net/z28126308/article/details/54429853</a></p>
+</blockquote>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/01/29/SSM/spring4x/6%E6%B8%B2%E6%9F%93Web%E8%A7%86%E5%9B%BE/">六、渲染Web视图</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/01/29/SSM/spring4x/6%E6%B8%B2%E6%9F%93Web%E8%A7%86%E5%9B%BE/">https://ooyhao.github.io/2020/01/29/SSM/spring4x/6%E6%B8%B2%E6%9F%93Web%E8%A7%86%E5%9B%BE/</a></li>
+            <li><strong>发布时间：</strong>2020-01-29</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/spring4x/" rel="tag">spring4x</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/01/29/SSM/spring4x/7SpringMVC%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">七、SpringMVC高级技术</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/29/SSM/spring4x/5SpringMVC%E8%B5%B7%E6%AD%A5/">
+                <span class="level-item">五、SpringMVC起步</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '36b78fb010cada88d915a6ba9d548f35',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            51
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            9
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            10
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#理解视图解析">
+        <span class="has-mr-6">1</span>
+        <span>理解视图解析</span>
+        </a></li><li>
+        <a class="is-flex" href="#解析JSTL视图">
+        <span class="has-mr-6">2</span>
+        <span>解析JSTL视图</span>
+        </a></li><li>
+        <a class="is-flex" href="#Spring的JSP库">
+        <span class="has-mr-6">3</span>
+        <span>Spring的JSP库</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#JSP标签">
+        <span class="has-mr-6">3.1</span>
+        <span>JSP标签</span>
+        </a></li><li>
+        <a class="is-flex" href="#将标签绑定到模型上">
+        <span class="has-mr-6">3.2</span>
+        <span>将标签绑定到模型上</span>
+        </a></li><li>
+        <a class="is-flex" href="#Spring-通用的标签库">
+        <span class="has-mr-6">3.3</span>
+        <span>Spring 通用的标签库</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#展现国际化信息">
+        <span class="has-mr-6">3.3.1</span>
+        <span>展现国际化信息</span>
+        </a></li><li>
+        <a class="is-flex" href="#创建URL">
+        <span class="has-mr-6">3.3.2</span>
+        <span>创建URL</span>
+        </a></li><li>
+        <a class="is-flex" href="#转义内容">
+        <span class="has-mr-6">3.3.3</span>
+        <span>转义内容</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#使用Thymeleaf">
+        <span class="has-mr-6">4</span>
+        <span>使用Thymeleaf</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Spring整合Thymeleaf">
+        <span class="has-mr-6">4.1</span>
+        <span>Spring整合Thymeleaf</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置整合Thymeleaf">
+        <span class="has-mr-6">4.2</span>
+        <span>配置整合Thymeleaf</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Thymeleaf实现表单绑定">
+        <span class="has-mr-6">5</span>
+        <span>Thymeleaf实现表单绑定</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#html文件">
+        <span class="has-mr-6">5.1</span>
+        <span>html文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#Controller文件">
+        <span class="has-mr-6">5.2</span>
+        <span>Controller文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#效果图">
+        <span class="has-mr-6">5.3</span>
+        <span>效果图</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">46</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 11.67px;">feign</a> <a href="/tags/gateway/" style="font-size: 13.33px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 16.67px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 18.33px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 15px;">sentinel</a> <a href="/tags/spring4x/" style="font-size: 20px;">spring4x</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十一、SSM + Redis">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:11.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十一、SSM + Redis</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十、Spring发送eMail">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:10.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十、Spring发送eMail</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="九、SpringCache">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:09.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="title has-link-black-ter is-size-6 has-text-weight-normal">九、SpringCache</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/8Spring%E5%92%8CJDBC%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="八、Spring和JDBC操作数据库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:08.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/8Spring%E5%92%8CJDBC%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" class="title has-link-black-ter is-size-6 has-text-weight-normal">八、Spring和JDBC操作数据库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/01/29/SSM/spring4x/7SpringMVC%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="七、SpringMVC高级技术">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:07.000Z">2020-01-29</time></div>
+                    <a href="/2020/01/29/SSM/spring4x/7SpringMVC%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/" class="title has-link-black-ter is-size-6 has-text-weight-normal">七、SpringMVC高级技术</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">51</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="六、渲染Web视图" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
