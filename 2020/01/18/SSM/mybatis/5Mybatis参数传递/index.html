@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-01-18T08:15:05.000Z">
-<meta property="article:modified_time" content="2020-01-28T03:20:07.073Z">
+<meta property="article:modified_time" content="2020-01-30T06:20:45.988Z">
 <meta property="article:author" content="ouYang">
 <meta property="article:tag" content="mybatis">
 <meta name="twitter:card" content="summary">
@@ -160,7 +160,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    9 分钟 读完 (大约 1285 个字)
+                    9 分钟 读完 (大约 1307 个字)
                 </span>
                 
                 
@@ -249,7 +249,8 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUsersByUsernamePassword5"</span> <span class="attr">resultType</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">        select * from tb_user where username = #&#123;map.username&#125; </span><br><span class="line">  			and password = #&#123;map.password&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>使用方法和方法5类似，不再赘述。</p>
-<h2 id="可迭代对象"><a href="#可迭代对象" class="headerlink" title="可迭代对象"></a>可迭代对象</h2><h3 id="传递List"><a href="#传递List" class="headerlink" title="传递List"></a>传递List</h3><p>前面的动态SQL中使用到了传递List的情况，这小节主要把几种迭代对象都使用一遍。</p>
+<h2 id="可迭代对象"><a href="#可迭代对象" class="headerlink" title="可迭代对象"></a>可迭代对象</h2><p>注意：如果使用接口<code>Collection</code> , 在Mapper.xml文件中，直接使用 <code>colllection</code>.</p>
+<h3 id="传递List"><a href="#传递List" class="headerlink" title="传递List"></a>传递List</h3><p>前面的动态SQL中使用到了传递List的情况，这小节主要把几种迭代对象都使用一遍。</p>
 <p>Mapper接口方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">List&lt;User&gt; <span class="title">findUsersByIds</span><span class="params">(List&lt;Integer&gt; id)</span></span>;</span><br></pre></td></tr></table></figure>
 
