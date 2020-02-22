@@ -7,19 +7,19 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Linux上安装 redis - Hexo</title>
+<title>5.redis 数据类型之list列表 - Hexo</title>
 
 
-    <meta name="description" content="Linux上安装 redis">
+    <meta name="description" content="redis 数据类型之list列表">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux上安装 redis">
-<meta property="og:url" content="https://ooyhao.github.io/2020/02/17/db/redis/Linux%E5%AE%89%E8%A3%85redis/index.html">
+<meta property="og:title" content="5.redis 数据类型之list列表">
+<meta property="og:url" content="https://ooyhao.github.io/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Linux上安装 redis">
+<meta property="og:description" content="redis 数据类型之list列表">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-02-17T05:48:34.000Z">
-<meta property="article:modified_time" content="2020-02-18T01:09:29.310Z">
+<meta property="article:published_time" content="2020-02-22T07:55:05.000Z">
+<meta property="article:modified_time" content="2020-02-22T07:58:55.519Z">
 <meta property="article:author" content="ouYang">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary">
@@ -81,7 +81,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo2.png" alt="Linux上安装 redis" height="28">
+                <img src="/images/logo2.png" alt="5.redis 数据类型之list列表" height="28">
             
             </a>
         </div>
@@ -150,17 +150,17 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-02-17T05:48:34.000Z">2020-02-17</time>
+                <time class="level-item has-text-grey" datetime="2020-02-22T07:55:05.000Z">2020-02-22</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                <a class="has-link-grey -link" href="/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    4 分钟 读完 (大约 629 个字)
+                    7 分钟 读完 (大约 1018 个字)
                 </span>
                 
                 
@@ -174,86 +174,82 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Linux上安装 redis
+                5.redis 数据类型之list列表
             
         </h1>
         <div class="content">
-            <p>Linux上安装 redis</p>
+            <p>redis 数据类型之list列表</p>
 <a id="more"></a>
 
-<h3 id="下载压缩包"><a href="#下载压缩包" class="headerlink" title="下载压缩包"></a>下载压缩包</h3><p>进入redis官网【 <a href="https://redis.io/">https://redis.io/</a> 】，将redis.tar.gz包下载下来，如果下载缓慢，可以把链接复制到迅雷中下载。</p>
-<p>【<a href="http://download.redis.io/releases/redis-5.0.7.tar.gz】">http://download.redis.io/releases/redis-5.0.7.tar.gz】</a></p>
-<p><img src="/images/redis/Snipaste_2020-01-19_23-10-30.png" alt></p>
-<h3 id="上传服务器"><a href="#上传服务器" class="headerlink" title="上传服务器"></a>上传服务器</h3><p>将下载的包【redis-5.0.7.tar.gz】上传到服务器或是虚拟机中。</p>
-<h3 id="解压并安装"><a href="#解压并安装" class="headerlink" title="解压并安装"></a>解压并安装</h3><p>执行命令【tar -zxvf redis-5.0.7.tar.gz】解压。cd 进入到redis包中，执行 make 命令进行编译。</p>
-<p>你可以会遇到下列报错：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-5.0.7]# make</span><br><span class="line">cd src &amp;&amp; make all</span><br><span class="line">make[1]: 进入目录“/ooyhao/software/redis-5.0.7/src”</span><br><span class="line">    CC adlist.o</span><br><span class="line">/bin/sh: cc: 未找到命令</span><br><span class="line">make[1]: *** [adlist.o] 错误 127</span><br><span class="line">make[1]: 离开目录“/ooyhao/software/redis-5.0.7/src”</span><br><span class="line">make: *** [all] 错误 2</span><br></pre></td></tr></table></figure>
+<h3 id="列表简介"><a href="#列表简介" class="headerlink" title="列表简介"></a>列表简介</h3><p>Redis列表是简单的<code>字符串</code>列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）一个列表最多可以包含 232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。</p>
+<h3 id="列表操作命令"><a href="#列表操作命令" class="headerlink" title="列表操作命令"></a>列表操作命令</h3><h4 id="lpush"><a href="#lpush" class="headerlink" title="lpush"></a>lpush</h4><p><code>LPUSH key value1[value2]</code></p>
+<p>lpush 即 left push. 将一个或多个值value插入到列表key的表头，如果有多个value值。那么各个value值按从左到右的顺序依次插入到表头。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpush name shangsan lisi wangwu</span><br><span class="line">(integer) 3</span><br></pre></td></tr></table></figure>
 
-<p>是因为没有安装 <code>gcc</code>环境，我们执行下列命令来安装环境</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++</span><br></pre></td></tr></table></figure>
+<p>返回的是列表元素的个数。</p>
+<h4 id="lpushx"><a href="#lpushx" class="headerlink" title="lpushx"></a>lpushx</h4><p><code>LPUSHX key value</code></p>
+<p>Redis Lpushx 将一个值插入到已存在的列表头部，列表不存在时操作无效。</p>
+<h4 id="lrange"><a href="#lrange" class="headerlink" title="lrange"></a>lrange</h4><p><code>LRANGE key start stop</code></p>
+<p>返回列表key中指定区间内的元素，区间以偏移量start 和 stop指定。下标(index)参数start和stop都以0为底，即0 表示的第一个元素，1表示列表的第二元素。依次类推。我们也可以使用负数下标，以-1表示列表的最后一个元素，-2 表示列表的倒数第二个元素，依次类推。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpush name shangsan lisi wangwu</span><br><span class="line">(integer) 3</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">3) "shangsan"</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -2</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 2</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">3) "shangsan"</span><br></pre></td></tr></table></figure>
 
-<p>再执行下列命令 清空上次编译失败残留文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make distclean</span><br></pre></td></tr></table></figure>
 
-<p>最后执行下列命令编译及安装</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
 
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>5.启动之前，执行【vi redis.conf】修改一下<code>redis.conf</code>这个配置文件。将里面的<code>daemonize no</code>改为<code>yes</code>。让服务在后台启动。如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi redis.conf</span><br></pre></td></tr></table></figure>
+<h4 id="rpush"><a href="#rpush" class="headerlink" title="rpush"></a>rpush</h4><p><code>RPUSH key value1 [value2]</code></p>
+<p>rpush即 right push. rpush与lpush的功能一致，不同的是rpush的中的value值是按照从右到左的顺序依次插入。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpush name tom peter john</span><br><span class="line">(integer) 6</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">3) "shangsan"</span><br><span class="line">4) "tom"</span><br><span class="line">5) "peter"</span><br><span class="line">6) "john"</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/redis/Snipaste_2020-01-19_23-22-18.png" alt></p>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>执行命令启动redis，如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd src</span><br><span class="line">redis-server ../redis-conf</span><br></pre></td></tr></table></figure>
+<h4 id="rpushx"><a href="#rpushx" class="headerlink" title="rpushx"></a>rpushx</h4><p><code>RPUSHX key value</code></p>
+<p>Redis Rpushx 命令用于将一个值插入到已存在的列表尾部(最右边)。如果列表不存在，操作无效。</p>
+<h4 id="rpop"><a href="#rpop" class="headerlink" title="rpop"></a>rpop</h4><p>rpop 即 right pop. rpop命令可以移除并返回列表key的尾元素。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">3) "shangsan"</span><br><span class="line">4) "tom"</span><br><span class="line">5) "peter"</span><br><span class="line">6) "john"</span><br><span class="line">127.0.0.1:6379&gt; rpop name</span><br><span class="line">"john"</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">3) "shangsan"</span><br><span class="line">4) "tom"</span><br><span class="line">5) "peter"</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/redis/Snipaste_2020-01-19_23-24-17.png" alt></p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>通过下列命令进入到控制台,然后通过 <code>ping</code>命令进行连通性测试，如果看到了<code>pong</code>，则表示连接通了。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-5.0.7]# redis-cli</span><br><span class="line">127.0.0.1:6379&gt;</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br></pre></td></tr></table></figure>
 
-<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><p>关闭redis，通过<code>shutdown</code>命令我们可以关闭实例。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; shutdown</span><br><span class="line">not connected&gt;</span><br><span class="line">not connected&gt; exit</span><br></pre></td></tr></table></figure>
 
-<p>到这里，我们的redis就算安装成功了。</p>
-<h3 id="远程连接"><a href="#远程连接" class="headerlink" title="远程连接"></a>远程连接</h3><p>如果需要使用redis客户端软件连接虚拟的redis，则需要将</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind 127.0.0.1</span><br></pre></td></tr></table></figure>
+<h4 id="lpop"><a href="#lpop" class="headerlink" title="lpop"></a>lpop</h4><p>lpop 和 rpop类似。不同的是lpop移除并返回列表key的头元素。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">3) "shangsan"</span><br><span class="line">4) "tom"</span><br><span class="line">5) "peter"</span><br><span class="line">127.0.0.1:6379&gt;</span><br><span class="line">127.0.0.1:6379&gt; lpop name</span><br><span class="line">"wangwu"</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "lisi"</span><br><span class="line">2) "shangsan"</span><br><span class="line">3) "tom"</span><br><span class="line">4) "peter"</span><br></pre></td></tr></table></figure>
 
-<p>修改为</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind 0.0.0.0</span><br></pre></td></tr></table></figure>
 
-<p>说明：<code>127.0.0.1</code> 表示只允许本机访问，先改为<code>0.0.0.0</code> 可以开放给任何机器访问。</p>
-<p>在 windows的cmd中使用telnet 测试是否可以连接</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 192.168.36.131 6379</span><br></pre></td></tr></table></figure>
 
-<p>如果连接不成功，可能是没有打开6379端口。我们需要开启其端口</p>
-<ol>
-<li>查询zone名称</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# firewall-cmd --get-active-zones</span><br><span class="line">public</span><br><span class="line">  interfaces: ens33</span><br></pre></td></tr></table></figure>
+<h4 id="lindex"><a href="#lindex" class="headerlink" title="lindex"></a>lindex</h4><p>lindex命令可以返回列表key中，下标为index的元素。正数下标0表示第一个元素，也可以使用负数下标。-1 表示倒数第一个元素，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "lisi"</span><br><span class="line">2) "shangsan"</span><br><span class="line">3) "tom"</span><br><span class="line">4) "peter"</span><br><span class="line">127.0.0.1:6379&gt; lindex name 0</span><br><span class="line">"lisi"</span><br><span class="line">127.0.0.1:6379&gt; lindex name -1</span><br><span class="line">"peter"</span><br><span class="line">127.0.0.1:6379&gt; lindex name -2</span><br><span class="line">"tom"</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>开启6379端口</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# firewall-cmd --zone=public --add-port=6379/tcp --permanent</span><br><span class="line">success</span><br></pre></td></tr></table></figure>
 
-<ol start="3">
-<li>重启防火墙</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# firewall-cmd --reload</span><br><span class="line">success</span><br></pre></td></tr></table></figure>
 
-<ol start="4">
-<li>检查端口是否成功开启</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# firewall-cmd --query-port=6379/tcp</span><br><span class="line">yes</span><br></pre></td></tr></table></figure>
+<h4 id="ltrim"><a href="#ltrim" class="headerlink" title="ltrim"></a>ltrim</h4><p><code>LTRIM key start stop</code></p>
+<p>ltrim 命令可以对一个列表进行修剪，即让列表只保留指定区间内的元素。不在指定区间之内的元素都将被删除。下标与之前介绍的写法都一致。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br><span class="line">3) "zhangsan"</span><br><span class="line">127.0.0.1:6379&gt; ltrim name 0 1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "lisi"</span><br></pre></td></tr></table></figure>
 
-<p>再次测试，如图所示</p>
-<p><img src="/images/redis/Snipaste_2020-01-19_23-49-47.png" alt></p>
+
+
+<h4 id="llen"><a href="#llen" class="headerlink" title="llen"></a>llen</h4><p>llen 获取列表的长度</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpush name zhangsan lisi wangwu</span><br><span class="line">(integer) 3</span><br><span class="line">127.0.0.1:6379&gt; llen name</span><br><span class="line">(integer) 3</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="lset"><a href="#lset" class="headerlink" title="lset"></a>lset</h4><p>通过索引设置列表的值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpush name zhangsan lisi wangwu</span><br><span class="line">127.0.0.1:6379&gt; lset name 1 ooyhao</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) "wangwu"</span><br><span class="line">2) "ooyhao"</span><br><span class="line">3) "zhangsan"</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="blpop"><a href="#blpop" class="headerlink" title="blpop"></a>blpop</h4><p><code>BLPOP key1 [key2] timeout</code></p>
+<p>说明：移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止.</p>
+<p>blpop 是阻塞式列表的弹出原语。它是命令lpop的阻塞版本，当给定列表内没有任何元素可供弹出的时候，连接将被blpop命令阻塞。当给定多个 key 参数时，按参数 key 的先后顺序依次检查各个列表，弹出第一个非空列表的头元素。同时，在使用该命令时也需要指定阻塞的时长，时长单位为秒，在该时长内如果没有元素可供弹出，则阻塞结束。返回的结果是 key 和 value 的组合，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; blpop name 10</span><br><span class="line">1) "name"</span><br><span class="line">2) "wangwu"</span><br><span class="line">127.0.0.1:6379&gt; blpop name 10</span><br><span class="line">1) "name"</span><br><span class="line">2) "lisi"</span><br><span class="line">127.0.0.1:6379&gt; blpop name 10</span><br><span class="line">(nil)</span><br><span class="line">(10.06s)</span><br></pre></td></tr></table></figure>
+
+<p>最后，brpop, bpoplpush, brpoplpush 都是相应命令的阻塞版本。</p>
+<blockquote>
+<p>  更加详细的文档可以查看：<a href="https://www.runoob.com/redis/redis-lists.html">https://www.runoob.com/redis/redis-lists.html</a> 或官网</p>
+<p>  本文部分参考自：<a href="http://www.javaboy.org/2019/0615/redis-list-set.html">http://www.javaboy.org/2019/0615/redis-list-set.html</a></p>
+</blockquote>
 
         </div>
 		
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/02/17/db/redis/Linux%E5%AE%89%E8%A3%85redis/">Linux上安装 redis</a></li>
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/">5.redis 数据类型之list列表</a></li>
             <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
-            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/02/17/db/redis/Linux%E5%AE%89%E8%A3%85redis/">https://ooyhao.github.io/2020/02/17/db/redis/Linux%E5%AE%89%E8%A3%85redis/</a></li>
-            <li><strong>发布时间：</strong>2020-02-17</li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/">https://ooyhao.github.io/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/</a></li>
+            <li><strong>发布时间：</strong>2020-02-22</li>
             <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
             </li>
             </ul>
@@ -280,10 +276,17 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/02/22/db/redis/6.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bset/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">6.redis 数据类型之set 集合</span>
+            </a>
+        </div>
+        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/01/%E9%9A%8F%E7%AC%94/2020/01/2019/">
-                <span class="level-item">2019，新冠肺炎</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/22/db/redis/4.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bstring-bit/">
+                <span class="level-item">4.Redis 字符串 string-bit</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -304,7 +307,7 @@
     var gitalk = new Gitalk({
         clientID: 'f4cce3ecdc344c1ed151',
         clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
-        id: '393eab4921cf0557b9aa0d6231c0927b',
+        id: 'c0d68add99039cfb901fe30bcb4de3ef',
         repo: 'ooyhao.github.io',
         owner: 'ooyhao',
         admin: "ooyhao",
@@ -361,7 +364,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            53
+                            59
                         </p>
                     </a>
                 </div>
@@ -436,38 +439,62 @@
                     目录
                 </h3>
                 <ul class="menu-list"><li>
-        <a class="is-flex" href="#下载压缩包">
+        <a class="is-flex" href="#列表简介">
         <span class="has-mr-6">1</span>
-        <span>下载压缩包</span>
+        <span>列表简介</span>
         </a></li><li>
-        <a class="is-flex" href="#上传服务器">
+        <a class="is-flex" href="#列表操作命令">
         <span class="has-mr-6">2</span>
-        <span>上传服务器</span>
+        <span>列表操作命令</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#lpush">
+        <span class="has-mr-6">2.1</span>
+        <span>lpush</span>
         </a></li><li>
-        <a class="is-flex" href="#解压并安装">
-        <span class="has-mr-6">3</span>
-        <span>解压并安装</span>
+        <a class="is-flex" href="#lpushx">
+        <span class="has-mr-6">2.2</span>
+        <span>lpushx</span>
         </a></li><li>
-        <a class="is-flex" href="#修改配置文件">
-        <span class="has-mr-6">4</span>
-        <span>修改配置文件</span>
+        <a class="is-flex" href="#lrange">
+        <span class="has-mr-6">2.3</span>
+        <span>lrange</span>
         </a></li><li>
-        <a class="is-flex" href="#启动">
-        <span class="has-mr-6">5</span>
-        <span>启动</span>
+        <a class="is-flex" href="#rpush">
+        <span class="has-mr-6">2.4</span>
+        <span>rpush</span>
         </a></li><li>
-        <a class="is-flex" href="#测试">
-        <span class="has-mr-6">6</span>
-        <span>测试</span>
+        <a class="is-flex" href="#rpushx">
+        <span class="has-mr-6">2.5</span>
+        <span>rpushx</span>
         </a></li><li>
-        <a class="is-flex" href="#关闭">
-        <span class="has-mr-6">7</span>
-        <span>关闭</span>
+        <a class="is-flex" href="#rpop">
+        <span class="has-mr-6">2.6</span>
+        <span>rpop</span>
         </a></li><li>
-        <a class="is-flex" href="#远程连接">
-        <span class="has-mr-6">8</span>
-        <span>远程连接</span>
-        </a></li></ul>
+        <a class="is-flex" href="#lpop">
+        <span class="has-mr-6">2.7</span>
+        <span>lpop</span>
+        </a></li><li>
+        <a class="is-flex" href="#lindex">
+        <span class="has-mr-6">2.8</span>
+        <span>lindex</span>
+        </a></li><li>
+        <a class="is-flex" href="#ltrim">
+        <span class="has-mr-6">2.9</span>
+        <span>ltrim</span>
+        </a></li><li>
+        <a class="is-flex" href="#llen">
+        <span class="has-mr-6">2.10</span>
+        <span>llen</span>
+        </a></li><li>
+        <a class="is-flex" href="#lset">
+        <span class="has-mr-6">2.11</span>
+        <span>lset</span>
+        </a></li><li>
+        <a class="is-flex" href="#blpop">
+        <span class="has-mr-6">2.12</span>
+        <span>blpop</span>
+        </a></li></ul></li></ul>
             </div>
         </div>
     </div>
@@ -523,23 +550,23 @@
                 <span class="level-item">DB</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">9</span>
             </span>
         </a><ul><li>
-        <a class="level is-marginless" href="/categories/DB/Redis/">
-            <span class="level-start">
-                <span class="level-item">Redis</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
         <a class="level is-marginless" href="/categories/DB/mysql/">
             <span class="level-start">
                 <span class="level-item">mysql</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/DB/redis/">
+            <span class="level-start">
+                <span class="level-item">redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">8</span>
             </span>
         </a></li></ul></li><li>
         <a class="level is-marginless" href="/categories/SSM/">
@@ -624,7 +651,7 @@
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/feign/" style="font-size: 11.67px;">feign</a> <a href="/tags/gateway/" style="font-size: 13.33px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 16.67px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 18.33px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 15px;">sentinel</a> <a href="/tags/spring4x/" style="font-size: 20px;">spring4x</a> <a href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/" style="font-size: 10px;">新冠肺炎</a>
+        <a href="/tags/feign/" style="font-size: 11.43px;">feign</a> <a href="/tags/gateway/" style="font-size: 12.86px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 17.14px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 18.57px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/redis/" style="font-size: 15.71px;">redis</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 14.29px;">sentinel</a> <a href="/tags/spring4x/" style="font-size: 20px;">spring4x</a> <a href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/" style="font-size: 10px;">新冠肺炎</a>
     </div>
 </div>
     
@@ -636,18 +663,18 @@
         
         <article class="media">
             
-            <a href="/2020/02/17/db/redis/Linux%E5%AE%89%E8%A3%85redis/" class="media-left">
+            <a href="/2020/02/22/db/redis/8.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bzset/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Linux上安装 redis">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="8.redis 数据类型之zset">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-17T05:48:34.000Z">2020-02-17</time></div>
-                    <a href="/2020/02/17/db/redis/Linux%E5%AE%89%E8%A3%85redis/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Linux上安装 redis</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:08.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/8.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bzset/" class="title has-link-black-ter is-size-6 has-text-weight-normal">8.redis 数据类型之zset</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
                     </p>
                 </div>
             </div>
@@ -655,18 +682,18 @@
         
         <article class="media">
             
-            <a href="/2020/02/01/%E9%9A%8F%E7%AC%94/2020/01/2019/" class="media-left">
+            <a href="/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="2019，新冠肺炎">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="7.redis 数据类型之hash 哈希">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-01T10:24:34.000Z">2020-02-01</time></div>
-                    <a href="/2020/02/01/%E9%9A%8F%E7%AC%94/2020/01/2019/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2019，新冠肺炎</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:07.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/" class="title has-link-black-ter is-size-6 has-text-weight-normal">7.redis 数据类型之hash 哈希</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a> / <a class="has-link-grey -link" href="/categories/%E9%9A%8F%E7%AC%94/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">新冠肺炎</a>
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
                     </p>
                 </div>
             </div>
@@ -674,18 +701,18 @@
         
         <article class="media">
             
-            <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="media-left">
+            <a href="/2020/02/22/db/redis/6.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bset/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十一、SSM + Redis">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="6.redis 数据类型之set 集合">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:11.000Z">2020-01-29</time></div>
-                    <a href="/2020/01/29/SSM/spring4x/11.SSM+redis/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十一、SSM + Redis</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:06.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/6.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bset/" class="title has-link-black-ter is-size-6 has-text-weight-normal">6.redis 数据类型之set 集合</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
                     </p>
                 </div>
             </div>
@@ -693,18 +720,18 @@
         
         <article class="media">
             
-            <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="media-left">
+            <a href="/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="十、Spring发送eMail">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="5.redis 数据类型之list列表">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:10.000Z">2020-01-29</time></div>
-                    <a href="/2020/01/29/SSM/spring4x/10Spring%E5%8F%91%E9%80%81EMail/" class="title has-link-black-ter is-size-6 has-text-weight-normal">十、Spring发送eMail</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:05.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/" class="title has-link-black-ter is-size-6 has-text-weight-normal">5.redis 数据类型之list列表</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
                     </p>
                 </div>
             </div>
@@ -712,18 +739,18 @@
         
         <article class="media">
             
-            <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="media-left">
+            <a href="/2020/02/22/db/redis/4.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bstring-bit/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="九、SpringCache">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="4.Redis 字符串 string-bit">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T09:55:09.000Z">2020-01-29</time></div>
-                    <a href="/2020/01/29/SSM/spring4x/9SpringCache/" class="title has-link-black-ter is-size-6 has-text-weight-normal">九、SpringCache</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:04.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/4.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bstring-bit/" class="title has-link-black-ter is-size-6 has-text-weight-normal">4.Redis 字符串 string-bit</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
                     </p>
                 </div>
             </div>
@@ -746,7 +773,7 @@
                     <span class="level-item">二月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">9</span>
                 </span>
             </a>
         </li>
@@ -757,7 +784,7 @@
                     <span class="level-item">一月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">51</span>
+                    <span class="level-item tag">50</span>
                 </span>
             </a>
         </li>
@@ -827,7 +854,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/redis/">
                         <span class="tag">redis</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">8</span>
                     </a>
                 </div>
                 
@@ -881,7 +908,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo2.png" alt="Linux上安装 redis" height="28">
+                    <img src="/images/logo2.png" alt="5.redis 数据类型之list列表" height="28">
                 
                 </a>
                 <p class="is-size-7">

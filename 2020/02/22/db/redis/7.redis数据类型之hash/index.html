@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>7.redis 数据类型之hash 哈希 - Hexo</title>
+
+
+    <meta name="description" content="redis 数据类型之hash 哈希">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.redis 数据类型之hash 哈希">
+<meta property="og:url" content="https://ooyhao.github.io/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="redis 数据类型之hash 哈希">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-02-22T07:55:07.000Z">
+<meta property="article:modified_time" content="2020-02-22T07:59:51.518Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="7.redis 数据类型之hash 哈希" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/spring4x">Spring4x</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/mybatis">Mybatis</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-02-22T07:55:07.000Z">2020-02-22</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 960 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                7.redis 数据类型之hash 哈希
+            
+        </h1>
+        <div class="content">
+            <p>redis 数据类型之hash 哈希</p>
+<a id="more"></a>
+
+<h3 id="哈希简介"><a href="#哈希简介" class="headerlink" title="哈希简介"></a>哈希简介</h3><p>hash 是一个string 类型的field和value的映射表，hash特别适合用于存储对象。redis中每个hash可以存储2^32 -1 个键值对(40多亿)。</p>
+<h3 id="Hash-命令集合"><a href="#Hash-命令集合" class="headerlink" title="Hash 命令集合"></a>Hash 命令集合</h3><h4 id="hset"><a href="#hset" class="headerlink" title="hset"></a>hset</h4><p><code>HSET key field value</code></p>
+<p>hset 命令用于为哈希表中字段赋值。如果哈希表不存在，一个新的哈希表被创建并进行hset操作。</p>
+<p>如果字段已经存在于哈希表中，旧值将被覆盖。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hset stu1 name zhangsan</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hmset"><a href="#hmset" class="headerlink" title="hmset"></a>hmset</h4><p><code>HMSET key field1 value1 [field2 value2]</code></p>
+<p>hmset 命令用于同时将多个field-value(字段-值)对设置到哈希表中。此命令会覆盖哈希表中已经存在的字段。如果哈希表不存在，会创建一个空的哈希表，并执行hmset命令操作。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hmset stu1 name ooyhao age 23 sex male</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hsetnx"><a href="#hsetnx" class="headerlink" title="hsetnx"></a>hsetnx</h4><p><code>HSETNX key field value</code></p>
+<p>hsetnx 命令用于为哈希表中不存在的字段赋值。如果哈希表不存在，一个新的哈希表被创建并进行hset操作。</p>
+<ul>
+<li>如果字段已经存在于哈希表中，则操作无效。</li>
+<li>如果key不存在，一个新的哈希表被创建并执行hsetnx命令。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hgetall stu1</span><br><span class="line">1) "name"</span><br><span class="line">2) "ooyhao"</span><br><span class="line">3) "age"</span><br><span class="line">4) "18"</span><br><span class="line">5) "sex"</span><br><span class="line">6) "female"</span><br><span class="line">127.0.0.1:6379&gt; hsetnx stu1 name ouYang</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; hsetnx stu1 salary 7500</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; hgetall stu1</span><br><span class="line">1) "name"</span><br><span class="line">2) "ooyhao"</span><br><span class="line">3) "age"</span><br><span class="line">4) "18"</span><br><span class="line">5) "sex"</span><br><span class="line">6) "female"</span><br><span class="line">7) "salary"</span><br><span class="line">8) "7500"</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="hget"><a href="#hget" class="headerlink" title="hget"></a>hget</h4><p><code>HGET key field</code></p>
+<p>hget 命令用于返回哈希表中执行字段的值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hmset stu1 name ooyhao age 23 sex male</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hget stu1 name</span><br><span class="line">"ooyhao"</span><br><span class="line">127.0.0.1:6379&gt; hget stu1 age</span><br><span class="line">"23"</span><br><span class="line">127.0.0.1:6379&gt; hget stu1 sex</span><br><span class="line">"male"</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hmget"><a href="#hmget" class="headerlink" title="hmget"></a>hmget</h4><p><code>HMGET key field1 [field2]</code></p>
+<p>hmget 命令用于返回哈希表中，一个或多个给定字段的值。如果指定的字段不存在与哈希表中，则返回一个nil值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hmget stu1 name age salary</span><br><span class="line">1) "ooyhao"</span><br><span class="line">2) "23"</span><br><span class="line">3) (nil)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hgetall"><a href="#hgetall" class="headerlink" title="hgetall"></a>hgetall</h4><p><code>HGETALL key</code></p>
+<p>hgetall 命令用于返回哈希表中，所有的字段和值。在返回值中，紧跟着每个字段名(field name)之后的是字段的值(value).左右返回值的长度是哈希表大小的两倍。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hgetall stu1</span><br><span class="line">1) "name"</span><br><span class="line">2) "ooyhao"</span><br><span class="line">3) "age"</span><br><span class="line">4) "23"</span><br><span class="line">5) "sex"</span><br><span class="line">6) "male"</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hdel"><a href="#hdel" class="headerlink" title="hdel"></a>hdel</h4><p><code>HDEL key field1 [field2]</code></p>
+<p>hdel 命令用于删除指定哈希表中的一个或多个字段。不存在的字段将被忽略。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hkeys stu1</span><br><span class="line">1) "name"</span><br><span class="line">2) "age"</span><br><span class="line">3) "sex"</span><br><span class="line">4) "salary"</span><br><span class="line">127.0.0.1:6379&gt; hdel stu1 sex salary</span><br><span class="line">(integer) 2</span><br><span class="line">127.0.0.1:6379&gt; hkeys stu1</span><br><span class="line">1) "name"</span><br><span class="line">2) "age"</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hincrby"><a href="#hincrby" class="headerlink" title="hincrby"></a>hincrby</h4><p><code>HINCRBY key field increment</code></p>
+<p>hincrby 命令用于为哈希表中的字段值加上指定的增量值。增量也可以是负数，相当于对指定字段进行减法操作。</p>
+<ul>
+<li><p>如果哈希表的key不存在，一个新的哈希表被创建并执行hincrby操作。</p>
+</li>
+<li><p>如果指定的字段不存在，那么在执行命令前，字段的值被初始化为0.</p>
+</li>
+</ul>
+<p>对一个存储字符串值的字段执行hincrby 命令将造成一个错误，本操作的值被限制在64位(bit)有符号数字表示之内。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hincrby stu1 age 1</span><br><span class="line">(integer) 19</span><br><span class="line">127.0.0.1:6379&gt; hincrby stu1 age 1</span><br><span class="line">(integer) 20</span><br><span class="line">127.0.0.1:6379&gt; hincrby stu1 age -1</span><br><span class="line">(integer) 19</span><br><span class="line">127.0.0.1:6379&gt; hincrby stu1 age -2</span><br><span class="line">(integer) 17</span><br><span class="line">127.0.0.1:6379&gt; hincrby stu1 name 1</span><br><span class="line">(error) ERR hash value is not an integer</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hincrbyfloat"><a href="#hincrbyfloat" class="headerlink" title="hincrbyfloat"></a>hincrbyfloat</h4><p><code>HINCRBYFLOAT key field increment</code></p>
+<p>hincrbyfloat 命令用于为哈希表中的字段值加上浮点数增量值。如果指定的字段不存在，那么在执行命令前，该字段会被初始化为0.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hkeys stu1</span><br><span class="line">1) "name"</span><br><span class="line">2) "age"</span><br><span class="line">3) "sex"</span><br><span class="line">127.0.0.1:6379&gt; hincrbyfloat stu1 salary 10.5</span><br><span class="line">"10.5"</span><br><span class="line">127.0.0.1:6379&gt; hincrbyfloat stu1 salary 1</span><br><span class="line">"11.5"</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hexists"><a href="#hexists" class="headerlink" title="hexists"></a>hexists</h4><p><code>HEXISTS key field</code></p>
+<p>hexists 命令用于查看哈希表中的指定字段是否存在。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hdel stu1 salary</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; hexists stu1 name</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; hexists stu1 salary</span><br><span class="line">(integer) 0</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hlen"><a href="#hlen" class="headerlink" title="hlen"></a>hlen</h4><p><code>HLEN key</code></p>
+<p>hlen 命令用于获取哈希表中字段的数量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hlen stu1</span><br><span class="line">(integer) 3</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hkeys"><a href="#hkeys" class="headerlink" title="hkeys"></a>hkeys</h4><p><code>HKEYS key</code></p>
+<p>hkeys 命令用于获取哈希表中的所有域(field).</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hkeys stu1</span><br><span class="line">1) "name"</span><br><span class="line">2) "age"</span><br><span class="line">3) "sex"</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hvals"><a href="#hvals" class="headerlink" title="hvals"></a>hvals</h4><p><code>HVALS key</code></p>
+<p>hvals 命令返回哈希表所有的字段的值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hvals stu1</span><br><span class="line">1) "ooyhao"</span><br><span class="line">2) "23"</span><br><span class="line">3) "male"</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>  本文参考自菜鸟教程:<a href="https://www.runoob.com/redis/redis-hashes.html">https://www.runoob.com/redis/redis-hashes.html</a></p>
+<p>  更多请移步官网</p>
+</blockquote>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/">7.redis 数据类型之hash 哈希</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/">https://ooyhao.github.io/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/</a></li>
+            <li><strong>发布时间：</strong>2020-02-22</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/redis/" rel="tag">redis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/02/22/db/redis/8.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bzset/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">8.redis 数据类型之zset</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/22/db/redis/6.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bset/">
+                <span class="level-item">6.redis 数据类型之set 集合</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'c67f0377d54c19c101273dab3d9a3b3a',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            59
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            12
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            12
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="/about" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#哈希简介">
+        <span class="has-mr-6">1</span>
+        <span>哈希简介</span>
+        </a></li><li>
+        <a class="is-flex" href="#Hash-命令集合">
+        <span class="has-mr-6">2</span>
+        <span>Hash 命令集合</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#hset">
+        <span class="has-mr-6">2.1</span>
+        <span>hset</span>
+        </a></li><li>
+        <a class="is-flex" href="#hmset">
+        <span class="has-mr-6">2.2</span>
+        <span>hmset</span>
+        </a></li><li>
+        <a class="is-flex" href="#hsetnx">
+        <span class="has-mr-6">2.3</span>
+        <span>hsetnx</span>
+        </a></li><li>
+        <a class="is-flex" href="#hget">
+        <span class="has-mr-6">2.4</span>
+        <span>hget</span>
+        </a></li><li>
+        <a class="is-flex" href="#hmget">
+        <span class="has-mr-6">2.5</span>
+        <span>hmget</span>
+        </a></li><li>
+        <a class="is-flex" href="#hgetall">
+        <span class="has-mr-6">2.6</span>
+        <span>hgetall</span>
+        </a></li><li>
+        <a class="is-flex" href="#hdel">
+        <span class="has-mr-6">2.7</span>
+        <span>hdel</span>
+        </a></li><li>
+        <a class="is-flex" href="#hincrby">
+        <span class="has-mr-6">2.8</span>
+        <span>hincrby</span>
+        </a></li><li>
+        <a class="is-flex" href="#hincrbyfloat">
+        <span class="has-mr-6">2.9</span>
+        <span>hincrbyfloat</span>
+        </a></li><li>
+        <a class="is-flex" href="#hexists">
+        <span class="has-mr-6">2.10</span>
+        <span>hexists</span>
+        </a></li><li>
+        <a class="is-flex" href="#hlen">
+        <span class="has-mr-6">2.11</span>
+        <span>hlen</span>
+        </a></li><li>
+        <a class="is-flex" href="#hkeys">
+        <span class="has-mr-6">2.12</span>
+        <span>hkeys</span>
+        </a></li><li>
+        <a class="is-flex" href="#hvals">
+        <span class="has-mr-6">2.13</span>
+        <span>hvals</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/DB/redis/">
+            <span class="level-start">
+                <span class="level-item">redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">8</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">46</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/">
+            <span class="level-start">
+                <span class="level-item">随笔</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+            <span class="level-start">
+                <span class="level-item">新冠肺炎</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/feign/" style="font-size: 11.43px;">feign</a> <a href="/tags/gateway/" style="font-size: 12.86px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 17.14px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 18.57px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/redis/" style="font-size: 15.71px;">redis</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 14.29px;">sentinel</a> <a href="/tags/spring4x/" style="font-size: 20px;">spring4x</a> <a href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/" style="font-size: 10px;">新冠肺炎</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/8.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bzset/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="8.redis 数据类型之zset">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:08.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/8.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bzset/" class="title has-link-black-ter is-size-6 has-text-weight-normal">8.redis 数据类型之zset</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="7.redis 数据类型之hash 哈希">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:07.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/7.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bhash/" class="title has-link-black-ter is-size-6 has-text-weight-normal">7.redis 数据类型之hash 哈希</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/6.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bset/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="6.redis 数据类型之set 集合">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:06.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/6.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bset/" class="title has-link-black-ter is-size-6 has-text-weight-normal">6.redis 数据类型之set 集合</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="5.redis 数据类型之list列表">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:05.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/" class="title has-link-black-ter is-size-6 has-text-weight-normal">5.redis 数据类型之list列表</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/4.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bstring-bit/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="4.Redis 字符串 string-bit">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:04.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/4.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bstring-bit/" class="title has-link-black-ter is-size-6 has-text-weight-normal">4.Redis 字符串 string-bit</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/redis/">redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">9</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">50</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/redis/">
+                        <span class="tag">redis</span>
+                        <span class="tag is-grey">8</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+                        <span class="tag">新冠肺炎</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="7.redis 数据类型之hash 哈希" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
