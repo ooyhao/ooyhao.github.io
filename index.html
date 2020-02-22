@@ -142,277 +142,6 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-02-22T08:50:48.692Z">2020-02-22</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    27 分钟 读完 (大约 4074 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/02/22/db/redis/Redis%E4%B9%8BAOF%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/">db/redis/Redis之AOF持久化方式</a>
-            
-        </h1>
-        <div class="content">
-            <h2 id="Redis-之-AOF持久化方式"><a href="#Redis-之-AOF持久化方式" class="headerlink" title="Redis 之 AOF持久化方式"></a>Redis 之 AOF持久化方式</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">power</span> <span class="string">outage：停电</span></span><br><span class="line"><span class="string">dramatic：</span> <span class="string">突然的，戏剧性的</span></span><br><span class="line"><span class="string">fsync：</span> <span class="string">同步</span></span><br><span class="line"><span class="string">For</span> <span class="string">instance：例如</span></span><br><span class="line"><span class="string">policy：政策，策略</span></span><br><span class="line"><span class="string">asynchronously:异步</span></span><br><span class="line"><span class="attr">ASAP as soon as possible :</span> <span class="string">尽可能快，尽快</span></span><br><span class="line"><span class="attr">live with:</span> <span class="string">接受</span></span><br><span class="line"><span class="string">contrary：</span> <span class="string">与之相反</span></span><br><span class="line"><span class="string">relax：放松，镇定</span></span><br><span class="line"><span class="string">performances：表现</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="AOF简介"><a href="#AOF简介" class="headerlink" title="AOF简介"></a>AOF简介</h3><p>​        Redis的持久化方式之一RDB是通过保存数据库的键值对数据来记录数据库的状态。而另一种持久化策略AOF就是通过保存Redis服务器所执行的命令来记录数据库状态的。</p>
-<p>比如执行如下命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; set str1 "123"</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; sadd str2 "a" "b" "c"</span><br><span class="line">(integer) 3</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
-
-<p>RDB持久化方式就是将 <code>str1</code> 和 <code>str2</code> 这两个键值对保存在RDB文件中，而AOF持久化则是将执行的 <code>set</code>和 <code>sadd</code>两个命令保存在AOF文件中。</p>
-<h3 id="AOF配置信息"><a href="#AOF配置信息" class="headerlink" title="AOF配置信息"></a>AOF配置信息</h3><p>下面我们看一下【redis.conf】配置文件中关于AOF的配置信息。</p>
-<h4 id="开启AOF"><a href="#开启AOF" class="headerlink" title="开启AOF"></a>开启AOF</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">appendonly</span> <span class="string">no</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：是否开启AOF持久化方式。<code>no</code> 不开启。<code>yes</code>开启。默认是不开启的，即：redis默认采用RDB方式持久化。</p>
-<p>解释：</p>
-<p>​            redis的<code>AOF</code>持久化方式默认是不开启的，它的出现是为了弥补RDB的不足（数据不一致），所以它采用日志的形式来记录每个写操作，并追加到文件中。redis重启会根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。</p>
-<p>​            默认redis使用的是<code>RDB</code>方式持久化，这种方式在需要应用中就已经足够用了。但是redis如果中途宕机，会导致可能几分钟的数据丢失（根据save策略进行持久化）。<code>Append Only File</code>是另一种持久化方式，可以提供更好的持久化特征。redis会把每次写入的数据在接收后都写入【appendonly.aof】文件，如果AOF方式开启了。每次启动时redis都会先把这个文件的数据读入内存里，先忽略RDB文件。</p>
-<p>注意：RDB和AOF可以同时开启，不会出现问题。redis会优先加载AOF，此时AOF是一种更好的持久化保证。</p>
-<h4 id="AOF文件名"><a href="#AOF文件名" class="headerlink" title="AOF文件名"></a>AOF文件名</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">appendfilename</span> <span class="string">"appendonly.aof"</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：指定AOF日志文件的文件名，默认使用”appendonly.aof”</p>
-<h4 id="文件位置"><a href="#文件位置" class="headerlink" title="文件位置"></a>文件位置</h4><p>AOF保存文件的位置和RDB保存文件的位置一样，都是通过【redis.conf】配置文件的【dir】来配置。</p>
-<p><img src="/.io//Snipaste_2020-01-21_09-49-10.png" alt></p>
-<p>可以通过命令【config get dir】来获取保存路径，如下：</p>
-<p><img src="/.io//Snipaste_2020-01-21_09-51-26.png" alt></p>
-<h4 id="AOF持久化策略"><a href="#AOF持久化策略" class="headerlink" title="AOF持久化策略"></a>AOF持久化策略</h4><p>​          同步方法的调用，告诉操作系统去真正的写数据到硬盘中，而不是等待更多的数据在输出缓存区。一些系统会真正的刷新数据到硬盘，而另一些则是尝试尽可能快的去执行。</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># appendfsync always</span></span><br><span class="line"><span class="attr">appendfsync</span> <span class="string">everysec</span></span><br><span class="line"><span class="comment"># appendfsync no</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：指定AOF持久化模式。</p>
-<ul>
-<li>no: 不同步，仅仅让操作系统在需要的时候刷新数据，速度最快。</li>
-<li>always：在每次写入后都同步；慢，但是最安全。</li>
-<li>everysec：每一秒同步一次，在速度和安全方面都适中。可能丢失一秒的数据。</li>
-</ul>
-<p>解释：</p>
-<p>​        默认的同步模式就是”everysec”，这种在速度和数据安全方面中达到一个适中。这取决于你的理解，如果你可以允许放置<code>no</code>来让操作系统在需要的时候去刷新到输出缓存中，也许更好的方式就是RDB。（如果你可以忍受丢失一些数据，可以使用默认的持久化方式–快照）。相反的话，可以使用一个很慢的但是比<code>everysec</code>更加的方式–<code>always</code>。</p>
-<p>注意：如果不确定使用哪种方式，那就使用<code>everysec</code></p>
-<h4 id="重写时是否同步"><a href="#重写时是否同步" class="headerlink" title="重写时是否同步"></a>重写时是否同步</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">no-appendfsync-on-rewrite</span> <span class="string">no</span></span><br></pre></td></tr></table></figure>
-
-<p>解释：fsync(同步) 。<code>no-appendfsyc-on-rewrite</code> 字段默认设置为<code>no</code>。</p>
-<p>​          在AOF重写或是写入RDB文件的时候，会执行大量的IO，此时对于<code>everysec</code>和<code>always</code>的aof模式来说，执行fsync会造成阻塞过长时间。</p>
-<p>​          如果对延迟要求很高的应用，这个字段可以设置为<code>yes</code>,否则设置为<code>no</code>，这样对持久化特性来说这是更加安全的选择。设置为<code>yes</code>表示<code>rewrite</code>期间对新写的操作不fsync，暂时存在内存中，等<code>rewrite</code>完成后再写入。默认为<code>no</code>，建议为<code>yes</code>。Linux的默认fsync策略是30秒，可能丢失30秒数据。</p>
-<h4 id="重写配置"><a href="#重写配置" class="headerlink" title="重写配置"></a>重写配置</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">auto-aof-rewrite-percentage</span> <span class="string">100</span></span><br><span class="line"><span class="meta">auto-aof-rewrite-min-size</span> <span class="string">64mb</span></span><br></pre></td></tr></table></figure>
-
-<p>解释：</p>
-<ul>
-<li><p><code>auto-aof-rewrite-percentage</code></p>
-<p>aof自动重写配置，当目前aof文件大小超过上一次重写的aof文件大小的百分之多少进行重写，即当AOF文件增加到一定的大小的时候，redis能够调用<code>bgrewriteaof</code>对日志文件进行重写。当前AOF文件大小是上次日志重写的AOF文件大小的2倍（设置为100）时，自动启动新的日志重写进程。</p>
-</li>
-<li><p><code>auto-aof-rewrite-min-size</code></p>
-</li>
-</ul>
-<p>设置允许重写的最小aof文件大小，避免了达到约定百分比但尺寸依然很小的情况还要重写.</p>
-<h4 id="截断导入"><a href="#截断导入" class="headerlink" title="截断导入"></a>截断导入</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">aof-load-truncated</span> <span class="string">yes</span></span><br></pre></td></tr></table></figure>
-
-<p>解释：</p>
-<p>​          AOF文件可能在尾部不完整的,当redis启动的时候,aof文件的数据被载入内存。重启可能发生在redis<br>所在的主机操作系统宕机后,尤其在ext4文件系统没有加上data=ordered选项（redis宕机或者异常终止<br>不会造成尾部不完整现象）。出现这种情况，可以选择让redis退出，或者导入尽可能多的数据。如果<br>选择yes，当截断的aof文件被导入的时候，会发布一个log给客户端然后load。如果是no，用户必须手动<br><code>redis-check-aof</code>修复AOF文件才可以。</p>
-<h4 id="混合持久化"><a href="#混合持久化" class="headerlink" title="混合持久化"></a>混合持久化</h4><blockquote>
-<p>部分参考：<a href="https://www.cnblogs.com/xiaoqiang-code/p/11748395.html">https://www.cnblogs.com/xiaoqiang-code/p/11748395.html</a></p>
-</blockquote>
-<p>​          重启redis恢复数据集时，很少会使用RDB来恢复内存状态，因为会丢失大量数据。通常会使用AOF日志恢复数据，但是重放AOF日志性能相对于RDB来说要慢得多，这样在Redis实例很大的情况下，启动需要花费很长时间。Redis4.0为了解决这个问题，带来了新的持久化选项—混合持久化。</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">aof-use-rdb-preamble</span> <span class="string">yes</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>​          如果开启了混合持久化，aof在重写时，不再是单纯将内存数据转换为RESP命令写入aof文件，而是将重写这一刻之前的内存做RDB快照处理，并且将RDB快照内容和增量的aof修改内存数据的命令存在一起，都写入新的AOF文件，新的AOF文件一开始不叫<code>appendonly.aof</code>,等到重写完成之后，新的aof文件才会进行改名，原子的覆盖原有的aof文件，完成新旧两个aof文件的替换。于是在redis重启的时候，可以先加载rdb文件，然后再重放增量的aof日志就可以完全替代之前的aof全量文件重放，因此重启效率大幅得到提高。</p>
-<h3 id="数据修复"><a href="#数据修复" class="headerlink" title="数据修复"></a>数据修复</h3><p>将appendonly设置为yes，重启redis之后就会进行AOF文件的载入。若AOF文件有损坏，例如由于某些原因，里面有些命令变成乱码。此时redis还可以重新启动吗？</p>
-<p>​            在AOF文件随便加一些字符，保存后重连redis。可发行此时redis无法在重新启动。那么此时如何恢复数据呢？在redis的文件目录下有一个叫<code>redis-check-aof</code>的工具。使用如下命令可修复AOF文件：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-check-aof.exe --fix appendonly.aof</span><br></pre></td></tr></table></figure>
-
-<p>上述命令会清除所有不符合语法的命令。</p>
-<p><img src="/.io//20190806154617792_9718.png" alt></p>
-<p>从上图可以看出，AOF文件是不正常的文件。</p>
-<p>当启动redis的时候，会提醒用户进行修复：</p>
-<p><img src="/.io//20190806154719841_23295.png" alt></p>
-<p>使用 <code>redis-check-aof --fix filename</code> 命令修复</p>
-<p><img src="/.io//20190806154813920_14680.png" alt></p>
-<p>这样就可以正常启动了</p>
-<p><img src="/.io//20190806154833209_2141.png" alt></p>
-<h3 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h3><p>​          由于AOF持久化是Redis不断将写命令记录到 AOF 文件中，随着Redis不断的进行，AOF 的文件会越来越大，文件越大，占用服务器内存越大以及 AOF 恢复要求时间越长。为了解决这个问题，Redis新增了重写机制，当AOF文件的大小超过所设定的阈值时，Redis就会启动AOF文件的内容压缩，只保留可以恢复数据的最小指令集。可以使用命令 bgrewriteaof 来重写。</p>
-<p>比如对于如下命令：</p>
-<p><img src="/.io//Snipaste_2020-01-21_10-28-26.png" alt></p>
-<p>如果不进行 AOF 文件重写，那么 AOF 文件将保存四条 SADD 命令，如果使用AOF 重写，那么AOF 文件中将只会保留下面一条命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sadd animals "cat" "dog" "tiger" "panda" "lion" "pig"</span><br></pre></td></tr></table></figure>
-
-<p>也就是说 AOF 文件重写并不是对原文件进行重新整理，而是直接读取服务器现有的键值对，然后用一条命令去代替之前记录这个键值对的多条命令，生成一个新的文件后去替换原来的 AOF 文件。</p>
-<p>AOF 文件重写触发机制：<br>         通过 redis.conf 配置文件中的 auto-aof-rewrite-percentage：默认值为100，以及auto-aof-rewrite-min-size：64mb 配置，也就是说默认Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发。</p>
-<p>这里再提一下，我们知道 Redis 是单线程工作，如果重写 AOF 需要比较长的时间，那么在重写 AOF 期间，Redis将长时间无法处理其他的命令，这显然是不能忍受的。Redis为了克服这个问题，解决办法是将 AOF 重写程序放到子程序中进行，这样有两个好处：</p>
-<ol>
-<li>子进程进行 AOF 重写期间，服务器进程（父进程）可以继续处理其他命令。</li>
-<li>子进程带有父进程的数据副本，使用子进程而不是线程，可以在避免使用锁的情况下，保证数据的安全性。</li>
-</ol>
-<p><strong>使用子进程解决了上面的问题，但是新问题也产生了</strong>：因为子进程在进行 AOF 重写期间，服务器进程依然在处理其它命令，这新的命令有可能也对数据库进行了修改操作，使得当前数据库状态和重写后的 AOF 文件状态不一致。<br>　　为了解决这个数据状态不一致的问题，Redis 服务器设置了一个 AOF 重写缓冲区，这个缓冲区是在创建子进程后开始使用，当Redis服务器执行一个写命令之后，就会将这个写命令也发送到 AOF 重写缓冲区。当子进程完成 AOF 重写之后，就会给父进程发送一个信号，父进程接收此信号后，就会调用函数将 AOF 重写缓冲区的内容都写到新的 AOF 文件中。这样将 AOF 重写对服务器造成的影响降到了最低。</p>
-<h3 id="AOF的优缺点"><a href="#AOF的优缺点" class="headerlink" title="AOF的优缺点"></a>AOF的优缺点</h3><ul>
-<li>优点</li>
-</ul>
-<ol>
-<li>AOF 持久化的方法提供了多种的同步频率，即使使用默认的同步频率每秒同步一次，Redis 最多也就丢失 1 秒的数据而已。</li>
-<li>AOF 文件使用 Redis 命令追加的形式来构造，因此，即使 Redis 只能向 AOF 文件写入命令的片断，使用 redis-check-aof 工具也很容易修正 AOF 文件。</li>
-<li>AOF 文件的格式可读性较强，这也为使用者提供了更灵活的处理方式。例如，如果我们不小心错用了 FLUSHALL 命令，在重写还没进行时，我们可以手工将最后的 FLUSHALL 命令去掉，然后再使用 AOF 来恢复数据。</li>
-</ol>
-<ul>
-<li>缺点</li>
-</ul>
-<ol>
-<li>对于具有相同数据的的 Redis，AOF 文件通常会比 RDB 文件体积更大。</li>
-<li>虽然 AOF 提供了多种同步的频率，默认情况下，每秒同步一次的频率也具有较高的性能。但在 Redis 的负载较高时，RDB 比 AOF 具好更好的性能保证。</li>
-<li>RDB 使用快照的形式来持久化整个 Redis 数据，而 AOF 只是将每次执行的命令追加到 AOF 文件中，因此从理论上说，RDB 比 AOF 方式更健壮。官方文档也指出，AOF 的确也存在一些 BUG，这些 BUG 在 RDB 没有存在。</li>
-</ol>
-<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><blockquote>
-<p>  参考：<a href="http://www.javaboy.org/2019/0615/redis-aof.html">http://www.javaboy.org/2019/0615/redis-aof.html</a></p>
-</blockquote>
-<ol>
-<li>如果redis只做缓存服务器，那么可以不使用任何持久化方式。</li>
-<li>同时开启两种持久化方式，在这种情况下，当redis重启的时候会优先载入AOF文件来恢复原始的数据，因为在通常情况下，AOF文件保存的数据集要比RDB文件保存的数据集要完整。RDB的数据不完整时，同时使用两者时服务器重启也只会找AOF。那要不要只使用AOF呢？建议不要，因为RDB更适合用于备份数据库（AOF在不断变化不好备份），快速重启，而且不会有AOF可能潜在bug，留着做万一的手段。</li>
-<li>因为RDB文件只用作后备用途，建议只在Slave上持久化RDB文件，而且只要15分钟备份一次就够了，只保留save 900 1 这一条规则。</li>
-<li>如果Enable AOF，好处是在最恶劣情况下也只会丢失不超过两秒数据，启动脚本较简单只load自己的AOF文件就可以了。代价一是带来了持续的IO，二是AOF rewrite的最后将rewrite过程中产生的新数据写到新文件造成的阻塞几乎是不可避免的。只要硬盘许可，应该尽量减少AOF rewrite的频率，AOF重写的基础大小默认值64M太小了，可以设置到5G以上。默认超过原大小100%大小时重写可以改到适当的数据。</li>
-<li>如果不Enable AOF，仅靠Master-Slave Replication 实现高可用性也可以。能省掉一大笔IO，也减少了rewrite 时带来的系统波动。代价是如果Master/Slave 同时宕掉，会丢失十几分钟的数据，启动脚本必要比较两个Master/Slave 中的RDB文件，载入较新的那个。</li>
-</ol>
-<p><strong>那么对于 AOF 和 RDB 两种持久化方式，我们应该如何选择呢？</strong><br>　　如果可以忍受一小段时间内数据的丢失，毫无疑问使用 RDB 是最好的，定时生成 RDB 快照（snapshot）非常便于进行数据库备份， 并且 RDB 恢复数据集的速度也要比 AOF 恢复的速度要快，而且使用 RDB 还可以避免 AOF 一些隐藏的 bug；否则就使用 AOF 重写。</p>
-
-        </div>
-		
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-02-22T08:50:48.689Z">2020-02-22</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    17 分钟 读完 (大约 2499 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/02/22/db/redis/Redis%E4%B9%8BRDB%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/">db/redis/Redis之RDB持久化方式</a>
-            
-        </h1>
-        <div class="content">
-            <h2 id="Redis之RDB持久化方式"><a href="#Redis之RDB持久化方式" class="headerlink" title="Redis之RDB持久化方式"></a>Redis之RDB持久化方式</h2><p>​         Redis 相对于 Memcache 等其他的缓存产品，有一个比较明显的优势就是 Redis 不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储, Redis 的另外一大优势——持久化。<br>​         由于 Redis 是一个内存数据库。所谓内存数据库，就是将数据库中的内容保存在内存中，这与传统的MySQL，Oracle等关系型数据库直接将内容保存到硬盘中相比，内存数据库的读写效率比传统数据库要快的多（内存的读写效率远远大于硬盘的读写效率）。但是保存在内存中也随之带来了一个缺点，一旦断电或者宕机，那么内存数据库中的数据将会全部丢失。</p>
-<p>　　为了解决这个缺点，Redis提供了将内存数据持久化到硬盘，以及用持久化文件来恢复数据库数据的功能。Redis 支持两种形式的持久化，一种是RDB快照（snapshotting），另外一种是AOF（append-only-file）</p>
-<pre><code>持久化简单理解就是将内存的数据移动到硬盘中，它的存在是防止电脑突然断电或者故障时数据的丢失。持久化到硬盘中后，只要硬盘不坏，下次启动的时候就可以再次将持久化到硬盘的数据快速的加载到内存中去。当然为了防止硬盘的坏掉，也有另外一种技术来支持这种容错性，那就是主从复制。</code></pre><h3 id="RDB-amp-AOF介绍"><a href="#RDB-amp-AOF介绍" class="headerlink" title="RDB &amp; AOF介绍"></a>RDB &amp; AOF介绍</h3><ul>
-<li>1.RDB(默认)  redis database<br>  在指定时间间隔内，将内存中的数据作为一个快照文件(snapshot)写入到磁盘，读取的时候也是直接读取snapshot文       件到内存。</li>
-<li>2.AOF Append Only  File<br>以日志形式记录每个写操作，启动时通过日志恢复数据。</li>
-</ul>
-<h3 id="RDB配置"><a href="#RDB配置" class="headerlink" title="RDB配置"></a>RDB配置</h3><h4 id="持久化时间策略"><a href="#持久化时间策略" class="headerlink" title="持久化时间策略"></a>持久化时间策略</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">save</span> <span class="string">900 1</span></span><br><span class="line"><span class="attr">save</span> <span class="string">300 10</span></span><br><span class="line"><span class="attr">save</span> <span class="string">60 10000</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：若不想用RDB方案，可以把 <code>save &quot;&quot;</code> 的注释打开，上面三个注释掉</p>
-<p>​          RDB 核心规则配置 save &lt;指定时间间隔&gt;&lt;执行指定次数更新操作&gt;，满足条件就将内存中的数据同步到硬盘中去。官方出厂配置默认是 900秒内有一个更改，300秒内有10个更改以及60秒内有10000个更改，则将内存中的数据快照写入磁盘。</p>
-<p>配置其实非常简单，这里说一下持久化的时间策略具体是什么意思。</p>
-<p>​        <strong>save</strong>: 这里是用来配置出发redis的RDB持久化条件，也就是什么时候将内存中的数据保存到硬盘。比如<code>save m n</code>。表示m秒内数据集存在n次修改时，自动触发。bgsave（手动触发RDB持久化命令）。<br>默认配置如下：</p>
-<ul>
-<li>save 900 1：表示900 秒内如果至少有 1 个 key 的值变化，则保存</li>
-<li>save 300 10：表示300 秒内如果至少有 10 个 key 的值变化，则保存</li>
-<li>save 60 10000：表示60 秒内如果至少有 10000 个 key 的值变化，则保存</li>
-</ul>
-<p>当然如果你只是用Redis的缓存功能，不需要持久化，那么你可以注释掉所有的save行来停用保存功能。当然，也可以在<code>save</code>的最后一行写上：save “”</p>
-<p>那么为什么需要配置这么多条规则呢？ </p>
-<p>​          因为Redis每个时段的读写请求肯定是不均衡的，为了平衡性能与数据安全，我们可以自由定制什么情况下出发备份。所以这里就是根据自身redis写入情况来进行合理配置。</p>
-<h4 id="出错是否继续写"><a href="#出错是否继续写" class="headerlink" title="出错是否继续写"></a>出错是否继续写</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">stop-writes-on-bgsave-error</span> <span class="string">yes</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：默认值为yes。</p>
-<p>​          默认情况下，如果RDB 快照被启用并且最后一个后台保存失败，redis将会停止接收写操作。这将使得用户很难意识到数据不会准确的持久化到硬盘中，另外将没有人会注意到一些灾难性的事情会发生。如果后台保存进程重新开始工作，将会自动允许写入。然而，如果你为redis服务和持久化有启用合适的监控，你可能希望禁用这个特征，以至于redis可以继续像往常一样的工作，即便是硬盘存在一些问题，权限等。 </p>
-<h4 id="是否压缩文件"><a href="#是否压缩文件" class="headerlink" title="是否压缩文件"></a>是否压缩文件</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">rdbcompression</span> <span class="string">yes</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：默认值为yes。</p>
-<p>​          配置存储至本地数据库时是否压缩数据，默认为yes，redis采用LZF压缩方式，但会占用一点CPU的时间。如果你不想消耗CPU来进行压缩的话，可以设置为关闭此功能，但是存储在磁盘上的快照会比较大。关于压缩的配置<code>rdbcompression yes</code>,建议没有必须开启，毕竟redis本身就属于CPU密集型服务器，再开启压缩会带来更加多的CPU消耗，相比硬盘成本，CPU更值钱。</p>
-<h4 id="是否检验文件"><a href="#是否检验文件" class="headerlink" title="是否检验文件"></a>是否检验文件</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">rdbchecksum</span> <span class="string">yes</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：默认值是yes。</p>
-<p>​          是否检验rdb文件；从rdb格式的第五个版本开始，在rdb文件的末尾会带上CRC的检验和。这更有利于文件的容错性，但是在保存rdb文件的时候，会有大概10%的性能损耗，所以如果你追求高性能，可以关闭这个配置。</p>
-<h4 id="快照文件名"><a href="#快照文件名" class="headerlink" title="快照文件名"></a>快照文件名</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dbfilename</span> <span class="string">dump.rdb</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：指定保存RDB快照的文件名</p>
-<h4 id="工作目录"><a href="#工作目录" class="headerlink" title="工作目录"></a>工作目录</h4><p>注意：这里必须指明的是一个目录，不能是文件名</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dir</span> <span class="string">./</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：工作目录；默认是和当前配置文件保存在同一目录。也就是说通过此配置文件中的save方式，当实际操作满足该配置形式时就会进行RDB持久化，将当前的存储快照保存在dir配置的目录中，文件名有dbfilename决定。</p>
-<h3 id="手动触发"><a href="#手动触发" class="headerlink" title="手动触发"></a>手动触发</h3><p>手动触发Redis进行RDB持久化的命令有两种：</p>
-<ol>
-<li><p>save<br>该命令会阻塞当前redis服务器，执行save命令期间，Redis不能处理其他命令，知道RDB过程完成为止。<br>虽然该命令对于内存比较大的实例会造成长时间的阻塞，这是致命的缺陷，为了解决此问题，Redis提供了第二种方式。</p>
-</li>
-<li><p>bgsave<br>执行该命令时，redis会在后台异步进行快照操作，快照的同时还可以响应客户端请求。具体操作是Redis进程执行fork操作创建子进程，RDB持久化过程由子进程负责，完成后自动结束。阻塞只发生在fork阶段，一般时间很短。<br>基本上Redis内部所有的RDB操作都是采用bgsave命令。</p>
-</li>
-</ol>
-<p>ps: 执行flushall命令，也会产生dump.rdb文件，但里面是空的，无意义。</p>
-<h3 id="恢复数据"><a href="#恢复数据" class="headerlink" title="恢复数据"></a>恢复数据</h3><p>将备份文件(dump.rdb)移动到redis安装目录并启动服务即可，redis就会自动加载文件数据到内存中了。Redis服务器在载入RDB文件期间，会一直处于阻塞状态，知道载入工作完成为止。<br>获取redis的安装路径可以使用<code>config get dir</code>命令。</p>
-<h3 id="停止RDB持久化"><a href="#停止RDB持久化" class="headerlink" title="停止RDB持久化"></a>停止RDB持久化</h3><p>有些情况下，我们只想要利用Redis的缓存功能，并不想使用Redis的持久化功能，那么这时候我们最好停掉RDB持久化。可以通过上面讲的在配置文件redis.conf中，注释掉所有的save行来停用保存功能，或者直接一个空字符串来实现停用：<code>save &quot;&quot;</code>也可以通过命令： <code>redis-cli config set save &quot;&quot;</code> .</p>
-<h3 id="优势与劣势"><a href="#优势与劣势" class="headerlink" title="优势与劣势"></a>优势与劣势</h3><ol>
-<li>优势<ol>
-<li>RDB是一个非常紧凑（compact）的文件，它保存了redis在某一个时间点上的数据集。这种文件非常适合用于进行备份和灾难恢复。</li>
-<li>生成RDB文件的时候，Redis主进程会fork()一个子进程来处理所有的保存工作，主进程不需要进行任何磁盘IO操作。</li>
-<li>RDB在恢复大数据集时的速度比AOF的恢复速度要快。</li>
-</ol>
-</li>
-<li>劣势<ol>
-<li>RDB方式数据没办法做到实时持久化/秒级持久化。因为bgsave每次运行都要执行fork操作创建子进程，属于重量级操作(内存中的数据被克隆了一份，大致2倍的膨胀性需要考虑)，频繁执行成本过高（影响性能）。</li>
-<li>RDB文件使用特定二进制格式保存，Redis版本演进过程中有多个格式的RDB版本，存在老版本Redis服务无法兼容新版RDB格式的问题（版本不兼容）。</li>
-<li>在一定间隔时间做一个备份，所以如果redis意外down掉的话，就会丢失最后一次快照的所有修改（数据有丢失）.</li>
-</ol>
-</li>
-</ol>
-<blockquote>
-<p>部分参考：</p>
-<p><a href="https://www.cnblogs.com/ysocean/p/9074787.html">https://www.cnblogs.com/ysocean/p/9074787.html</a></p>
-<p><a href="https://blog.csdn.net/suprezheng/article/details/90679790">https://blog.csdn.net/suprezheng/article/details/90679790</a></p>
-<p>博主：YSOcean<br>RDB持久化方式：<a href="https://www.cnblogs.com/ysocean/p/9114268.html">https://www.cnblogs.com/ysocean/p/9114268.html</a><br>AOF持久化方式：<a href="https://www.cnblogs.com/ysocean/p/9114267.html">https://www.cnblogs.com/ysocean/p/9114267.html</a><br>博主：阿飞云<br>RDB:<a href="https://blog.csdn.net/u010648555/article/details/73433717">https://blog.csdn.net/u010648555/article/details/73433717</a><br>AOF:<a href="https://blog.csdn.net/u010648555/article/details/73442336">https://blog.csdn.net/u010648555/article/details/73442336</a></p>
-</blockquote>
-
-        </div>
-		
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-02-22T07:55:08.000Z">2020-02-22</time>
                 
                 <div class="level-item">
@@ -802,7 +531,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    4 分钟 读完 (大约 625 个字)
+                    4 分钟 读完 (大约 629 个字)
                 </span>
                 
                 
@@ -839,6 +568,114 @@
 
 
 
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-02-01T10:24:34.000Z">2020-02-01</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E9%9A%8F%E7%AC%94/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">新冠肺炎</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 879 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/02/01/%E9%9A%8F%E7%AC%94/2020/01/2019/">2019，新冠肺炎</a>
+            
+        </h1>
+        <div class="content">
+            <p>​          这个春节在我记忆里，是第一次没有走亲戚的。往年不管是在哪，年前都是期盼回家过年，而今年，回家前真的有一种避难的感觉。</p>
+        </div>
+		
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/02/01/%E9%9A%8F%E7%AC%94/2020/01/2019/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-29T09:55:11.000Z">2020-01-29</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/spring4x/">spring4x</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    9 分钟 读完 (大约 1422 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/01/29/SSM/spring4x/11.SSM+redis/">十一、SSM + Redis</a>
+            
+        </h1>
+        <div class="content">
+            <p>这里我们先介绍一下如何整合Redis，后面再整合一个SSM+redis的项目，无spring配置文件。</p>
+        </div>
+		
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/01/29/SSM/spring4x/11.SSM+redis/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
 
     
 <div class="card card-transparent">
@@ -857,7 +694,7 @@
             
             <li><span class="pagination-ellipsis has-text-black-ter">&hellip;</span></li>
             
-            <li><a class="pagination-link has-text-black-ter" href="/page/7/">7</a></li>
+            <li><a class="pagination-link has-text-black-ter" href="/page/6/">6</a></li>
             
         </ul>
     </nav>
@@ -907,7 +744,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            61
+                            59
                         </p>
                     </a>
                 </div>
@@ -1138,44 +975,6 @@
         
         <article class="media">
             
-            <a href="/2020/02/22/db/redis/Redis%E4%B9%8BAOF%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="db/redis/Redis之AOF持久化方式">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T08:50:48.692Z">2020-02-22</time></div>
-                    <a href="/2020/02/22/db/redis/Redis%E4%B9%8BAOF%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/" class="title has-link-black-ter is-size-6 has-text-weight-normal">db/redis/Redis之AOF持久化方式</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/02/22/db/redis/Redis%E4%B9%8BRDB%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="db/redis/Redis之RDB持久化方式">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T08:50:48.689Z">2020-02-22</time></div>
-                    <a href="/2020/02/22/db/redis/Redis%E4%B9%8BRDB%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/" class="title has-link-black-ter is-size-6 has-text-weight-normal">db/redis/Redis之RDB持久化方式</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
             <a href="/2020/02/22/db/redis/8.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bzset/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="8.redis 数据类型之zset">
@@ -1231,6 +1030,44 @@
             </div>
         </article>
         
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="5.redis 数据类型之list列表">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:05.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/5.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Blist/" class="title has-link-black-ter is-size-6 has-text-weight-normal">5.redis 数据类型之list列表</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/4.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bstring-bit/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="4.redis 字符串 string-bit">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:04.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/4.redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8Bstring-bit/" class="title has-link-black-ter is-size-6 has-text-weight-normal">4.redis 字符串 string-bit</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
     </div>
 </div>
     
@@ -1248,7 +1085,7 @@
                     <span class="level-item">二月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">11</span>
+                    <span class="level-item tag">9</span>
                 </span>
             </a>
         </li>
