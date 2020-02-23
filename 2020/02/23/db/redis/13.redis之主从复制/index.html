@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>13.Redis主从复制和哨兵模式 - ouYangHao</title>
+
+
+    <meta name="description" content="主从复制和哨兵模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.Redis主从复制和哨兵模式">
+<meta property="og:url" content="https://ooyhao.github.io/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html">
+<meta property="og:site_name" content="ouYangHao">
+<meta property="og:description" content="主从复制和哨兵模式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-02-23T07:55:13.000Z">
+<meta property="article:modified_time" content="2020-02-23T07:07:46.843Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="13.Redis主从复制和哨兵模式" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/spring4x">Spring4x</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/mybatis">Mybatis</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-02-23T07:55:13.000Z">2020-02-23</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    24 分钟 读完 (大约 3600 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                13.Redis主从复制和哨兵模式
+            
+        </h1>
+        <div class="content">
+            <p>主从复制和哨兵模式</p>
+<a id="more"></a>
+
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><h3 id="主从复制介绍"><a href="#主从复制介绍" class="headerlink" title="主从复制介绍"></a>主从复制介绍</h3><p>前面介绍Redis，我们都是在一台服务器上进行操作的，也就是说读和写以及备份操作都是在一台Redis服务器上进行的，那么随着项目访问量的增加，对Redis服务器的操作也越加频繁，虽然Redis读写速度都很快，但是一定程度上也会造成一定的延时，那么为了解决访问量大的问题，通常会采取的一种方式是主从架构Master/Slave，Master 以写为主，Slave 以读为主，Master 主节点更新后根据配置，自动同步到从机 Slave 节点。<br>接下来我们就来介绍如何进行主从架构的搭建。<br>　　PS:这里我是在一台机器上模拟多个Redis服务器，与实际生产环境中相比，基本配置都是一样，仅仅是IP地址和端口号变化。</p>
+<p><img src="/images/redis/20190806155304429_25820.png" alt></p>
+<h3 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h3><h4 id="复制Redis"><a href="#复制Redis" class="headerlink" title="复制Redis"></a>复制Redis</h4><p>将解压编译好的redis复制三份，并且重命名为 <code>redis6379</code> <code>redis6380</code> 和 <code>redis6381</code>.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ooyhao]# cp -r  redis-5.0.7 redis6379</span><br><span class="line">[root@localhost ooyhao]# cp -r  redis-5.0.7 redis6380</span><br><span class="line">[root@localhost ooyhao]# cp -r  redis-5.0.7 redis6381</span><br></pre></td></tr></table></figure>
+
+<p>当然，我们也可以只将配置文件复制三份。可以起到同样的效果。</p>
+<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><p>将前面复制的三份redis文件进行配置文件【redis.conf】的修改。</p>
+<ol>
+<li><p>修改为后台启动运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">################################ GENERAL #####################################</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> By default Redis does not run as a daemon. Use <span class="string">'yes'</span> <span class="keyword">if</span> you need it.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note that Redis will write a pid file <span class="keyword">in</span> /var/run/redis.pid when daemonized.、</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> daemonize no</span></span><br><span class="line">daemonize yes</span><br></pre></td></tr></table></figure>
+
+<p>表示修改redis以守护线程的方式启动（后台启动）</p>
+</li>
+</ol>
+<ol start="2">
+<li><p>配置PID文件路径pidfile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> If a pid file is specified, Redis writes it <span class="built_in">where</span> specified at startup</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> and removes it at <span class="built_in">exit</span>.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> When the server runs non daemonized, no pid file is created <span class="keyword">if</span> none is</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> specified <span class="keyword">in</span> the configuration. When the server is daemonized, the pid file</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> is used even <span class="keyword">if</span> not specified, defaulting to <span class="string">"/var/run/redis.pid"</span>.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Creating a pid file is best effort: <span class="keyword">if</span> Redis is not able to create it</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> nothing bad happens, the server will start and run normally.</span></span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br></pre></td></tr></table></figure>
+
+<p>表示当redis作为守护线程运行的时候，它会把pid默认写到 /var/run/redis_6379.pid 文件中。</p>
+</li>
+</ol>
+<ol start="3">
+<li><p>配置端口号port</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Accept connections on the specified port, default is 6379 (IANA <span class="comment">#815344).</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> If port 0 is specified Redis will not listen on a TCP socket.</span></span><br><span class="line">port 6379</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="4">
+<li><p>配置log文件名</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Specify the <span class="built_in">log</span> file name. Also the empty string can be used to force</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Redis to <span class="built_in">log</span> on the standard output. Note that <span class="keyword">if</span> you use standard</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> output <span class="keyword">for</span> logging but daemonize, logs will be sent to /dev/null</span></span><br><span class="line">logfile "6379.log"</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="5">
+<li><p>配置RDB文件名</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> The filename <span class="built_in">where</span> to dump the DB</span></span><br><span class="line">dbfilename dump_6379.rdb</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>按照上面的方式配置redis6380和redis6381。只需要将相应的6379改为6380或6381即可。</p>
+<h4 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h4><p><img src="/images/redis/Snipaste_2020-02-23_12-50-13.png" alt></p>
+<p>从上图可以看出，我们的三个redis服务已经正常启动。分别监听的端口是6379,6380和6381。</p>
+<h4 id="启动客户端"><a href="#启动客户端" class="headerlink" title="启动客户端"></a>启动客户端</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# ./redis-cli -p 6379</span><br><span class="line">[root@localhost src]# ./redis-cli -p 6380</span><br><span class="line">[root@localhost src]# ./redis-cli -p 6381</span><br></pre></td></tr></table></figure>
+
+<p>利用上述命令，以启动三个不同的客户端，用来监听不同端口的服务。</p>
+<h4 id="配置主从关系"><a href="#配置主从关系" class="headerlink" title="配置主从关系"></a>配置主从关系</h4><ol>
+<li><p>通过命令查询当前节点的角色</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">info / info replication</span><br></pre></td></tr></table></figure>
+
+<p>此时在三个不同的客户端执行<code>info replication</code>命令，可以看到三个节点的角色(<code>role</code>)都是<code>master</code>。那么如何将6380和6381设置为6379的从节点(slave)呢？</p>
+</li>
+<li><p>配置主从关系</p>
+<p>在6380和6381客户端，执行命令<code>slaveof 127.0.0.1 6379</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<p>此时我们再次使用<code>info replication</code> 命令查询三个节点的角色状态：</p>
+<p>6379：</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-05-51.png" alt></p>
+<p>6380:</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-06-40.png" alt></p>
+<p>6381:</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-07-14.png" alt></p>
+</li>
+</ol>
+<p>通过上述截图信息，可以看出此时主节点为 <code>127.0.0.1 6379</code>, 而从节点为<code>127.0.0.1 6380</code> 和 <code>127.0.0.1 6381</code> 。但是，通过命令设置的主从关系，一旦服务重启，那么角色关系就不复存在了。想要永久的保存这种关系。可以通过配置配置文件【redis.conf】来实现。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">################################ REPLICATION #################################</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Master-Replica replication. Use replicaof to make a Redis instance a copy of</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> another Redis server. A few things to understand ASAP about Redis replication.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   +------------------+      +---------------+</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   |      Master      | ---&gt; |    Replica    |</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   | (receive writes) |      |  (exact copy) |</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   +------------------+      +---------------+</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1) Redis replication is asynchronous, but you can configure a master to</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    stop accepting writes <span class="keyword">if</span> it appears to be not connected with at least</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    a given number of replicas.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2) Redis replicas are able to perform a partial resynchronization with the</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    master <span class="keyword">if</span> the replication link is lost <span class="keyword">for</span> a relatively small amount of</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    time. You may want to configure the replication backlog size (see the next</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    sections of this file) with a sensible value depending on your needs.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3) Replication is automatic and does not need user intervention. After a</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    network partition replicas automatically try to reconnect to masters</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    and resynchronize with them.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> replicaof &lt;masterip&gt; &lt;masterport&gt;</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件后，分别重启三个服务。执行<code>info replication</code>命令后，就可以看到效果了，并且这种方式不会因为服务重启而丢失主从关系。</p>
+<h3 id="测试主从复制关系"><a href="#测试主从复制关系" class="headerlink" title="测试主从复制关系"></a>测试主从复制关系</h3><h4 id="增量复制"><a href="#增量复制" class="headerlink" title="增量复制"></a>增量复制</h4><p>主节点执行命令<code>set username ooyhao</code> ，从节点是否可以获取到信息呢？</p>
+<p>答案：肯定可以的。测试如下：</p>
+<p>主节点执行set命令：</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-22-41.png" alt></p>
+<p>从节点获取keys：</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-23-55.png" alt></p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-24-28.png" alt></p>
+<h4 id="全量复制"><a href="#全量复制" class="headerlink" title="全量复制"></a>全量复制</h4><p>通过执行<code>slaveof 127.0.0.1 6379</code> ，如果主节点6379以前还存在以下key-value数据。那么在执行命令之后，从节点是否可以将主节点的旧信息复制过来呢？</p>
+<p>答案：可以的。测试过，不再截图。</p>
+<h4 id="主从读写分离"><a href="#主从读写分离" class="headerlink" title="主从读写分离"></a>主从读写分离</h4><p>主节点可以执行写的命令，那么从节点是否可以执行写的命令呢？</p>
+<p>答案：从节点默认情况下是不可以写入的，因为配置文件中配置了 <code>replica-read-only</code></p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-29-52.png" alt></p>
+<p>配置文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> You can configure a replica instance to accept writes or not. Writing against</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> a replica instance may be useful to store some ephemeral data (because data</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> written on a replica will be easily deleted after resync with the master) but</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> may also cause problems <span class="keyword">if</span> clients are writing to it because of a</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> misconfiguration.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Since Redis 2.6 by default replicas are <span class="built_in">read</span>-only.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: <span class="built_in">read</span> only replicas are not designed to be exposed to untrusted clients</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> on the internet. It<span class="string">'s just a protection layer against misuse of the instance.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Still a <span class="built_in">read</span> only replica exports by default all the administrative commands</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> such as CONFIG, DEBUG, and so forth. To a limited extent you can improve</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> security of <span class="built_in">read</span> only replicas using <span class="string">'rename-command'</span> to shadow all the</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> administrative / dangerous commands.</span></span><br><span class="line">replica-read-only yes</span><br></pre></td></tr></table></figure>
+
+<p>如果将其修改为no。从节点是可以写入数据的。</p>
+<p><strong>注意</strong>：即使是从节点的<code>replica-read-only</code>修改为no，从节点写入的数据，主节点也是同步不到的。如图</p>
+<p>从节点写入数据：</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-36-34.png" alt></p>
+<p>主节点读取数据：</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_13-37-14.png" alt></p>
+<p>可以看出，即使我们将配置文件中的<code>replica-read-only</code>设置为no，从节点可以写入数据，但是主节点也是同步不到的。</p>
+<h4 id="主节点宕机"><a href="#主节点宕机" class="headerlink" title="主节点宕机"></a>主节点宕机</h4><p>主节点Master宕机之后，两个节点的角色会发生变化吗？</p>
+<p>答案：主节点挂掉之后，从节点的角色依旧不会发生变化。</p>
+<p><img src="/images/redis/redis-replication-master-shutdown.gif" alt></p>
+<h4 id="主节点宕机后恢复"><a href="#主节点宕机后恢复" class="headerlink" title="主节点宕机后恢复"></a>主节点宕机后恢复</h4><p>主节点宕机之后，马上启动主节点master。主节点是否还继续扮演master角色呢？</p>
+<p>答案：主节点恢复之后，又恢复其主节点master角色。</p>
+<p><img src="/images/redis/redis-replication-master.gif" alt></p>
+<h3 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h3><p>Redis的复制功能分为同步（sync）和命令传播（command propagate）两个操作。</p>
+<ol>
+<li><p>旧版同步(旧数据同步)<br> 当从节点发出 <code>slaveof</code> 命令，要求从服务器复制主服务器时，从服务器通过向主服务器发送 <code>sync</code> 命令来完成。该命令执行步骤：</p>
+<ol>
+<li>从服务器向主服务器发送 <code>sync</code> 命令</li>
+<li>收到 <code>sync</code> 命令的主服务器执行 <code>bgsave</code> 命令，在后台生成一个 RDB 文件，并使用一个缓冲区记录从开始执行的所有写命令</li>
+<li>当主服务器的 <code>bgsave</code> 命令执行完毕时，主服务器会将 <code>bgsave</code> 命令生成的 RDB 文件发送给从服务器，从服务器接收此 RDB 文件，并将服务器状态更新为RDB文件记录的状态。</li>
+<li>主服务器将缓冲区的所有写命令也发送给从服务器，从服务器执行相应命令。</li>
+</ol>
+</li>
+<li><p>命令传播<br> 当同步操作完成之后，主服务器会进行相应的修改命令，这时候从服务器和主服务器状态就会不一致。为了让主服务器和从服务器保持状态一致，主服务器需要对从服务器执行命令传播操作，主服务器会将自己的写命令发送给从服务器执行。从服务器执行相应的命令之后，主从服务器状态继续保持一致。</p>
+<p> 总结：通过同步操作以及命令传播功能，能够很好的保证了主从一致的特性。</p>
+</li>
+</ol>
+<p>但是我们考虑一个问题，如果从服务器在同步主服务器期间，突然断开了连接，而这时候主服务器进行了一些写操作，这时候从服务器恢复连接，如果我们在进行同步，那么就必须将主服务器重新生成一个RDB文件，然后给从服务器加载，这样虽然能够保证一致性，但是其实断开连接之前主从服务器状态是保持一致的，不一致的是从服务器断开连接，而主服务器执行了一些写命令，那么从服务器恢复连接后能不能只要断开连接的哪些写命令，而不是整个RDB快照呢？</p>
+<p>　　同步操作其实是一个非常耗时的操作，主服务器需要先通过<code>bgsave</code> 命令来生成一个 RDB 文件，然后需要将该文件发送给从服务器，从服务器接收该文件之后，接着加载该文件，并且加载期间，从服务器是无法处理其他命令的。<br>　　为了解决这个问题，Redis从<strong>2.8</strong>版本之后，使用了新的同步命令 <code>psync</code> 来代替 <code>sync</code> 命令。该命令的部分重同步功能用于处理断线后重复制的效率问题。也就是说当从服务器在断线后重新连接主服务器时，主服务器只将断开连接后执行的写命令发送给从服务器，从服务器只需要接收并执行这些写命令即可保持主从一致。</p>
+<h3 id="主从复制的缺点"><a href="#主从复制的缺点" class="headerlink" title="主从复制的缺点"></a>主从复制的缺点</h3><p>　　主从复制虽然解决了主节点的单点故障问题，但是由于所有的写操作都是在 Master 节点上操作，然后同步到 Slave 节点，那么同步就会有一定的延时，当系统很繁忙的时候，延时问题就会更加严重，而且会随着从节点slave的增多而愈加严重。因此我们还需要集群来进一步提升 redis 性能。</p>
+<h2 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h2><h3 id="哨兵模式介绍"><a href="#哨兵模式介绍" class="headerlink" title="哨兵模式介绍"></a>哨兵模式介绍</h3><p>通过前面的配置，主节点Master 只有一个，一旦主节点挂掉之后，从节点没法担起主节点的任务，那么整个系统也无法运行。如果主节点挂掉之后，从节点能够自动变成主节点，那么问题就解决了，于是哨兵模式诞生了。哨兵模式就是不时地监控redis是否按照预期良好地运行（至少是保证主节点是存在的），若一台主机出现问题时，哨兵会自动将该主机下的某一个从机设置为新的主机，并让其他从机和新主机建立主从关系。</p>
+<p><img src="/images/redis/20190806230042724_10985.png" alt></p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h4 id="修改配置文件-1"><a href="#修改配置文件-1" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><p>配置文件是【sentinel.conf】，如果没有，则需要创建。注意：名字不能出错。</p>
+<p><code>sentinel monitor 被监控机器的名字 ip port 得票数</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Tells Sentinel to monitor this master, and to consider it <span class="keyword">in</span> O_DOWN</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> (Objectively Down) state only <span class="keyword">if</span> at least &lt;quorum&gt; sentinels agree.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note that whatever is the ODOWN quorum, a Sentinel will require to</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> be elected by the majority of the known Sentinels <span class="keyword">in</span> order to</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> start a failover, so no failover can be performed <span class="keyword">in</span> minority.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Replicas are auto-discovered, so you don<span class="string">'t need to specify replicas in</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> any way. Sentinel itself will rewrite this configuration file adding</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> the replicas using additional configuration options.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Also note that the configuration file is rewritten when a</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> replica is promoted to master.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: master name should not include special characters or spaces.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The valid charset is A-z 0-9 and the three characters <span class="string">".-_"</span>.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sentinel monitor mymaster 127.0.0.1 6379 2</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 1</span><br></pre></td></tr></table></figure>
+
+<p>分别配置【被监控机器的名字】，【IP地址】，【端口port】，【得票数】。</p>
+<p>解释：sentinel 监控的master名字叫做mymaster，2 代表，当集群中有2个sentinel认为master挂了，才能真正认为该master已经不可用了。</p>
+<p>但是测试时，只有一个哨兵sentinel。所以，这里设置为1.</p>
+<h4 id="启动哨兵"><a href="#启动哨兵" class="headerlink" title="启动哨兵"></a>启动哨兵</h4><p>使用<code>./redis-sentinel ./sentinel.conf</code> 命令来启动哨兵。启动效果如下：</p>
+<p><img src="/images/redis/Snipaste_2020-02-23_14-39-21.png" alt></p>
+<p>接下来，我们关闭主机6379，看各节点之间的主从关系变化。</p>
+<blockquote>
+<p>  redis后台服务器的开启命令：./redis-server redis.conf  (在redis-server redis.conf安装目录下运行)</p>
+<p>  redis后台服务器的关闭命令：./redis-cli shutdown  (同上)</p>
+</blockquote>
+<p><img src="/images/redis/Snipaste_2020-02-23_14-44-24.png" alt></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6381&gt; info replication</span><br><span class="line"><span class="meta">#</span><span class="bash"> Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:1</span><br><span class="line">slave0:ip=127.0.0.1,port=6380,state=online,offset=10056,lag=0</span><br><span class="line">master_replid:07d2f9797241c511275d4bf769be1c04dab5bea6</span><br><span class="line">master_replid2:7374d6fb11b97935b7ed4b7821fd8cc6e1125c9a</span><br><span class="line">master_repl_offset:10056</span><br><span class="line">second_repl_offset:8410</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:1</span><br><span class="line">repl_backlog_histlen:10056</span><br></pre></td></tr></table></figure>
+
+<p>通过日志可以看出，6379挂掉之后，redis内部进行了重新选举，6381上位成为master节点。即使6379重启之后，也只能是slave节点，无法直接成为master节点。</p>
+<p><strong>注意</strong>：哨兵模式也存在单点故障的问题，如果哨兵机器挂掉了，那么就无法进行监控了，解决办法就是哨兵也建立集群，redis哨兵模式也支持集群的。</p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">13.Redis主从复制和哨兵模式</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">https://ooyhao.github.io/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</a></li>
+            <li><strong>发布时间：</strong>2020-02-23</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Redis/" rel="tag">Redis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/22/db/redis/12.redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E4%B9%8BAOF/">
+                <span class="level-item">12.Redis 之 AOF持久化方式</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '4bb5ff07d45daba1969f81ce18d3d39a',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            63
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            12
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            12
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="/about" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#主从复制">
+        <span class="has-mr-6">1</span>
+        <span>主从复制</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#主从复制介绍">
+        <span class="has-mr-6">1.1</span>
+        <span>主从复制介绍</span>
+        </a></li><li>
+        <a class="is-flex" href="#搭建环境">
+        <span class="has-mr-6">1.2</span>
+        <span>搭建环境</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#复制Redis">
+        <span class="has-mr-6">1.2.1</span>
+        <span>复制Redis</span>
+        </a></li><li>
+        <a class="is-flex" href="#修改配置文件">
+        <span class="has-mr-6">1.2.2</span>
+        <span>修改配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#启动服务">
+        <span class="has-mr-6">1.2.3</span>
+        <span>启动服务</span>
+        </a></li><li>
+        <a class="is-flex" href="#启动客户端">
+        <span class="has-mr-6">1.2.4</span>
+        <span>启动客户端</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置主从关系">
+        <span class="has-mr-6">1.2.5</span>
+        <span>配置主从关系</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#测试主从复制关系">
+        <span class="has-mr-6">1.3</span>
+        <span>测试主从复制关系</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#增量复制">
+        <span class="has-mr-6">1.3.1</span>
+        <span>增量复制</span>
+        </a></li><li>
+        <a class="is-flex" href="#全量复制">
+        <span class="has-mr-6">1.3.2</span>
+        <span>全量复制</span>
+        </a></li><li>
+        <a class="is-flex" href="#主从读写分离">
+        <span class="has-mr-6">1.3.3</span>
+        <span>主从读写分离</span>
+        </a></li><li>
+        <a class="is-flex" href="#主节点宕机">
+        <span class="has-mr-6">1.3.4</span>
+        <span>主节点宕机</span>
+        </a></li><li>
+        <a class="is-flex" href="#主节点宕机后恢复">
+        <span class="has-mr-6">1.3.5</span>
+        <span>主节点宕机后恢复</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#复制原理">
+        <span class="has-mr-6">1.4</span>
+        <span>复制原理</span>
+        </a></li><li>
+        <a class="is-flex" href="#主从复制的缺点">
+        <span class="has-mr-6">1.5</span>
+        <span>主从复制的缺点</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#哨兵模式">
+        <span class="has-mr-6">2</span>
+        <span>哨兵模式</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#哨兵模式介绍">
+        <span class="has-mr-6">2.1</span>
+        <span>哨兵模式介绍</span>
+        </a></li><li>
+        <a class="is-flex" href="#环境搭建">
+        <span class="has-mr-6">2.2</span>
+        <span>环境搭建</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#修改配置文件-1">
+        <span class="has-mr-6">2.2.1</span>
+        <span>修改配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#启动哨兵">
+        <span class="has-mr-6">2.2.2</span>
+        <span>启动哨兵</span>
+        </a></li></ul></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">14</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/Redis/">
+            <span class="level-start">
+                <span class="level-item">Redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">13</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">46</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/">
+            <span class="level-start">
+                <span class="level-item">随笔</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+            <span class="level-start">
+                <span class="level-item">新冠肺炎</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Redis/" style="font-size: 20px;">Redis</a> <a href="/tags/feign/" style="font-size: 11.43px;">feign</a> <a href="/tags/gateway/" style="font-size: 12.86px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 15.71px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 17.14px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 14.29px;">sentinel</a> <a href="/tags/spring4x/" style="font-size: 18.57px;">spring4x</a> <a href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/" style="font-size: 10px;">新冠肺炎</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="13.Redis主从复制和哨兵模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-23T07:55:13.000Z">2020-02-23</time></div>
+                    <a href="/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="title has-link-black-ter is-size-6 has-text-weight-normal">13.Redis主从复制和哨兵模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/12.redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E4%B9%8BAOF/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="12.Redis 之 AOF持久化方式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:12.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/12.redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E4%B9%8BAOF/" class="title has-link-black-ter is-size-6 has-text-weight-normal">12.Redis 之 AOF持久化方式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/11.redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E4%B9%8BRDB/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="11.Redis之RDB持久化方式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:11.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/11.redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E4%B9%8BRDB/" class="title has-link-black-ter is-size-6 has-text-weight-normal">11.Redis之RDB持久化方式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/10.redis%E4%B9%8B%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="10.Redis之事务管理">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:10.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/10.redis%E4%B9%8B%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" class="title has-link-black-ter is-size-6 has-text-weight-normal">10.Redis之事务管理</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/9.redis%E4%B9%8B%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="9.Redis 发布订阅模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:09.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/9.redis%E4%B9%8B%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85/" class="title has-link-black-ter is-size-6 has-text-weight-normal">9.Redis 发布订阅模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">14</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">49</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Redis/">
+                        <span class="tag">Redis</span>
+                        <span class="tag is-grey">13</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+                        <span class="tag">新冠肺炎</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="13.Redis主从复制和哨兵模式" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
