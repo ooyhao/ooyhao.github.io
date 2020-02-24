@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-02-22T07:55:01.000Z">
-<meta property="article:modified_time" content="2020-02-22T09:30:00.215Z">
+<meta property="article:modified_time" content="2020-02-23T13:35:27.065Z">
 <meta property="article:author" content="ouYang">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
@@ -209,8 +209,7 @@
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>通过下列命令进入到控制台,然后通过 <code>ping</code>命令进行连通性测试，如果看到了<code>pong</code>，则表示连接通了。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-5.0.7]# redis-cli</span><br><span class="line">127.0.0.1:6379&gt;</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br></pre></td></tr></table></figure>
 
-<p>###关闭</p>
-<p>关闭redis，通过<code>shutdown</code>命令我们可以关闭实例。</p>
+<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><p>关闭redis，通过<code>shutdown</code>命令我们可以关闭实例。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; shutdown</span><br><span class="line">not connected&gt;</span><br><span class="line">not connected&gt; exit</span><br></pre></td></tr></table></figure>
 
 <p>到这里，我们的redis就算安装成功了。</p>
@@ -369,7 +368,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            64
+                            65
                         </p>
                     </a>
                 </div>
@@ -468,8 +467,12 @@
         <span class="has-mr-6">6</span>
         <span>测试</span>
         </a></li><li>
-        <a class="is-flex" href="#远程连接">
+        <a class="is-flex" href="#关闭">
         <span class="has-mr-6">7</span>
+        <span>关闭</span>
+        </a></li><li>
+        <a class="is-flex" href="#远程连接">
+        <span class="has-mr-6">8</span>
         <span>远程连接</span>
         </a></li></ul>
             </div>
@@ -527,7 +530,7 @@
                 <span class="level-item">DB</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">15</span>
+                <span class="level-item tag">16</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/categories/DB/Redis/">
@@ -535,7 +538,7 @@
                 <span class="level-item">Redis</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">14</span>
+                <span class="level-item tag">15</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/DB/mysql/">
@@ -640,6 +643,25 @@
         
         <article class="media">
             
+            <a href="/2020/02/24/db/redis/15.SpringBoot%E6%95%B4%E5%90%88Redis/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="15.SpringBoot 整合 Redis">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-24T11:41:15.000Z">2020-02-24</time></div>
+                    <a href="/2020/02/24/db/redis/15.SpringBoot%E6%95%B4%E5%90%88Redis/" class="title has-link-black-ter is-size-6 has-text-weight-normal">15.SpringBoot 整合 Redis</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/02/23/db/redis/14.redis%E4%B9%8B%E9%9B%86%E7%BE%A4/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="14.Redis之集群搭建">
@@ -714,25 +736,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/02/22/db/redis/10.redis%E4%B9%8B%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="10.Redis之事务管理">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:10.000Z">2020-02-22</time></div>
-                    <a href="/2020/02/22/db/redis/10.redis%E4%B9%8B%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" class="title has-link-black-ter is-size-6 has-text-weight-normal">10.Redis之事务管理</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -750,7 +753,7 @@
                     <span class="level-item">二月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">15</span>
+                    <span class="level-item tag">16</span>
                 </span>
             </a>
         </li>
@@ -782,7 +785,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/Redis/">
                         <span class="tag">Redis</span>
-                        <span class="tag is-grey">14</span>
+                        <span class="tag is-grey">15</span>
                     </a>
                 </div>
                 
