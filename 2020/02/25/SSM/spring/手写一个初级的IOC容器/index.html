@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>手写一个简单的IOC容器 - ouYangHao</title>
+
+
+    <meta name="description" content="手写一个简单的IOC容器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手写一个简单的IOC容器">
+<meta property="og:url" content="https://ooyhao.github.io/2020/02/25/SSM/spring/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E5%88%9D%E7%BA%A7%E7%9A%84IOC%E5%AE%B9%E5%99%A8/index.html">
+<meta property="og:site_name" content="ouYangHao">
+<meta property="og:description" content="手写一个简单的IOC容器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-02-25T04:22:01.000Z">
+<meta property="article:modified_time" content="2020-02-25T04:33:36.264Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="手写一个简单的IOC容器" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/spring4x">Spring4x</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/mybatis">Mybatis</a>
+                
+                <a class="navbar-item"
+                href="/categories/DB/Redis">Redis</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-02-25T04:22:01.000Z">2020-02-25</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/SSM/">SSM</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/SSM/spring/">spring</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 860 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                手写一个简单的IOC容器
+            
+        </h1>
+        <div class="content">
+            <p>手写一个简单的IOC容器</p>
+<a id="more"></a>
+
+<h2 id="手写一个简单的IOC容器"><a href="#手写一个简单的IOC容器" class="headerlink" title="手写一个简单的IOC容器"></a>手写一个简单的IOC容器</h2><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>首先我们都知道，Spring框架中两个最重要的组件就是IOC和AOP。IOC 即 inversion of control 控制反转。Aop即 Aspect Oriented Programming 面向切面编程。那么我们这里就来手写一个简单的IOC容器。这里主要使用 xml配置的方式来实现IOC容器。</p>
+<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><p>手撸一个IOC容器需要先掌握好 <code>XML文件解析</code> 和 <code>Java反射</code>知识。</p>
+<p>行了，下面我们就开始了。</p>
+<h3 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h3><h4 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h4><p>使用普通的maven搭建一个项目。</p>
+<h4 id="导入依赖"><a href="#导入依赖" class="headerlink" title="导入依赖"></a>导入依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.3.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.18.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.dom4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>dom4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.62<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ooyhao.pojo;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span> age;</span><br><span class="line">    <span class="keyword">private</span> Byte ageB;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">short</span> height;</span><br><span class="line">    <span class="keyword">private</span> Short heightS;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> Integer idI;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> weight;</span><br><span class="line">    <span class="keyword">private</span> Long weightL;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">char</span> sex;</span><br><span class="line">    <span class="keyword">private</span> Character sexC;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> salary;</span><br><span class="line">    <span class="keyword">private</span> Float salaryF;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> buy;</span><br><span class="line">    <span class="keyword">private</span> Double buyD;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> successB;</span><br><span class="line">    <span class="keyword">private</span> Boolean success;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="spring配置文件"><a href="#spring配置文件" class="headerlink" title="spring配置文件"></a>spring配置文件</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">class</span>=<span class="string">"com.ooyhao.pojo.User"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"age"</span> <span class="attr">value</span>=<span class="string">"2"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"ageB"</span> <span class="attr">value</span>=<span class="string">"20"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"height"</span> <span class="attr">value</span>=<span class="string">"170"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"heightS"</span> <span class="attr">value</span>=<span class="string">"1700"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">value</span>=<span class="string">"1"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"idI"</span> <span class="attr">value</span>=<span class="string">"10"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"weight"</span> <span class="attr">value</span>=<span class="string">"60"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"weightL"</span> <span class="attr">value</span>=<span class="string">"600"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sex"</span> <span class="attr">value</span>=<span class="string">"m"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sexC"</span> <span class="attr">value</span>=<span class="string">"f"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"salary"</span> <span class="attr">value</span>=<span class="string">"7500.5"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"salaryF"</span> <span class="attr">value</span>=<span class="string">"9000.5"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"buy"</span> <span class="attr">value</span>=<span class="string">"10.05"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"buyD"</span> <span class="attr">value</span>=<span class="string">"100.5"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"success"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"successB"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">value</span>=<span class="string">"欧阳"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="自定义ApplicationContext"><a href="#自定义ApplicationContext" class="headerlink" title="自定义ApplicationContext"></a>自定义ApplicationContext</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 简单手写一个IOC容器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplicationContext</span> <span class="keyword">implements</span> <span class="title">ApplicationContext</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String,Object&gt; beansContainer = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyApplicationContext</span><span class="params">(String path)</span></span>&#123;</span><br><span class="line">        <span class="comment">//构造器中处理</span></span><br><span class="line">        <span class="comment">//处理ClassPath下的文件。</span></span><br><span class="line">        ClassPathResource resource = <span class="keyword">new</span> ClassPathResource(path);</span><br><span class="line">        <span class="comment">//利用DOM4J解析XML文件</span></span><br><span class="line">        SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//读取xml文件,获取到文档</span></span><br><span class="line">            Document document = reader.read(resource.getInputStream());</span><br><span class="line">            <span class="comment">//根目录beans</span></span><br><span class="line">            Element beansElement = document.getRootElement();</span><br><span class="line">            <span class="comment">//迭代beans获取多个bean</span></span><br><span class="line">            Iterator&lt;Element&gt; beansIter = beansElement.elementIterator();</span><br><span class="line">            <span class="keyword">while</span>(beansIter.hasNext())&#123;</span><br><span class="line">                <span class="comment">//单个bean</span></span><br><span class="line">                Element beanElement = beansIter.next();</span><br><span class="line">                <span class="comment">//id</span></span><br><span class="line">                String id = beanElement.attributeValue(<span class="string">"id"</span>);</span><br><span class="line">                <span class="comment">//完整的类名</span></span><br><span class="line">                String className = beanElement.attributeValue(<span class="string">"class"</span>);</span><br><span class="line">                <span class="comment">//通过className反射出一个对象</span></span><br><span class="line">                Class&lt;?&gt; aClass = Class.forName(className);</span><br><span class="line">                <span class="comment">//获取无参数的构造器</span></span><br><span class="line">                Constructor&lt;?&gt; constructor = aClass.getConstructor();</span><br><span class="line">                <span class="comment">//利用无参数的构造器创建实例</span></span><br><span class="line">                Object o = constructor.newInstance();</span><br><span class="line">                <span class="comment">//迭代bean获取property</span></span><br><span class="line">                Iterator&lt;Element&gt; beanIter = beanElement.elementIterator();</span><br><span class="line">                <span class="keyword">while</span> (beanIter.hasNext())&#123;</span><br><span class="line">                    Element property = beanIter.next();</span><br><span class="line">                    <span class="comment">//属性名</span></span><br><span class="line">                    String fieldName = property.attributeValue(<span class="string">"name"</span>);</span><br><span class="line">                    <span class="comment">//属性值</span></span><br><span class="line">                    String fieldValue = property.attributeValue(<span class="string">"value"</span>);</span><br><span class="line">                    <span class="comment">//根据属性名获取属性对象</span></span><br><span class="line">                    Field field = aClass.getDeclaredField(fieldName);</span><br><span class="line">                    <span class="comment">//属性的类型</span></span><br><span class="line">                    Class&lt;?&gt; fieldType = field.getType();</span><br><span class="line">                    <span class="comment">//拼接set方法名</span></span><br><span class="line">                    String setMethodName = <span class="string">"set"</span> + fieldName.substring(<span class="number">0</span>,<span class="number">1</span>).toUpperCase()+ fieldName.substring(<span class="number">1</span>);</span><br><span class="line">                    <span class="comment">//获取方法对象</span></span><br><span class="line">                    Method method = aClass.getMethod(setMethodName, fieldType);</span><br><span class="line"></span><br><span class="line">                    Object val = fieldValue;</span><br><span class="line">                    <span class="keyword">switch</span> (fieldType.getName())&#123;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"int"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Integer"</span>:</span><br><span class="line">                            val = Integer.valueOf(fieldValue);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"boolean"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Boolean"</span>:</span><br><span class="line">                            val = Boolean.valueOf(fieldValue);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"char"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Character"</span>:</span><br><span class="line">                            val = fieldValue.charAt(<span class="number">0</span>);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"long"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Long"</span>:</span><br><span class="line">                            val = Long.valueOf(fieldValue);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"double"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Double"</span>:</span><br><span class="line">                            val = Double.valueOf(fieldValue);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"float"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Float"</span>:</span><br><span class="line">                            val = Float.valueOf(fieldValue);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"byte"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Byte"</span>:</span><br><span class="line">                            val = Byte.valueOf(fieldValue);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"short"</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">"java.lang.Short"</span>:</span><br><span class="line">                            val = Short.valueOf(fieldValue);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    method.invoke(o,val);</span><br><span class="line">                &#125;</span><br><span class="line">                beansContainer.put(id,o);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (DocumentException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getBean</span><span class="params">(String s)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        Object o = beansContainer.get(s);</span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getBean</span><span class="params">(Class&lt;T&gt; aClass)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        Collection&lt;Object&gt; values = beansContainer.values();</span><br><span class="line">        Iterator&lt;Object&gt; iterator = values.iterator();</span><br><span class="line">        <span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">            Object next = iterator.next();</span><br><span class="line">            <span class="keyword">if</span> (next.getClass().equals(aClass)) &#123;</span><br><span class="line">                <span class="keyword">return</span> (T) next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//部分未实现功能此处省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述部分就是实现简单的IOC重点内容。主要是基于 XML解析和发射知识。</p>
+<h3 id="项目测试"><a href="#项目测试" class="headerlink" title="项目测试"></a>项目测试</h3><p>项目测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context = <span class="keyword">new</span> MyApplicationContext(<span class="string">"spring.xml"</span>);</span><br><span class="line">User o = context.getBean(User<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">System.out.println(JSONObject.toJSONString(o));</span><br></pre></td></tr></table></figure>
+
+<p>测试结果</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"age"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"ageB"</span>: <span class="number">20</span>,</span><br><span class="line">    <span class="attr">"buy"</span>: <span class="number">10.05</span>,</span><br><span class="line">    <span class="attr">"buyD"</span>: <span class="number">100.5</span>,</span><br><span class="line">    <span class="attr">"height"</span>: <span class="number">170</span>,</span><br><span class="line">    <span class="attr">"heightS"</span>: <span class="number">1700</span>,</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">"idI"</span>: <span class="number">10</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"欧阳"</span>,</span><br><span class="line">    <span class="attr">"salary"</span>: <span class="number">7500.5</span>,</span><br><span class="line">    <span class="attr">"salaryF"</span>: <span class="number">9000.5</span>,</span><br><span class="line">    <span class="attr">"sex"</span>: <span class="string">"m"</span>,</span><br><span class="line">    <span class="attr">"sexC"</span>: <span class="string">"f"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"successB"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"weight"</span>: <span class="number">60</span>,</span><br><span class="line">    <span class="attr">"weightL"</span>: <span class="number">600</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意：这里只是实现了一个简单的IOC容器，并且只是实现了 java的简单类型和 包装类型，以及String类型的注入。</p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/02/25/SSM/spring/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E5%88%9D%E7%BA%A7%E7%9A%84IOC%E5%AE%B9%E5%99%A8/">手写一个简单的IOC容器</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/02/25/SSM/spring/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E5%88%9D%E7%BA%A7%E7%9A%84IOC%E5%AE%B9%E5%99%A8/">https://ooyhao.github.io/2020/02/25/SSM/spring/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E5%88%9D%E7%BA%A7%E7%9A%84IOC%E5%AE%B9%E5%99%A8/</a></li>
+            <li><strong>发布时间：</strong>2020-02-25</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/spring/" rel="tag">spring</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/24/db/redis/15.SpringBoot%E6%95%B4%E5%90%88Redis/">
+                <span class="level-item">15.SpringBoot 整合 Redis</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: '846bcc64daf3ad464eac22b05b650c5f',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            66
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            13
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            13
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="/about" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#手写一个简单的IOC容器">
+        <span class="has-mr-6">1</span>
+        <span>手写一个简单的IOC容器</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#说明">
+        <span class="has-mr-6">1.1</span>
+        <span>说明</span>
+        </a></li><li>
+        <a class="is-flex" href="#前置知识">
+        <span class="has-mr-6">1.2</span>
+        <span>前置知识</span>
+        </a></li><li>
+        <a class="is-flex" href="#项目搭建">
+        <span class="has-mr-6">1.3</span>
+        <span>项目搭建</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#创建项目">
+        <span class="has-mr-6">1.3.1</span>
+        <span>创建项目</span>
+        </a></li><li>
+        <a class="is-flex" href="#导入依赖">
+        <span class="has-mr-6">1.3.2</span>
+        <span>导入依赖</span>
+        </a></li><li>
+        <a class="is-flex" href="#实体类">
+        <span class="has-mr-6">1.3.3</span>
+        <span>实体类</span>
+        </a></li><li>
+        <a class="is-flex" href="#spring配置文件">
+        <span class="has-mr-6">1.3.4</span>
+        <span>spring配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#自定义ApplicationContext">
+        <span class="has-mr-6">1.3.5</span>
+        <span>自定义ApplicationContext</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#项目测试">
+        <span class="has-mr-6">1.4</span>
+        <span>项目测试</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">16</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/Redis/">
+            <span class="level-start">
+                <span class="level-item">Redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">15</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">47</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring/">
+            <span class="level-start">
+                <span class="level-item">spring</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/">
+            <span class="level-start">
+                <span class="level-item">随笔</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+            <span class="level-start">
+                <span class="level-item">新冠肺炎</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Redis/" style="font-size: 20px;">Redis</a> <a href="/tags/feign/" style="font-size: 11.43px;">feign</a> <a href="/tags/gateway/" style="font-size: 12.86px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/mybatis/" style="font-size: 15.71px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 17.14px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 14.29px;">sentinel</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring4x/" style="font-size: 18.57px;">spring4x</a> <a href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/" style="font-size: 10px;">新冠肺炎</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/02/25/SSM/spring/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E5%88%9D%E7%BA%A7%E7%9A%84IOC%E5%AE%B9%E5%99%A8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="手写一个简单的IOC容器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-25T04:22:01.000Z">2020-02-25</time></div>
+                    <a href="/2020/02/25/SSM/spring/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E5%88%9D%E7%BA%A7%E7%9A%84IOC%E5%AE%B9%E5%99%A8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">手写一个简单的IOC容器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/spring/">spring</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/24/db/redis/15.SpringBoot%E6%95%B4%E5%90%88Redis/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="15.SpringBoot 整合 Redis">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-24T11:41:15.000Z">2020-02-24</time></div>
+                    <a href="/2020/02/24/db/redis/15.SpringBoot%E6%95%B4%E5%90%88Redis/" class="title has-link-black-ter is-size-6 has-text-weight-normal">15.SpringBoot 整合 Redis</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/23/db/redis/14.redis%E4%B9%8B%E9%9B%86%E7%BE%A4/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="14.Redis之集群搭建">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-23T12:55:14.000Z">2020-02-23</time></div>
+                    <a href="/2020/02/23/db/redis/14.redis%E4%B9%8B%E9%9B%86%E7%BE%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">14.Redis之集群搭建</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="13.Redis主从复制和哨兵模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-23T07:55:13.000Z">2020-02-23</time></div>
+                    <a href="/2020/02/23/db/redis/13.redis%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="title has-link-black-ter is-size-6 has-text-weight-normal">13.Redis主从复制和哨兵模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/02/22/db/redis/12.redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E4%B9%8BAOF/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="12.Redis 之 AOF持久化方式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-22T07:55:12.000Z">2020-02-22</time></div>
+                    <a href="/2020/02/22/db/redis/12.redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E4%B9%8BAOF/" class="title has-link-black-ter is-size-6 has-text-weight-normal">12.Redis 之 AOF持久化方式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/DB/">DB</a> / <a class="has-link-grey -link" href="/categories/DB/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">17</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">49</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Redis/">
+                        <span class="tag">Redis</span>
+                        <span class="tag is-grey">15</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring/">
+                        <span class="tag">spring</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+                        <span class="tag">新冠肺炎</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="手写一个简单的IOC容器" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
