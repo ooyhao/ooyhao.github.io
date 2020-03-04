@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
 <meta property="article:published_time" content="2020-03-04T12:43:09.000Z">
-<meta property="article:modified_time" content="2020-03-04T12:54:38.426Z">
+<meta property="article:modified_time" content="2020-03-04T13:16:51.598Z">
 <meta property="article:author" content="ouYang">
 <meta property="article:tag" content="springboot">
 <meta name="twitter:card" content="summary">
@@ -163,7 +163,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    9 分钟 读完 (大约 1302 个字)
+                    9 分钟 读完 (大约 1311 个字)
                 </span>
                 
                 
@@ -215,7 +215,7 @@
 <p><img src="/images/springboot/QQ%E6%88%AA%E5%9B%BE20200302213946.png" alt></p>
 <h1 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h1><p>了解了整个CORS的工作过程之后，我们通过Ajax发送跨域请求，虽然用户体验提高了，但是也有潜在的威胁存在，常见的就是CSRF（Cross-site request forgery）跨站请求伪造。跨站请求伪造也被称为one-click attack 或者 session riding，通常缩写为CSRF或者XSRF，是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法，举个例子：</p>
 <blockquote>
-<p>  假如一家银行用以运行转账操作的URL地址如下：<code>http://icbc.com/aa?bb=cc</code>，那么，一个恶意攻击者可以在另一个网站上放置如下代码：<img src="http://icbc.com/aa?bb=cc">，如果用户访问了恶意站点，而她之前刚访问过银行不久，登录信息尚未过期，那么她就会遭受损失。</p>
+<p>  假如一家银行用以运行转账操作的URL地址如下：<code>http://icbc.com/aa?bb=cc</code>，那么，一个恶意攻击者可以在另一个网站上放置如下代码：&lt;img src=”<a href="http://icbc.com/aa?bb=cc&quot;&gt;，如果用户访问了恶意站点，而她之前刚访问过银行不久，登录信息尚未过期，那么她就会遭受损失。">http://icbc.com/aa?bb=cc&quot;&gt;，如果用户访问了恶意站点，而她之前刚访问过银行不久，登录信息尚未过期，那么她就会遭受损失。</a></p>
 </blockquote>
 <p>基于此，浏览器在实际操作中，会对请求进行分类，分为简单请求，预先请求，带凭证的请求等，预先请求会首先发送一个options探测请求，和浏览器进行协商是否接受请求。默认情况下跨域请求是不需要凭证的，但是服务端可以配置要求客户端提供凭证，这样就可以有效避免csrf攻击。</p>
 
