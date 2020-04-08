@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>String 类 - ouYangHao</title>
+
+
+    <meta name="description" content="String 类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="String 类">
+<meta property="og:url" content="https://ooyhao.github.io/2020/04/08/%E5%9F%BA%E7%A1%80/String/index.html">
+<meta property="og:site_name" content="ouYangHao">
+<meta property="og:description" content="String 类">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-04-08T12:07:01.000Z">
+<meta property="article:modified_time" content="2020-04-08T03:08:45.788Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="JavaSE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="String 类" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/spring4x">Spring4x</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/mybatis">Mybatis</a>
+                
+                <a class="navbar-item"
+                href="/categories/DB/Redis">Redis</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-04-08T12:07:01.000Z">2020-04-08</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    33 分钟 读完 (大约 4907 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                String 类
+            
+        </h1>
+        <div class="content">
+            <h2 id="String-类"><a href="#String-类" class="headerlink" title="String 类"></a>String 类</h2><a id="more"></a>
+
+<blockquote>
+<p>  部分参考自：<a href="https://www.cnblogs.com/ysocean/p/8571426.html#_label0">https://www.cnblogs.com/ysocean/p/8571426.html#_label0</a></p>
+</blockquote>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>String类是一个不可变类。其一旦被赋值，就不能别修改了。</p>
+<p>我们先来看一下源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">String</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>, <span class="title">Comparable</span>&lt;<span class="title">String</span>&gt;, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">char</span> value[];</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们都知道String类是一个不可变类。首先String类是被final修饰的类，不能被任何类继承，而且由于内部属性value数组也被final修饰，一旦被创建之后，包含在这个对象中的字符序列是不可改变的，包括该类后续的所有方法都是不能修改该对象的，直至该对象被销毁，这是我们需要特别注意的（该类的一些方法看似改变了字符串，其实内部都是创建一个新的字符串）。</p>
+<p>通过上面的代码可以看到，String内部其实是一个字符数组<code>char[]</code> ，这里使用的JDK版本是8.x的。在后面的版本改为了<code>byte[]</code>数组，网上说9.x之后改的。我没有下载9.x，看的是11.x，内部确实改为了<code>byte[]</code>.</p>
+<p>网上扯来了一张图：</p>
+<p><img src="/images/base/String/65065144.png" alt></p>
+<p>看完String类的基本特点之后，我们看一下方法：</p>
+<h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><p>String类的构造方法有很多，我们来看一下：</p>
+<p><img src="/images/base/String/Snipaste_2020-04-06_19-13-45.png" alt></p>
+<p>无参构造方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">String</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.value = <span class="string">""</span>.value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>字符串构造方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">String</span><span class="params">(String original)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.value = original.value;</span><br><span class="line">    <span class="keyword">this</span>.hash = original.hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以及利用<strong>字符数组</strong>，<strong>字节数组</strong> 和 <strong>StringBuffer</strong> 以及 <strong>StringBuilder</strong>来创建。</p>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String str0 = <span class="keyword">new</span> String();</span><br><span class="line">String str1 = <span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br><span class="line">String str2 = <span class="keyword">new</span> String(<span class="keyword">new</span> <span class="keyword">char</span>[]&#123;<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>&#125;);</span><br><span class="line">String str3 = <span class="keyword">new</span> String(<span class="keyword">new</span> <span class="keyword">byte</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;);</span><br><span class="line">String str4 = <span class="keyword">new</span> String(<span class="keyword">new</span> StringBuilder());</span><br><span class="line">String str5 = <span class="keyword">new</span> String(<span class="keyword">new</span> StringBuffer());</span><br></pre></td></tr></table></figure>
+
+<p>除了上面的示例，还有一些特殊处理的。比如取数组的某个区间创建字符串。</p>
+<h3 id="常用的普通方法"><a href="#常用的普通方法" class="headerlink" title="常用的普通方法"></a>常用的普通方法</h3><h4 id="获取长度和判空的方法"><a href="#获取长度和判空的方法" class="headerlink" title="获取长度和判空的方法"></a>获取长度和判空的方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">length</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value.length;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value.length == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取当前字符串中指定位置的字符"><a href="#获取当前字符串中指定位置的字符" class="headerlink" title="获取当前字符串中指定位置的字符"></a>获取当前字符串中指定位置的字符</h4><p>说明：通过其源码可以看出，其实就是获取value数组第index位置上的字符。由于数组下标从0开始，所以这里的index也是从0开始的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">char</span> <span class="title">charAt</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ((index &lt; <span class="number">0</span>) || (index &gt;= value.length)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(index);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> value[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取字符串的字节数组"><a href="#获取字符串的字节数组" class="headerlink" title="获取字符串的字节数组"></a>获取字符串的字节数组</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">byte</span>[] getBytes(String charsetName) <span class="keyword">throws</span> UnsupportedEncodingException &#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">byte</span>[] getBytes(Charset charset) &#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">byte</span>[] getBytes() &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="比较字符串是否相同"><a href="#比较字符串是否相同" class="headerlink" title="比较字符串是否相同"></a>比较字符串是否相同</h4><p>通过方法名即可知道equalsIgnoreCase是忽略大小写的，则equals是区分大小写的比较，即<code>A</code> 和 <code>a</code> 是false</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equalsIgnoreCase</span><span class="params">(String anotherString)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="比较字符串大小，返回值是int"><a href="#比较字符串大小，返回值是int" class="headerlink" title="比较字符串大小，返回值是int"></a>比较字符串大小，返回值是int</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(String anotherString)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareToIgnoreCase</span><span class="params">(String str)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="以xx开头，以xx结尾"><a href="#以xx开头，以xx结尾" class="headerlink" title="以xx开头，以xx结尾"></a>以xx开头，以xx结尾</h4><p>实用场景：</p>
+<ul>
+<li>startsWith：比如判断某一类路径，不走拦截器拦截，以/static开头的静态文件不拦截。</li>
+<li>endsWith：比如获取所有的pdf文件，那就需要判断是否是以.pdf结尾的。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">startsWith</span><span class="params">(String prefix, <span class="keyword">int</span> toffset)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">startsWith</span><span class="params">(String prefix)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">endsWith</span><span class="params">(String suffix)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取指定元素的下标"><a href="#获取指定元素的下标" class="headerlink" title="获取指定元素的下标"></a>获取指定元素的下标</h4><p>获取指定字符，指定字符串第一次出现的位置，最后一次出现的位置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(<span class="keyword">int</span> ch)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(<span class="keyword">int</span> ch, <span class="keyword">int</span> fromIndex)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lastIndexOf</span><span class="params">(<span class="keyword">int</span> ch)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lastIndexOf</span><span class="params">(<span class="keyword">int</span> ch, <span class="keyword">int</span> fromIndex)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String str)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String str, <span class="keyword">int</span> fromIndex)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lastIndexOf</span><span class="params">(String str)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lastIndexOf</span><span class="params">(String str, <span class="keyword">int</span> fromIndex)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意，我们的方法中只提供 int和String类型的参数，但是我们可以传入char类型的，这里就涉及到了类型转换问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"abcda"</span>;</span><br><span class="line">System.out.println(str.indexOf(<span class="string">'a'</span>));			<span class="comment">//0</span></span><br><span class="line">System.out.println(str.lastIndexOf(<span class="string">'a'</span>));		<span class="comment">//4</span></span><br><span class="line">System.out.println(str.indexOf(<span class="number">98</span>));			<span class="comment">//1</span></span><br><span class="line">System.out.println(str.lastIndexOf(<span class="number">99</span>));		<span class="comment">//2</span></span><br><span class="line">System.out.println(str.indexOf(<span class="string">"bc"</span>));			<span class="comment">//1</span></span><br><span class="line">System.out.println(str.lastIndexOf(<span class="string">"bc"</span>));		<span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+
+<p>类型转换：左边的类型可以自动类型转换为右边的类型，反过来则需要强制类型转换。</p>
+<ul>
+<li><p>byte -&gt; short -&gt; int -&gt; long -&gt; float -&gt; double</p>
+</li>
+<li><p>char -&gt; int -&gt; long -&gt; float -&gt; double</p>
+</li>
+</ul>
+<h4 id="子串subString"><a href="#子串subString" class="headerlink" title="子串subString"></a>子串subString</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">substring</span><span class="params">(<span class="keyword">int</span> beginIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (beginIndex &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(beginIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> subLen = value.length - beginIndex;</span><br><span class="line">    <span class="keyword">if</span> (subLen &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(subLen);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (beginIndex == <span class="number">0</span>) ? <span class="keyword">this</span> : <span class="keyword">new</span> String(value, beginIndex, subLen);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">substring</span><span class="params">(<span class="keyword">int</span> beginIndex, <span class="keyword">int</span> endIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (beginIndex &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(beginIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (endIndex &gt; value.length) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(endIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> subLen = endIndex - beginIndex;</span><br><span class="line">    <span class="keyword">if</span> (subLen &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(subLen);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ((beginIndex == <span class="number">0</span>) &amp;&amp; (endIndex == value.length)) ? <span class="keyword">this</span></span><br><span class="line">        : <span class="keyword">new</span> String(value, beginIndex, subLen);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，subString方法是获取指定区间的字符数组新创建String或是返回当前字符串本身。</p>
+<h4 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">concat</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> otherLen = str.length();</span><br><span class="line">    <span class="keyword">if</span> (otherLen == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> len = value.length;</span><br><span class="line">    <span class="keyword">char</span> buf[] = Arrays.copyOf(value, len + otherLen);</span><br><span class="line">    str.getChars(buf, len);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(buf, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过方法可以知道，方法体直接调用的是length方法，所以传入的参数不能为空，否则会抛出空指针异常。字符串拼接，会返回一个新的字符串对象，不会修改原来数据。</p>
+<h4 id="字符串替换"><a href="#字符串替换" class="headerlink" title="字符串替换"></a>字符串替换</h4><p>具体实现先不看，直接看返回值，可以看出，同样是方法当前对象或是重新构建一个新的对象。</p>
+<p>解释：</p>
+<ul>
+<li><p>replace: 单个字符替换，将所有相同的字符全部替换</p>
+</li>
+<li><p>replaceFirst: 见名知意，替换第一个相同的字符串</p>
+</li>
+<li><p>replaceAll:同样，将所有相同的字符串全部替换，只是replaceFirst和replaceAll支持正则表达式。</p>
+</li>
+<li><p>replace：则是CharSequence类型的参数。下面是CharSequence的实现类。</p>
+<p><img src="/images/base/String/Snipaste_2020-04-07_14-29-11.png" alt></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">replace</span><span class="params">(<span class="keyword">char</span> oldChar, <span class="keyword">char</span> newChar)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">replaceFirst</span><span class="params">(String regex, String replacement)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">replaceAll</span><span class="params">(String regex, String replacement)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">replace</span><span class="params">(CharSequence target, CharSequence replacement)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们看其中一个方法；</p>
+<p>说明：从源码我们可以知道，返回值是一个新的对象或是本身，同时会把<strong>所有</strong>相同的对象<strong>全部替换</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">replace</span><span class="params">(<span class="keyword">char</span> oldChar, <span class="keyword">char</span> newChar)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (oldChar != newChar) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = value.length;</span><br><span class="line">        <span class="keyword">int</span> i = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">char</span>[] val = value; <span class="comment">/* avoid getfield opcode */</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (++i &lt; len) &#123;</span><br><span class="line">            <span class="keyword">if</span> (val[i] == oldChar) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (i &lt; len) &#123;</span><br><span class="line">            <span class="keyword">char</span> buf[] = <span class="keyword">new</span> <span class="keyword">char</span>[len];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++) &#123;</span><br><span class="line">                buf[j] = val[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; len) &#123;</span><br><span class="line">                <span class="keyword">char</span> c = val[i];</span><br><span class="line">                buf[i] = (c == oldChar) ? newChar : c;<span class="comment">//一直遍历到最后，所以会把相同的串全部替换</span></span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> String(buf, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="判断字符串是否满足格式"><a href="#判断字符串是否满足格式" class="headerlink" title="判断字符串是否满足格式"></a>判断字符串是否满足格式</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(String regex)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，接受一个正则表达式串，来判断当前字符串是否满足格式。</p>
+<h4 id="判断字符串是否包含指定子串"><a href="#判断字符串是否包含指定子串" class="headerlink" title="判断字符串是否包含指定子串"></a>判断字符串是否包含指定子串</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(CharSequence s)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="分割字符串"><a href="#分割字符串" class="headerlink" title="分割字符串"></a>分割字符串</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String[] split(String regex, <span class="keyword">int</span> limit) &#123;&#125;</span><br><span class="line"><span class="keyword">public</span> String[] split(String regex) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="转换大小写"><a href="#转换大小写" class="headerlink" title="转换大小写"></a>转换大小写</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toLowerCase</span><span class="params">(Locale locale)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toLowerCase</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toUpperCase</span><span class="params">(Locale locale)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toUpperCase</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="去除空白符"><a href="#去除空白符" class="headerlink" title="去除空白符"></a>去除空白符</h4><p>同样没有修改原有的字符，调用的是subString方法，用来获取子串，也是新创建的字符串对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">trim</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = value.length;</span><br><span class="line">    <span class="keyword">int</span> st = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span>[] val = value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ((st &lt; len) &amp;&amp; (val[st] &lt;= <span class="string">' '</span>)) &#123;</span><br><span class="line">        st++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> ((st &lt; len) &amp;&amp; (val[len - <span class="number">1</span>] &lt;= <span class="string">' '</span>)) &#123;</span><br><span class="line">        len--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ((st &gt; <span class="number">0</span>) || (len &lt; value.length)) ? substring(st, len) : <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="加分隔符并返回字符串"><a href="#加分隔符并返回字符串" class="headerlink" title="加分隔符并返回字符串"></a>加分隔符并返回字符串</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">join</span><span class="params">(CharSequence delimiter, CharSequence... elements)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">join</span><span class="params">(CharSequence delimiter, Iterable&lt;? extends CharSequence&gt; elements)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; stringList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">stringList.add(<span class="string">"AA"</span>);</span><br><span class="line">stringList.add(<span class="string">"BB"</span>);</span><br><span class="line">stringList.add(<span class="string">"CC"</span>);</span><br><span class="line"></span><br><span class="line">String join = String.join(<span class="string">"|"</span>, stringList);</span><br><span class="line">System.out.println(join);<span class="comment">// AA|BB|CC</span></span><br><span class="line"></span><br><span class="line">System.out.println(String.join(<span class="string">"@"</span>,<span class="string">"A"</span>,<span class="string">"B"</span>,<span class="string">"C"</span>));<span class="comment">// A@B@C</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="获取字符串的字节数组-1"><a href="#获取字符串的字节数组-1" class="headerlink" title="获取字符串的字节数组"></a>获取字符串的字节数组</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">char</span>[] toCharArray() &#123;</span><br><span class="line">    <span class="comment">// Cannot use Arrays.copyOf because of class initialization order issues</span></span><br><span class="line">    <span class="keyword">char</span> result[] = <span class="keyword">new</span> <span class="keyword">char</span>[value.length];</span><br><span class="line">    System.arraycopy(value, <span class="number">0</span>, result, <span class="number">0</span>, value.length);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="其他类型转为字符串"><a href="#其他类型转为字符串" class="headerlink" title="其他类型转为字符串"></a>其他类型转为字符串</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(Object obj)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">char</span> data[])</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">char</span> data[], <span class="keyword">int</span> offset, <span class="keyword">int</span> count)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">copyValueOf</span><span class="params">(<span class="keyword">char</span> data[], <span class="keyword">int</span> offset, <span class="keyword">int</span> count)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">copyValueOf</span><span class="params">(<span class="keyword">char</span> data[])</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">boolean</span> b)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">char</span> c)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">long</span> l)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">float</span> f)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>功能就是将传入的参数转为字符串，这里不详细说。</p>
+<p><strong>注意</strong>：我们基本把String中的方法都看遍了，可以发现，String内部都没有去修改原有字符串的内容，由于字符串是不可变类，我们也不法修改String的内容，所以转替换，转大小写，删空白符等操作，都是通过新建String对象来实现的。</p>
+<h3 id="String为什么是不可变类"><a href="#String为什么是不可变类" class="headerlink" title="String为什么是不可变类"></a>String为什么是不可变类</h3><p>上面我们介绍了如何保证String类是不可变类：①利用final关键字修饰String类，这样String就不能被继承，就无法被继承修改。②利用final修改属性value，就意味着value属性一旦初始化，就不可以修改。</p>
+<p>但是我们都知道value属性是一个数组，虽然我们不能修改value属性的引用，但是我们可以修改数组中具体的某个下标元素，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">int</span> val[] = &#123;<span class="number">1</span>,<span class="number">23</span>,<span class="number">3</span>&#125;;</span><br><span class="line">val[<span class="number">1</span>] = <span class="number">20</span>;<span class="comment">//[1, 20, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>也就是说，要实现真正的不可变类String，并不会仅仅因为这两个final关键字修饰。通过上面我们分析的普通方法可以知道，所以设计到修改字符串的方法，都是构建了新的字符串实例之后返回的，也就是JDK设计者在设计的时候，已经保证了所提供的方法是不会修改value数组的数据的。所以，综合上述三个条件，才能实现真正的不可变类。如下：</p>
+<ul>
+<li>final修饰类：保证String类无法被继承，从而无法通过重写方法来修改原有String类的方法功能。</li>
+<li>final修饰value：保证value属性一旦被初始化，其引用就是固定的，不能修改。</li>
+<li>方法不修改value数组的具体元素：保证在使用String提供的方法时，都不会修改String内部的数据。</li>
+</ul>
+<h3 id="String类为什么要设计成不可变类"><a href="#String类为什么要设计成不可变类" class="headerlink" title="String类为什么要设计成不可变类"></a>String类为什么要设计成不可变类</h3><blockquote>
+<p>  部分引用：<a href="https://www.cnblogs.com/ysocean/p/8571426.html">https://www.cnblogs.com/ysocean/p/8571426.html</a></p>
+</blockquote>
+<p>原因：</p>
+<ol>
+<li>安全</li>
+<li>hashcode缓存的需要</li>
+<li>实现字符串常量池（效率高）</li>
+</ol>
+<h4 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h4><p>如果字符串可变的话，可能会引发安全问题，比如数据库的用户名、密码都是以字符串的形式传入来获得数据库的连接，或者在socket变成中，主机和端口都是以字符串的形式传入的。因为字符串是不可变的，所以它的值是不可以变的，否则黑客可以钻到空子，改变字符串指向的对象的值，造成安全漏洞。</p>
+<h4 id="hashcode缓存的需要"><a href="#hashcode缓存的需要" class="headerlink" title="hashcode缓存的需要"></a>hashcode缓存的需要</h4><p>首先我们需要先看一下String类的hashcode的计算方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> hash; <span class="comment">// Default to 0</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> h = hash;</span><br><span class="line">    <span class="keyword">if</span> (h == <span class="number">0</span> &amp;&amp; value.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">char</span> val[] = value;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; value.length; i++) &#123;</span><br><span class="line">            h = <span class="number">31</span> * h + val[i];</span><br><span class="line">        &#125;</span><br><span class="line">        hash = h;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，hashcode只在第一次进行计算，后续调用这个对象时，直接返回缓存在对象中的hash值。hashcode的计算与value有关，若String可变，那么hashcode也需要随之进行计算，针对于Map，Set等容器，他们的键值需要保证唯一性和一致性，因此，String的不可变性使其比其他对象更加适合当容器的键值对。</p>
+<p>实例：如果我们不用String类型的不可变类来存，而使用StringBuilder这种可变类来操作，往HashSet中存值，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    StringBuilder sb1 = <span class="keyword">new</span> StringBuilder(<span class="string">"AA"</span>);</span><br><span class="line">    StringBuilder sb2 = <span class="keyword">new</span> StringBuilder(<span class="string">"AA"</span>);</span><br><span class="line">    HashSet&lt;StringBuilder&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    set.add(sb1);</span><br><span class="line">    set.add(sb2);</span><br><span class="line">    System.out.println(set);<span class="comment">//[AA, AA]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，想StringBuilder这种没有重写hashcode方法，调用的Object的。把sb1和sb2进行了区分，这对于我们来说就相当于存储了相同的值。</p>
+<h4 id="实现字符串常量池"><a href="#实现字符串常量池" class="headerlink" title="实现字符串常量池"></a>实现字符串常量池</h4><p>这个原因是非常主要的，只有保证了字符串类的不可变性，才有实现字符串常量池的必要性。</p>
+<p>常量池：Java运行时会维护一个String Pool（String池），也叫“字符串缓存池”。String池用来存放运行时中产生的各种字符串，并且池中的字符串的内容不重复。</p>
+<p>①、字面量创建字符串或者纯字符串（常量）拼接字符串会现在字符串池中找，看是否有相等的对象，没有的话就在字符串池创建该对象；有的话则直接用池中的引用，避免重复创建对象。</p>
+<p>②、new关键字创建时，直接在堆中创建一个新的对象，变量所引用的都是这个新对象的地址，但是如果new关键字创建的字符串内容在常量池中存在了，那么会由堆再指向常量池中对应的字符；但是反过来，如果通过new关键字创建的字符串对象在常量池中没有，那么通过new关键字创建的字符串对象是不会额外在常量池中维护的。</p>
+<p>③、使用包含变量表达式来创建String对象，则不仅会检查维护字符串池，还会在堆区创建这个对象，最后是指向堆内存的对象。</p>
+<p>我们先来看一个题目：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String str1 = <span class="string">"hello"</span>;</span><br><span class="line">String str2 = <span class="string">"hello"</span>;</span><br><span class="line">String str3 = <span class="keyword">new</span> String(<span class="string">"hello"</span>);</span><br><span class="line">System.out.println(str1==str2); </span><br><span class="line">System.out.println(str1==str3);</span><br><span class="line">System.out.println(str2==str3);</span><br><span class="line">System.out.println(str1.equals(str2));</span><br><span class="line">System.out.println(str1.equals(str3));</span><br><span class="line">System.out.println(str2.equals(str3));</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/base/String/1120165-20190615234817441-1307711026.png" alt></p>
+<p>首先，str1是字面量创建对象的，所以会先看字符串常量池中查看有没有”hello”对象，发现没有，会先在字符串常量池中创建，再将其引用返回，而此时str2创建时，字符串常量池中已经存在了，所以就直接返回”hello”对象的引用。当str3通过new对象创建时，会先在堆中创建对象，然后查询常量池，发现里面存在了”hello”对象，于是将其指向字符串常量池中的对象。</p>
+<p>我们再来看一个题目：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args]&#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str1 = <span class="string">"hello"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str2 = <span class="string">"helloworld"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str3 = str1+<span class="string">"world"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str4 = <span class="string">"hello"</span>+<span class="string">"world"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    System.out.println(str2==str3)</span></span>; </span><br><span class="line">    System.out.println(str2==str4);</span><br><span class="line">    System.out.println(str3==str4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的结果是什么呢？</p>
+<p>我们先看一下反编译之后的结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    String str1 = <span class="string">"hello"</span>;</span><br><span class="line">    String str2 = <span class="string">"helloworld"</span>;</span><br><span class="line">    String str3 = str1 + <span class="string">"world"</span>;</span><br><span class="line">    String str4 = <span class="string">"helloworld"</span>;</span><br><span class="line">    System.out.println((str2 == str3));</span><br><span class="line">    System.out.println((str2 == str4));</span><br><span class="line">    System.out.println((str3 == str4));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先 str1 是利用字符串字面量来创建对象。str2也是。可以看出，str4编译器能够明确这两个是不变的，就进行优化了，而str3中带有str1，编译器是无法确定里面的值的。</p>
+<p>对于str1，<strong>内存操作步骤</strong>是：</p>
+<p>先查询字符串常量池用存不存在”hello”对象。</p>
+<ul>
+<li>存在，直接返回字符串常量池中”hello”对象的引用</li>
+<li>不存在，在字符串常量池中创建”hello”对象，并返回其引用。</li>
+</ul>
+<p><strong>str2</strong> 依旧如此。那么此时字符串常量池中已经有<code>&quot;hello&quot;</code>对象和<code>&quot;helloworld&quot;</code>对象了。当执行到<strong>str3</strong>时，由于此时不是字面量创建了，<strong>str3</strong>会先在堆内存中创建一个String对象，再去查询<code>str1+world</code>拼接后的”helloworld”对象是否存在于字符串常量池中，如果存在，则直接将str3中的对象指向常量池中”helloworld”对象的。如果不存在，则只会在堆中创建。</p>
+<p>而当执行str4时，其实与str2的效果一样，同样是直接查询常量池。如图：</p>
+<p><img src="/images/base/String/1120165-20190615234833062-287021429.png" alt></p>
+<p>至此，我们再回来看这个题目：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args]&#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str1 = <span class="string">"hello"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str2 = <span class="string">"helloworld"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str3 = str1+<span class="string">"world"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    String str4 = <span class="string">"hello"</span>+<span class="string">"world"</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">    System.out.println(str2==str3)</span></span>;<span class="comment">//false</span></span><br><span class="line">    System.out.println(str2==str4);<span class="comment">//true</span></span><br><span class="line">    System.out.println(str3==str4);<span class="comment">//false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>可能看到这，会有这样的疑惑，堆中创建了对象怎么再指向常量池呢？</p>
+<blockquote>
+<p>  参考自：<a href="https://segmentfault.com/a/1190000009888357">https://segmentfault.com/a/1190000009888357</a></p>
+</blockquote>
+<p>字符串对象内部是用字符数组存储的，那么看下面的例子:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String m = <span class="string">"hello,world"</span>;</span><br><span class="line">String n = <span class="string">"hello,world"</span>;</span><br><span class="line">String u = <span class="keyword">new</span> String(m);</span><br><span class="line">String v = <span class="keyword">new</span> String(<span class="string">"hello,world"</span>);</span><br><span class="line">System.out.println(m == n);</span><br><span class="line">System.out.println(m == u);</span><br><span class="line">System.out.println(m == v);</span><br><span class="line">System.out.println(u == v);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>会分配一个11长度的char数组，并在常量池分配一个由这个char数组组成的字符串，然后由m去引用这个字符串。<code>String m = &quot;hello,world&quot;</code></li>
+<li>用n去引用常量池中的字符串对象，所以和m引用的是同一个对象。</li>
+<li>在堆中生成一个新的字符串，但是其内部的字符数组是引用m内部的字符数组。</li>
+<li>同样会生成一个新的字符串，但内部的字符数组引用常量池中的m的字符数组，意思是和u是同样的字符数组。</li>
+</ol>
+<p>图示：情况就大概是这样的(使用虚线只是表示两者其实没什么特别的关系)</p>
+<p><img src="/images/base/String/4198190031-594b70acb9b4b_articlex.png" alt></p>
+<p>综上，所以题目结果为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(m == n);<span class="comment">//true</span></span><br><span class="line">System.out.println(m == u);<span class="comment">//false</span></span><br><span class="line">System.out.println(m == v);<span class="comment">//false</span></span><br><span class="line">System.out.println(u == v);<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<p>结论：</p>
+<ul>
+<li>m和n是同一个对象。</li>
+<li>m,u,v都是不同的对象</li>
+<li>m,n,u,v都使用了同样的字符数组，并且用equals判断的话也会返回true。</li>
+</ul>
+<p>上面说到了m,n,u,v都是使用了同样的字符数组，但是我们使用正常的方式又获取不到value属性，那么我们使用反射来看一下具体的地址和值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String m = <span class="string">"hello,world"</span>;</span><br><span class="line">    String n = <span class="string">"hello,world"</span>;</span><br><span class="line">    String u = <span class="keyword">new</span> String(m);</span><br><span class="line">    String v = <span class="keyword">new</span> String(<span class="string">"hello,world"</span>);</span><br><span class="line"></span><br><span class="line">    Field value = String.class.getDeclaredField("value");</span><br><span class="line">    value.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    printMsg(m, value);</span><br><span class="line">    printMsg(n, value);</span><br><span class="line">    printMsg(u, value);</span><br><span class="line">    printMsg(v, value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printMsg</span><span class="params">(String m,Field value)</span> <span class="keyword">throws</span> IllegalAccessException </span>&#123;</span><br><span class="line">    Object o = value.get(m);</span><br><span class="line">    System.out.println(<span class="string">"字符数组地址："</span>+o);</span><br><span class="line">    System.out.println(<span class="string">"字符串地址："</span>+System.identityHashCode(m));</span><br><span class="line">    System.out.println(<span class="string">"字符数组内容："</span>+Arrays.toString((<span class="keyword">char</span>[])o));</span><br><span class="line">    System.out.println(<span class="string">"-------------------------------------"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果如图：</p>
+<p><img src="/images/base/String/Snipaste_2020-04-07_19-10-09.png" alt></p>
+<p><strong>可以看到获取到m,n,u,v四个对象中的char[] value数组的地址都是相同的。m和n的地址也是一样的</strong></p>
+<h3 id="可变的String"><a href="#可变的String" class="headerlink" title="可变的String"></a>可变的String</h3><p>String类的字符数组真的修改不了吗？String对象真的是一个绝对的不可变对象吗？不！下面我们来看一下，如果真的需要修改，如何修改String对象。</p>
+<p>定义一个字符串<code>String str = &quot;hello&quot;;</code> 如果将其值修改为<code>Hello</code>;这里说的是真正的修改，str的地址不能变。</p>
+<p>修改实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String str = <span class="string">"hello"</span>;</span><br><span class="line">    <span class="comment">//获取所有的value属性</span></span><br><span class="line">    Field value = String.class.getDeclaredField("value");</span><br><span class="line">    <span class="comment">//设置为可访问</span></span><br><span class="line">    value.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">//获取属性值</span></span><br><span class="line">    Object o = value.get(str);</span><br><span class="line">    <span class="comment">//转为字符数组</span></span><br><span class="line">    <span class="keyword">char</span>[] val = (<span class="keyword">char</span>[]) o;</span><br><span class="line">    <span class="comment">//修改字符数组</span></span><br><span class="line">    val[<span class="number">0</span>] = <span class="string">'H'</span>;</span><br><span class="line">    System.out.println(str);<span class="comment">//Hello</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，可以进行字符串内容的修改，但是需要使用到反射技术。但是一般不会进行这样的操作，所以可以说String类是不可变的类。</p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/04/08/%E5%9F%BA%E7%A1%80/String/">String 类</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/04/08/%E5%9F%BA%E7%A1%80/String/">https://ooyhao.github.io/2020/04/08/%E5%9F%BA%E7%A1%80/String/</a></li>
+            <li><strong>发布时间：</strong>2020-04-08</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/JavaSE/" rel="tag">JavaSE</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/04/05/%E5%9F%BA%E7%A1%80/Integer/">
+                <span class="level-item">Integer 类</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'c2709ed1e10584c1c3a2a677886a848c',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            83
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            18
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            16
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="/about" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#String-类">
+        <span class="has-mr-6">1</span>
+        <span>String 类</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#定义">
+        <span class="has-mr-6">1.1</span>
+        <span>定义</span>
+        </a></li><li>
+        <a class="is-flex" href="#构造方法">
+        <span class="has-mr-6">1.2</span>
+        <span>构造方法</span>
+        </a></li><li>
+        <a class="is-flex" href="#常用的普通方法">
+        <span class="has-mr-6">1.3</span>
+        <span>常用的普通方法</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#获取长度和判空的方法">
+        <span class="has-mr-6">1.3.1</span>
+        <span>获取长度和判空的方法</span>
+        </a></li><li>
+        <a class="is-flex" href="#获取当前字符串中指定位置的字符">
+        <span class="has-mr-6">1.3.2</span>
+        <span>获取当前字符串中指定位置的字符</span>
+        </a></li><li>
+        <a class="is-flex" href="#获取字符串的字节数组">
+        <span class="has-mr-6">1.3.3</span>
+        <span>获取字符串的字节数组</span>
+        </a></li><li>
+        <a class="is-flex" href="#比较字符串是否相同">
+        <span class="has-mr-6">1.3.4</span>
+        <span>比较字符串是否相同</span>
+        </a></li><li>
+        <a class="is-flex" href="#比较字符串大小，返回值是int">
+        <span class="has-mr-6">1.3.5</span>
+        <span>比较字符串大小，返回值是int</span>
+        </a></li><li>
+        <a class="is-flex" href="#以xx开头，以xx结尾">
+        <span class="has-mr-6">1.3.6</span>
+        <span>以xx开头，以xx结尾</span>
+        </a></li><li>
+        <a class="is-flex" href="#获取指定元素的下标">
+        <span class="has-mr-6">1.3.7</span>
+        <span>获取指定元素的下标</span>
+        </a></li><li>
+        <a class="is-flex" href="#子串subString">
+        <span class="has-mr-6">1.3.8</span>
+        <span>子串subString</span>
+        </a></li><li>
+        <a class="is-flex" href="#字符串拼接">
+        <span class="has-mr-6">1.3.9</span>
+        <span>字符串拼接</span>
+        </a></li><li>
+        <a class="is-flex" href="#字符串替换">
+        <span class="has-mr-6">1.3.10</span>
+        <span>字符串替换</span>
+        </a></li><li>
+        <a class="is-flex" href="#判断字符串是否满足格式">
+        <span class="has-mr-6">1.3.11</span>
+        <span>判断字符串是否满足格式</span>
+        </a></li><li>
+        <a class="is-flex" href="#判断字符串是否包含指定子串">
+        <span class="has-mr-6">1.3.12</span>
+        <span>判断字符串是否包含指定子串</span>
+        </a></li><li>
+        <a class="is-flex" href="#分割字符串">
+        <span class="has-mr-6">1.3.13</span>
+        <span>分割字符串</span>
+        </a></li><li>
+        <a class="is-flex" href="#转换大小写">
+        <span class="has-mr-6">1.3.14</span>
+        <span>转换大小写</span>
+        </a></li><li>
+        <a class="is-flex" href="#去除空白符">
+        <span class="has-mr-6">1.3.15</span>
+        <span>去除空白符</span>
+        </a></li><li>
+        <a class="is-flex" href="#加分隔符并返回字符串">
+        <span class="has-mr-6">1.3.16</span>
+        <span>加分隔符并返回字符串</span>
+        </a></li><li>
+        <a class="is-flex" href="#获取字符串的字节数组-1">
+        <span class="has-mr-6">1.3.17</span>
+        <span>获取字符串的字节数组</span>
+        </a></li><li>
+        <a class="is-flex" href="#其他类型转为字符串">
+        <span class="has-mr-6">1.3.18</span>
+        <span>其他类型转为字符串</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#String为什么是不可变类">
+        <span class="has-mr-6">1.4</span>
+        <span>String为什么是不可变类</span>
+        </a></li><li>
+        <a class="is-flex" href="#String类为什么要设计成不可变类">
+        <span class="has-mr-6">1.5</span>
+        <span>String类为什么要设计成不可变类</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#安全">
+        <span class="has-mr-6">1.5.1</span>
+        <span>安全</span>
+        </a></li><li>
+        <a class="is-flex" href="#hashcode缓存的需要">
+        <span class="has-mr-6">1.5.2</span>
+        <span>hashcode缓存的需要</span>
+        </a></li><li>
+        <a class="is-flex" href="#实现字符串常量池">
+        <span class="has-mr-6">1.5.3</span>
+        <span>实现字符串常量池</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#可变的String">
+        <span class="has-mr-6">1.6</span>
+        <span>可变的String</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">16</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/Redis/">
+            <span class="level-start">
+                <span class="level-item">Redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">15</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">61</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring/">
+            <span class="level-start">
+                <span class="level-item">spring</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springboot/">
+            <span class="level-start">
+                <span class="level-item">springboot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">14</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/tools/">
+            <span class="level-start">
+                <span class="level-item">tools</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/tools/idea/">
+            <span class="level-start">
+                <span class="level-item">idea</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E5%9F%BA%E7%A1%80/">
+            <span class="level-start">
+                <span class="level-item">基础</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">
+            <span class="level-start">
+                <span class="level-item">JavaSE</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/">
+            <span class="level-start">
+                <span class="level-item">随笔</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+            <span class="level-start">
+                <span class="level-item">新冠肺炎</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/JavaSE/" style="font-size: 11.11px;">JavaSE</a> <a href="/tags/Redis/" style="font-size: 20px;">Redis</a> <a href="/tags/feign/" style="font-size: 12.22px;">feign</a> <a href="/tags/gateway/" style="font-size: 13.33px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/idea/" style="font-size: 10px;">idea</a> <a href="/tags/mybatis/" style="font-size: 15.56px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 16.67px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 14.44px;">sentinel</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring4x/" style="font-size: 17.78px;">spring4x</a> <a href="/tags/springboot/" style="font-size: 18.89px;">springboot</a> <a href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/" style="font-size: 10px;">新冠肺炎</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/04/08/%E5%9F%BA%E7%A1%80/String/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="String 类">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-08T12:07:01.000Z">2020-04-08</time></div>
+                    <a href="/2020/04/08/%E5%9F%BA%E7%A1%80/String/" class="title has-link-black-ter is-size-6 has-text-weight-normal">String 类</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a> / <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/04/05/%E5%9F%BA%E7%A1%80/Integer/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Integer 类">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-05T12:07:01.000Z">2020-04-05</time></div>
+                    <a href="/2020/04/05/%E5%9F%BA%E7%A1%80/Integer/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Integer 类</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a> / <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/04/SSM/springboot/14.SpringBoot%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="14.Spring Boot之数据持久化">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-04T12:43:14.000Z">2020-03-04</time></div>
+                    <a href="/2020/03/04/SSM/springboot/14.SpringBoot%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" class="title has-link-black-ter is-size-6 has-text-weight-normal">14.Spring Boot之数据持久化</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springboot/">springboot</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/04/SSM/springboot/13.SpringBoot%E4%B9%8B%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="13.SpringBoot之类型转换">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-04T12:43:13.000Z">2020-03-04</time></div>
+                    <a href="/2020/03/04/SSM/springboot/13.SpringBoot%E4%B9%8B%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="title has-link-black-ter is-size-6 has-text-weight-normal">13.SpringBoot之类型转换</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springboot/">springboot</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/04/SSM/springboot/12.SpringBoot%E4%B9%8BWebMvcConfigurer/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="12.SpringBoot之WebMvcConfigurer">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-04T12:43:12.000Z">2020-03-04</time></div>
+                    <a href="/2020/03/04/SSM/springboot/12.SpringBoot%E4%B9%8BWebMvcConfigurer/" class="title has-link-black-ter is-size-6 has-text-weight-normal">12.SpringBoot之WebMvcConfigurer</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/SSM/">SSM</a> / <a class="has-link-grey -link" href="/categories/SSM/springboot/">springboot</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">11</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">21</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">49</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/JavaSE/">
+                        <span class="tag">JavaSE</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Redis/">
+                        <span class="tag">Redis</span>
+                        <span class="tag is-grey">15</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/idea/">
+                        <span class="tag">idea</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring/">
+                        <span class="tag">spring</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/springboot/">
+                        <span class="tag">springboot</span>
+                        <span class="tag is-grey">14</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+                        <span class="tag">新冠肺炎</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="String 类" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
