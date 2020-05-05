@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>HashMap的remove相关方法 - ouYangHao</title>
+
+
+    <meta name="description" content="前面增加和查询都解析完了，这里我们看一下跟删除相关的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HashMap的remove相关方法">
+<meta property="og:url" content="https://ooyhao.github.io/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/4.HashMap%E7%9A%84remove%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="ouYangHao">
+<meta property="og:description" content="前面增加和查询都解析完了，这里我们看一下跟删除相关的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooyhao.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-05-05T03:54:02.000Z">
+<meta property="article:modified_time" content="2020-05-05T05:26:08.981Z">
+<meta property="article:author" content="ouYang">
+<meta property="article:tag" content="JavaSE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooyhao.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/logo2.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atelier-forest-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo2.png" alt="HashMap的remove相关方法" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/springcloudbalibaba">SpringCloudAlibaba</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/spring4x">Spring4x</a>
+                
+                <a class="navbar-item"
+                href="/categories/SSM/mybatis">Mybatis</a>
+                
+                <a class="navbar-item"
+                href="/categories/DB/Redis">Redis</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-05T03:54:02.000Z">2020-05-05</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    10 分钟 读完 (大约 1465 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                HashMap的remove相关方法
+            
+        </h1>
+        <div class="content">
+            <p>前面增加和查询都解析完了，这里我们看一下跟删除相关的方法。</p>
+<a id="more"></a>
+
+
+<h2 id="Remove-key"><a href="#Remove-key" class="headerlink" title="Remove key"></a>Remove key</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">remove</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    <span class="keyword">return</span> (e = removeNode(hash(key), key, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">true</span>)) == <span class="keyword">null</span> ? <span class="keyword">null</span> : e.value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过源码可以看到，主要的功能方法还是里面的removeNode方法，我们看一下removeNode方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> Node&lt;K,V&gt; <span class="title">removeNode</span><span class="params">(<span class="keyword">int</span> hash, Object key, Object value,<span class="keyword">boolean</span> matchValue, <span class="keyword">boolean</span> movable)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="keyword">int</span> n, index;</span><br><span class="line">    <span class="keyword">if</span> ((tab = table) != <span class="keyword">null</span> &amp;&amp; (n = tab.length) &gt; <span class="number">0</span> &amp;&amp; (p = tab[index = (n - <span class="number">1</span>) &amp; hash]) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//移除的条件：</span></span><br><span class="line">        <span class="comment">//  1.HashMap中table属性不能为null，</span></span><br><span class="line">        <span class="comment">//  2.table的程度需要大于0，</span></span><br><span class="line">        <span class="comment">//  3.通过hash计算出来的下标元素需要存在</span></span><br><span class="line">        Node&lt;K,V&gt; node = <span class="keyword">null</span>, e; K k; V v;</span><br><span class="line">        <span class="keyword">if</span> (p.hash == hash &amp;&amp; ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            <span class="comment">//(hash值相等) 并且 (key地址等或key equals为true)</span></span><br><span class="line">            <span class="comment">//如果条件都成立，表示table[(n-1)&amp;hash]上的元素就是需要找的元素</span></span><br><span class="line">            node = p;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ((e = p.next) != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//否则，先取出table[(n-1)&amp;hash]的next，判断是否为null</span></span><br><span class="line">            <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                <span class="comment">//如果此时节点是红黑树类型，则通过树的方式来查询</span></span><br><span class="line">                node = ((TreeNode&lt;K,V&gt;)p).getTreeNode(hash, key);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//链表方式</span></span><br><span class="line">                <span class="keyword">do</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k)))) &#123;</span><br><span class="line">                        <span class="comment">//同样获取到hash相同，并且key地址相同或equals为true，则退出</span></span><br><span class="line">                        node = e;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    p = e;</span><br><span class="line">                &#125; <span class="keyword">while</span> ((e = e.next) != <span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (node != <span class="keyword">null</span> &amp;&amp; (!matchValue || (v = node.value) == value || </span><br><span class="line">                             (value != <span class="keyword">null</span> &amp;&amp; value.equals(v)))) &#123;</span><br><span class="line">            <span class="comment">//此时如果node为null，则表示没有查到。</span></span><br><span class="line">            <span class="comment">//如果不为空，当matchValue为true时，才需要后面的值相等时会被删除，否则不用比较值，这个节点就会被删除</span></span><br><span class="line">            <span class="keyword">if</span> (node <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                <span class="comment">//红黑树</span></span><br><span class="line">                ((TreeNode&lt;K,V&gt;)node).removeTreeNode(<span class="keyword">this</span>, tab, movable);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (node == p)</span><br><span class="line">                <span class="comment">//如果与table[(n-1)&amp;hash]相等</span></span><br><span class="line">                tab[index] = node.next;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="comment">//链表</span></span><br><span class="line">                p.next = node.next;</span><br><span class="line">            ++modCount;</span><br><span class="line">            --size;</span><br><span class="line">            afterNodeRemoval(node);</span><br><span class="line">            <span class="keyword">return</span> node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里是remove方法的源码，虽然注释也写了很多，但是我们还是一步一步来分析一遍。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((tab = table) != <span class="keyword">null</span> &amp;&amp; (n = tab.length) &gt; <span class="number">0</span> &amp;&amp; (p = tab[index = (n - <span class="number">1</span>) &amp; hash]) != <span class="keyword">null</span>) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先还是前提条件要保证：① 数组不为null ② 数组的长度大于0 ③ 计算到的hash值对应的数组位置节点不为null。【index计算请看put方法相应文章】</p>
+<p>继续：</p>
+<p>其实我们会发现，查询和删除都有相同的一步，就是需要先把这个key指定的节点找出来。再去执行后面的操作。所以我们可以看到，removeNode前面一部分代码和查询的代码是相似的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Node&lt;K,V&gt; node = <span class="keyword">null</span>, e; K k; V v;</span><br><span class="line"><span class="keyword">if</span> (p.hash == hash &amp;&amp; ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">    <span class="comment">//(hash值相等) 并且 (key地址等或key equals为true)</span></span><br><span class="line">    <span class="comment">//如果条件都成立，表示table[(n-1)&amp;hash]上的元素就是需要找的元素</span></span><br><span class="line">    node = p;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ((e = p.next) != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">//否则，先取出table[(n-1)&amp;hash]的next，判断是否为null</span></span><br><span class="line">    <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">        <span class="comment">//如果此时节点是红黑树类型，则通过树的方式来查询</span></span><br><span class="line">        node = ((TreeNode&lt;K,V&gt;)p).getTreeNode(hash, key);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//链表方式</span></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k)))) &#123;</span><br><span class="line">                <span class="comment">//同样获取到hash相同，并且key地址相同或equals为true，则退出</span></span><br><span class="line">                node = e;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = e;</span><br><span class="line">        &#125; <span class="keyword">while</span> ((e = e.next) != <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样情景也是分为三种：</p>
+<ul>
+<li>数组上的节点就是目标节点</li>
+<li>此时链表已经是树结构，需要通过搜索红黑树来查找目标节点</li>
+<li>数组上的桶对应是链表结构，则需要通过遍历链表来查找目标节点</li>
+</ul>
+<p>具体细节就不再赘述，跟前面get方法一直。</p>
+<p>继续：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (node != <span class="keyword">null</span> &amp;&amp; (!matchValue || (v = node.value) == value || (value != <span class="keyword">null</span> &amp;&amp; value.equals(v)))) &#123;</span><br><span class="line">    <span class="comment">//此时如果node为null，则表示没有查到。</span></span><br><span class="line">    <span class="comment">//如果不为空，当matchValue为true时，才需要后面的值相等时会被删除，否则不用比较值，这个节点就会被删除</span></span><br><span class="line">    <span class="keyword">if</span> (node <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">        <span class="comment">//红黑树</span></span><br><span class="line">        ((TreeNode&lt;K,V&gt;)node).removeTreeNode(<span class="keyword">this</span>, tab, movable);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (node == p)</span><br><span class="line">        <span class="comment">//如果与table[(n-1)&amp;hash]相等</span></span><br><span class="line">        tab[index] = node.next;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="comment">//链表</span></span><br><span class="line">        p.next = node.next;</span><br><span class="line">    ++modCount;</span><br><span class="line">    --size;</span><br><span class="line">    afterNodeRemoval(node);</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行完查询之后就是需要执行具体的删除操作了。</p>
+<p>首先需要判断指定的节点是否存在</p>
+<ul>
+<li><p>不存在直接返回null</p>
+</li>
+<li><p>存在；则同样需要分为三种情况处理</p>
+<ul>
+<li>红黑树结构，则执行removeTreeNode方法进行删除【不深究】</li>
+<li>数组上的位置就是目标节点。即node与p相等，则直接将node的next放置在数组第i个位置上。</li>
+<li>如果不是在数组的第i位置，则需要通过段链的方式来删除节点，即此时节点p是node的上一个节点，只需要把p的next执行node的next即可。</li>
+</ul>
+</li>
+</ul>
+<p>我们再回过头来看这个remove方法的声明:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">remove</span><span class="params">(Object key)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>只传入一个key，来删除，即不用通过比较value的值，遇到相同的key就删除，所以在调用removeNode的时候，matchValue参数传入的是false，即这个值为false，!matchValue就为true，则后面的值value就不用比较了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (node != <span class="keyword">null</span> &amp;&amp; (!matchValue || (v = node.value) == value || (value != <span class="keyword">null</span> &amp;&amp; value.equals(v))))</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Remove-key-value"><a href="#Remove-key-value" class="headerlink" title="Remove key value"></a>Remove key value</h2><p>我们再看一下传入两个值的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object key, Object value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> removeNode(hash(key), key, value, <span class="keyword">true</span>, <span class="keyword">true</span>) != <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过前面的分析，我们大概可以猜到，这个方法移除条件是建立在key和value都相同的时候，才移除节点。所以matchValue传入的是true。此时的!matchValue就是false，所以需要看后面value判断是否为true。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (node != <span class="keyword">null</span> &amp;&amp; (!matchValue || (v = node.value) == value || (value != <span class="keyword">null</span> &amp;&amp; value.equals(v))))</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>至此，HashMap的remove方法就解析这么多了</strong></p>
+
+        </div>
+		
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://ooyhao.github.io/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/4.HashMap%E7%9A%84remove%E6%96%B9%E6%B3%95/">HashMap的remove相关方法</a></li>
+            <li><strong>本文作者：</strong><a href="https://ooyhao.github.io">ouYang</a></li>
+            <li><strong>本文链接：</strong><a href="https://ooyhao.github.io/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/4.HashMap%E7%9A%84remove%E6%96%B9%E6%B3%95/">https://ooyhao.github.io/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/4.HashMap%E7%9A%84remove%E6%96%B9%E6%B3%95/</a></li>
+            <li><strong>发布时间：</strong>2020-05-05</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/JavaSE/" rel="tag">JavaSE</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/5.HashMap%E7%9A%84%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">HashMap的参数总结</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/3.HashMap%E7%9A%84get%E6%96%B9%E6%B3%95/">
+                <span class="level-item">HashMap的get，containKey, containsValue方法</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'f4cce3ecdc344c1ed151',
+        clientSecret: '7f38f8a41d90fc7d18d276758a4d00f253ebebde',
+        id: 'c5eef3d40aa829d57e82f135e9bc6c73',
+        repo: 'ooyhao.github.io',
+        owner: 'ooyhao',
+        admin: "ooyhao",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="ouYangHao">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        ouYangHao
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        路虽远，行则将至
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>china,shanghai</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            90
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            18
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            16
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="/about" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="http://github.com/ooyhao/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Dribbble" href="/625194996">
+                
+                <i class="fab fa-qq"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="wechat" href="/yhao6251">
+                
+                <i class="fab fa-weixin"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#Remove-key">
+        <span class="has-mr-6">1</span>
+        <span>Remove key</span>
+        </a></li><li>
+        <a class="is-flex" href="#Remove-key-value">
+        <span class="has-mr-6">2</span>
+        <span>Remove key value</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://blog.csdn.net/ooyhao" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">CSDN</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">blog.csdn.net</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.cnblogs.com/ooyhao/" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">博客园</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.cnblogs.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/DB/">
+            <span class="level-start">
+                <span class="level-item">DB</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">16</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/DB/Redis/">
+            <span class="level-start">
+                <span class="level-item">Redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">15</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/DB/mysql/">
+            <span class="level-start">
+                <span class="level-item">mysql</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/SSM/">
+            <span class="level-start">
+                <span class="level-item">SSM</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">61</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/SSM/mybatis/">
+            <span class="level-start">
+                <span class="level-item">mybatis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring/">
+            <span class="level-start">
+                <span class="level-item">spring</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/spring4x/">
+            <span class="level-start">
+                <span class="level-item">spring4x</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">11</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springboot/">
+            <span class="level-start">
+                <span class="level-item">springboot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">14</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/SSM/springcloudbalibaba/">
+            <span class="level-start">
+                <span class="level-item">springcloudbalibaba</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">26</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/tools/">
+            <span class="level-start">
+                <span class="level-item">tools</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/tools/idea/">
+            <span class="level-start">
+                <span class="level-item">idea</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+            <span class="level-start">
+                <span class="level-item">中间件</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/hessian/">
+            <span class="level-start">
+                <span class="level-item">hessian</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/rabbitmq/">
+            <span class="level-start">
+                <span class="level-item">rabbitmq</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E5%9F%BA%E7%A1%80/">
+            <span class="level-start">
+                <span class="level-item">基础</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">
+            <span class="level-start">
+                <span class="level-item">JavaSE</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/">
+            <span class="level-start">
+                <span class="level-item">随笔</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E9%9A%8F%E7%AC%94/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+            <span class="level-start">
+                <span class="level-item">新冠肺炎</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/JavaSE/" style="font-size: 15px;">JavaSE</a> <a href="/tags/Redis/" style="font-size: 20px;">Redis</a> <a href="/tags/feign/" style="font-size: 11.25px;">feign</a> <a href="/tags/gateway/" style="font-size: 12.5px;">gateway</a> <a href="/tags/hessian/" style="font-size: 10px;">hessian</a> <a href="/tags/idea/" style="font-size: 10px;">idea</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nacos/" style="font-size: 16.25px;">nacos</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/ribbon/" style="font-size: 10px;">ribbon</a> <a href="/tags/sentinel/" style="font-size: 13.75px;">sentinel</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring4x/" style="font-size: 17.5px;">spring4x</a> <a href="/tags/springboot/" style="font-size: 18.75px;">springboot</a> <a href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/" style="font-size: 10px;">新冠肺炎</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/5.HashMap%E7%9A%84%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="HashMap的参数总结">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-05T03:54:03.000Z">2020-05-05</time></div>
+                    <a href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/5.HashMap%E7%9A%84%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93/" class="title has-link-black-ter is-size-6 has-text-weight-normal">HashMap的参数总结</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a> / <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/4.HashMap%E7%9A%84remove%E6%96%B9%E6%B3%95/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="HashMap的remove相关方法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-05T03:54:02.000Z">2020-05-05</time></div>
+                    <a href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/4.HashMap%E7%9A%84remove%E6%96%B9%E6%B3%95/" class="title has-link-black-ter is-size-6 has-text-weight-normal">HashMap的remove相关方法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a> / <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/3.HashMap%E7%9A%84get%E6%96%B9%E6%B3%95/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="HashMap的get，containKey, containsValue方法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-05T03:54:01.000Z">2020-05-05</time></div>
+                    <a href="/2020/05/05/%E5%9F%BA%E7%A1%80/HashMap/3.HashMap%E7%9A%84get%E6%96%B9%E6%B3%95/" class="title has-link-black-ter is-size-6 has-text-weight-normal">HashMap的get，containKey, containsValue方法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a> / <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/04/%E5%9F%BA%E7%A1%80/HashMap/2.HashMap%E7%9A%84putVal%E5%92%8Cresize/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="HashMap的putVal和resize">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-04T03:33:01.000Z">2020-05-04</time></div>
+                    <a href="/2020/05/04/%E5%9F%BA%E7%A1%80/HashMap/2.HashMap%E7%9A%84putVal%E5%92%8Cresize/" class="title has-link-black-ter is-size-6 has-text-weight-normal">HashMap的putVal和resize</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a> / <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/04/%E5%9F%BA%E7%A1%80/HashMap/1.%E5%88%9D%E8%AF%95HashMap%E7%9A%84put%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="初试HashMap的put存储过程">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-04T03:33:00.000Z">2020-05-04</time></div>
+                    <a href="/2020/05/04/%E5%9F%BA%E7%A1%80/HashMap/1.%E5%88%9D%E8%AF%95HashMap%E7%9A%84put%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初试HashMap的put存储过程</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a> / <a class="has-link-grey -link" href="/categories/%E5%9F%BA%E7%A1%80/JavaSE/">JavaSE</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">11</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">21</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">49</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/JavaSE/">
+                        <span class="tag">JavaSE</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Redis/">
+                        <span class="tag">Redis</span>
+                        <span class="tag is-grey">15</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/feign/">
+                        <span class="tag">feign</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gateway/">
+                        <span class="tag">gateway</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hessian/">
+                        <span class="tag">hessian</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/idea/">
+                        <span class="tag">idea</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mybatis/">
+                        <span class="tag">mybatis</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/mysql/">
+                        <span class="tag">mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nacos/">
+                        <span class="tag">nacos</span>
+                        <span class="tag is-grey">10</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/rabbitmq/">
+                        <span class="tag">rabbitmq</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ribbon/">
+                        <span class="tag">ribbon</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sentinel/">
+                        <span class="tag">sentinel</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring/">
+                        <span class="tag">spring</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/spring4x/">
+                        <span class="tag">spring4x</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/springboot/">
+                        <span class="tag">springboot</span>
+                        <span class="tag is-grey">14</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/">
+                        <span class="tag">新冠肺炎</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo2.png" alt="HashMap的remove相关方法" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 ouYang&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv"> 来访 <span id="busuanzi_value_site_uv"></span>人</span>
+                <span id="busuanzi_container_site_pv">, 总访问 <span id="busuanzi_value_site_pv"></span>次</span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ooyhao/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://ooyhao.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
